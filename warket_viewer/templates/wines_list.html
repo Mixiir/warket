@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <h2>Wines list</h2>
+        <div class="container">
+          <form method="get">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for a delicious wine" name="search">
+                <div class="input-group-append">
+                <button class="btn btn-secondary" type="submit">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+          <ul>
+            {% for wine in wines_data %}
+              <li><a href ="{% url 'detail_wine' wine.pk %}">{{ wine.name }}</a> {{ wine.vintage }}</li>
+            {% endfor %}
+          </ul>
+<br>
+{% endblock %}
