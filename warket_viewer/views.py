@@ -23,7 +23,7 @@ def get_languages_name(language_code):
 
 class WineListView(ListView):
     model = Wine
-    template_name = 'wines_list.html'
+    template_name = 'list_wines.html'
     context_object_name = 'wines_data'
 
     def get_queryset(self):
@@ -33,15 +33,9 @@ class WineListView(ListView):
         if search:
             wines = wines.filter(
                 Q(name__icontains=search) |
-                Q(description__icontains=search) |
-                Q(rating__name__icontains=search) |
-                Q(price__bio__icontains=search) |
-                Q(country__name__icontains=search) |
-                Q(region__bio__icontains=search) |
-                Q(grape_variety__icontains=search) |
+                Q(variety__icontains=search) |
                 Q(vintage__icontains=search) |
-                Q(color__icontains=search) |
-                Q(alcohol_content=search))
+                Q(type__icontains=search))
         return wines
 
     def get_context_data(self, **kwargs):
@@ -50,12 +44,25 @@ class WineListView(ListView):
         return context
 
 
-class RegisterUser(CreateView):
-    model = Profile
-    template_name = 'register.html'
-    success_url = reverse_lazy('login')
+class DetailWine(DetailView):
+    model = Wine
+    template_name = 'detail_wine.html'
+    context_object_name = 'wine_data'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_is'] = 'register'
+        context['page_is'] = 'wines'
+        return context
+
+
+class CreateWine(PermissionRequiredMixin, CreateView):
+    permission_required = 'warket_viewer.add_wine'
+    model = Wine
+    fields = '__all__'
+    template_name = 'create_wine.html'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_is'] = 'wines'
         return context
