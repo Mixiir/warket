@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from warket_viewer.views import WineListView, RegisterUser, DetailWine, CreateWine
+from warket_viewer.views import WineListView, DetailWine, CreateWine
 
 urlpatterns = [
     path('admin/', admin.site.urls),
