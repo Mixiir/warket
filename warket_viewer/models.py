@@ -1,4 +1,4 @@
-from .constants import COUNTRIES, LANGUAGES
+from .constants import COUNTRIES, LANGUAGES, WINE_VARIETY, WINE_TYPE
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -19,17 +19,27 @@ class Profile(models.Model):
     feedback_score = models.PositiveIntegerField(blank=True, null=True)
 
 
+class Manufacturer(models.Model):
+    name = models.CharField(max_length=100)
+    country = models.CharField(max_length=100, choices=COUNTRIES)
+    region = models.CharField(max_length=100)
+    bio = models.TextField()
+
+
 class Wine(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     rating = models.FloatField(blank=True, null=True)
     price = models.PositiveIntegerField(blank=True, null=True)
-    country = models.CharField(max_length=100, choices=COUNTRIES, blank=True, null=True)
-    region = models.CharField(max_length=100, blank=True, null=True)
-    grape_variety = models.CharField(max_length=100, blank=True, null=True)
+    grape_variety = models.CharField(max_length=100, blank=True, null=True, )
     vintage = models.PositiveIntegerField(blank=True, null=True)
     alcohol_content = models.FloatField(blank=True, null=True)
-    color = models.CharField(max_length=100, blank=True, null=True)
+    price_per_unit = models.PositiveIntegerField(blank=True, null=True)
+    units_in_stock = models.PositiveIntegerField(blank=True, null=True)
+    units_in_auction = models.PositiveIntegerField(blank=True, null=True)
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, blank=True, null=True)
+    type = models.CharField(max_length=100, blank=True, null=True, choices=WINE_TYPE)
+    variety = models.CharField(max_length=100, blank=True, null=True, choices=WINE_VARIETY)
 
 
 class Cart(models.Model):

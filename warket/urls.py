@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from warket_viewer.views import WineListView, RegisterUser
+from warket_viewer.views import WineListView, RegisterUser, DetailWine, CreateWine
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', WineListView.as_view(), name="home"),
+    path('', WineListView.as_view(), name="list_wines"),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('register/', RegisterUser.as_view(), name="register"),
+    path('wine/<int:pk>', DetailWine.as_view(), name="detail_wine"),
+    path('create_wine/', CreateWine.as_view(), name="create_wine"),
+
 ]
