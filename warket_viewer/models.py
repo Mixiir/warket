@@ -25,6 +25,9 @@ class Manufacturer(models.Model):
     region = models.CharField(max_length=100)
     bio = models.TextField()
 
+    def __str__(self):
+        return self.name
+
 
 class Wine(models.Model):
     name = models.CharField(max_length=100)
