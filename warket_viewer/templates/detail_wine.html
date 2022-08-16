@@ -16,8 +16,7 @@
     <p> Type: {{  wine_data.type }}</p>
     <p> Variety: {{  wine_data.variety }}</p>
 
-{#    <a href="{% url 'edit_wine'  wine_data.pk %}">Edit</a>#}
+    <a href="{% url 'edit_wine'  wine_data.pk %}">Edit</a>
 {#    <a href="{% url 'delete_wine'  wine_data.pk %}">Delete</a>#}
-    </p>
 
 {% endblock %}

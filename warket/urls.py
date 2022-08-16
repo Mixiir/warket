@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from warket_viewer.views import WineListView, DetailWine, CreateWine
+from warket_viewer.views import WineListView, DetailWine, CreateWine, EditWine
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,5 +25,6 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('wine/<int:pk>', DetailWine.as_view(), name="detail_wine"),
     path('create_wine/', CreateWine.as_view(), name="create_wine"),
+    path('wine/<int:pk>/edit/', EditWine.as_view(), name="edit_wine"),
 
 ]

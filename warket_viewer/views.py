@@ -68,3 +68,16 @@ class CreateWine(PermissionRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['page_is'] = 'wines'
         return context
+
+
+class EditWine(PermissionRequiredMixin, UpdateView):
+    permission_required = 'warket_viewer.edit_wine'
+    model = Wine
+    fields = '__all__'
+    template_name = 'edit_wine.html'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_is'] = 'wines'
+        return context
