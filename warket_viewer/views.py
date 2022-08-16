@@ -35,7 +35,9 @@ class WineListView(ListView):
                 Q(name__icontains=search) |
                 Q(variety__icontains=search) |
                 Q(vintage__icontains=search) |
-                Q(type__icontains=search))
+                Q(type__icontains=search) |
+                Q(grape_variety__icontains=search))
+
         return wines
 
     def get_context_data(self, **kwargs):
