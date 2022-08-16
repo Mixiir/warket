@@ -16,8 +16,9 @@
         </div>
           <ul>
             {% for wine in wines_data %}
-              <li><a href ="{% url 'detail_wine' wine.pk %}">{{ wine.name }}</a>    {{ wine.vintage }} </li>
+              <li><a href ="{% url 'detail_wine' wine.pk %}">{{ wine.name }}</a>    {{ wine.vintage }}  {{ wine.variety }}</li>
             {% endfor %}
           </ul>
 <br>
+    <a href ="{% url 'create_wine' %}">Add a wine</a>
 {% endblock %}

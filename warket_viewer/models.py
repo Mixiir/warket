@@ -8,14 +8,14 @@ from django.contrib.auth.models import User
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     birth_date = models.DateField(blank=True, null=True)
-    bio = models.TextField()
+    bio = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=100, choices=COUNTRIES, blank=True, null=True)
     language = models.CharField(max_length=100, choices=LANGUAGES, blank=True, null=True)
     seller = models.BooleanField(default=False)
     buyer = models.BooleanField(default=False)
     auctioneer = models.BooleanField(default=False)
     auction_limit = models.PositiveIntegerField(blank=True, null=True)
-    sold_items = models.PositiveIntegerField(blank=True, null=True)
+    sold_items = models.PositiveIntegerField(default=0)
     feedback_score = models.PositiveIntegerField(blank=True, null=True)
 
 
@@ -31,7 +31,6 @@ class Wine(models.Model):
     description = models.TextField()
     rating = models.FloatField(blank=True, null=True)
     price = models.PositiveIntegerField(blank=True, null=True)
-    grape_variety = models.CharField(max_length=100, blank=True, null=True, )
     vintage = models.PositiveIntegerField(blank=True, null=True)
     alcohol_content = models.FloatField(blank=True, null=True)
     price_per_unit = models.PositiveIntegerField(blank=True, null=True)
