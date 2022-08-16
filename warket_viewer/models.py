@@ -1,22 +1,7 @@
 from .constants import COUNTRIES, LANGUAGES, WINE_VARIETY, WINE_TYPE
 from django.db import models
 from django.contrib.auth.models import User
-
-
-# Create your models here.
-
-class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    birth_date = models.DateField(blank=True, null=True)
-    bio = models.TextField(blank=True, null=True)
-    location = models.CharField(max_length=100, choices=COUNTRIES, blank=True, null=True)
-    language = models.CharField(max_length=100, choices=LANGUAGES, blank=True, null=True)
-    seller = models.BooleanField(default=False)
-    buyer = models.BooleanField(default=False)
-    auctioneer = models.BooleanField(default=False)
-    auction_limit = models.PositiveIntegerField(blank=True, null=True)
-    sold_items = models.PositiveIntegerField(default=0)
-    feedback_score = models.PositiveIntegerField(blank=True, null=True)
+from django.contrib.auth.forms import UserCreationForm
 
 
 class Manufacturer(models.Model):
@@ -31,31 +16,21 @@ class Manufacturer(models.Model):
 
 class Wine(models.Model):
     name = models.CharField(max_length=100)
+    image = models.ImageField(default='default.jpg', upload_to='images')
     description = models.TextField()
-    rating = models.FloatField(blank=True, null=True)
-    price = models.PositiveIntegerField(blank=True, null=True)
-    vintage = models.PositiveIntegerField(blank=True, null=True)
+    rating = models.FloatField(default=0)
+    vintage = models.PositiveIntegerField(default=1999)
     alcohol_content = models.FloatField(blank=True, null=True)
-    price_per_unit = models.PositiveIntegerField(blank=True, null=True)
-    units_in_stock = models.PositiveIntegerField(blank=True, null=True)
-    units_in_auction = models.PositiveIntegerField(blank=True, null=True)
+    price_per_unit = models.PositiveIntegerField(default=1)
+    units_in_stock = models.PositiveIntegerField(default=1)
+    units_in_auction = models.PositiveIntegerField(default=0)
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, blank=True, null=True)
-    type = models.CharField(max_length=100, blank=True, null=True, choices=WINE_TYPE)
-    variety = models.CharField(max_length=100, blank=True, null=True, choices=WINE_VARIETY)
+    type = models.CharField(max_length=100, choices=WINE_TYPE, default='red')
+    variety = models.CharField(max_length=100, choices=WINE_VARIETY, default='')
 
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     wine = models.ForeignKey(Wine, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(blank=True, null=True)
-    total = models.PositiveIntegerField(blank=True, null=True)
-    date_added = models.DateField(blank=True, null=True)
-    date_modified = models.DateField(blank=True, null=True)
-    status = models.CharField(max_length=100, blank=True, null=True)
-    payment_method = models.CharField(max_length=100, blank=True, null=True)
-    payment_status = models.CharField(max_length=100, blank=True, null=True)
-    payment_id = models.CharField(max_length=100, blank=True, null=True)
-    payment_amount = models.PositiveIntegerField(blank=True, null=True)
-    payment_currency = models.CharField(max_length=100, blank=True, null=True)
-    payment_date = models.DateField(blank=True, null=True)
-    payment_details = models.TextField(blank=True, null=True)
+    quantity = models.PositiveIntegerField(default=1)
+    status = models.CharField(max_length=100, default="cart")

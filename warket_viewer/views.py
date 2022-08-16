@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, FormView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from .constants import LANGUAGES, COUNTRIES
-from .models import Wine, Profile, Cart
+from .models import Wine
 from django.db.models import Q
+from django.contrib import messages
+from users.forms import UserRegisterForm
 
 
 # Create your views here.
@@ -36,7 +38,7 @@ class WineListView(ListView):
                 Q(variety__icontains=search) |
                 Q(vintage__icontains=search) |
                 Q(type__icontains=search) |
-                Q(grape_variety__icontains=search))
+                Q(variety__icontains=search))
 
         return wines
 
@@ -62,7 +64,7 @@ class CreateWine(PermissionRequiredMixin, CreateView):
     model = Wine
     fields = '__all__'
     template_name = 'create_wine.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('list_wines')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -75,7 +77,7 @@ class EditWine(PermissionRequiredMixin, UpdateView):
     model = Wine
     fields = '__all__'
     template_name = 'edit_wine.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('list_wines')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
