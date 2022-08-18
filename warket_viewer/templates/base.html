@@ -23,7 +23,7 @@
             <div class="navbar-nav">
                 <a class="navbar-brand {% if page_is == 'wines' %}nav-item nav-link active {% endif %}"
                    href="/">Warket</a>
-                <a class="navbar-brand {% if page_is == 'sell' %}nav-item nav-link active {% endif %}" href="/">Sell
+                <a class="navbar-brand {% if page_is == 'sell' %}nav-item nav-link active {% endif %}" href="{% url "create_wine" %}">Sell
                     wines</a>
                 <a class="navbar-brand {% if page_is == 'auction' %}nav-item nav-link active {% endif %}" href="/">Auctions</a>
                 <a class="navbar-brand {% if page_is == 'contact' %}nav-item nav-link active {% endif %}"

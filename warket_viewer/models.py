@@ -16,6 +16,7 @@ class Manufacturer(models.Model):
 
 class Wine(models.Model):
     name = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(default='default.jpg', upload_to='images')
     description = models.TextField()
     rating = models.FloatField(default=0)
