@@ -7,8 +7,8 @@
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Search for a delicious wine" name="search">
                 <div class="input-group-append">
-                <button class="btn btn-secondary" type="submit">
-                  <i class="bi bi-search"></i>
+                <button class="btn btn-secondary" type="submit" >
+                  <i class="bi bi-search">Search</i>
                 </button>
               </div>
             </div>
@@ -16,9 +16,22 @@
         </div>
           <ul>
             {% for wine in wines_data %}
-              <li><a href ="{% url 'detail_wine' wine.pk %}">{{ wine.name }}</a>    {{ wine.vintage }}  {{ wine.variety }}   -
-                  {{ wine.price_per_unit }}€</li>
-            {% endfor %}
+            {% if forloop.first %}<div class="row">{% endif %}
+              <div class="col-sm-6">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">  <a href ="wine/{{ wine.pk }}">{{ wine.name }}</a></h5>
+                      <p class="card-text">{{ wine.description }}</p>
+                      <img src="{{ wine.image.url }}" class="card-img-top" alt="...">
+                        <p class="card-text"><small class="text-muted">{{ wine.vintage }}</small></p>
+                        <p class="card-text"><small class="text-muted">{{ wine.price_per_unit }} €</small></p>
+                  </div>
+                </div>
+              </div>
+            {% if forloop.counter|divisibleby:2 %}</div><div class="row">{% endif %}
+            {% if forloop.last %}</div>{% endif %} {% endfor %}          
           </ul>
 <br>
 {% endblock %}
+
+
