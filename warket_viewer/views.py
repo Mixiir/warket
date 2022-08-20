@@ -7,6 +7,7 @@ from .models import Wine
 from django.db.models import Q
 from django.contrib import messages
 from users.forms import UserRegisterForm
+from .forms import CreateWineForm
 
 
 # Create your views here.
@@ -59,17 +60,30 @@ class DetailWine(DetailView):
         return context
 
 
-class CreateWine(PermissionRequiredMixin, CreateView):
-    permission_required = 'warket_viewer.add_wine'
-    model = Wine
-    fields = '__all__'
-    template_name = 'create_wine.html'
-    success_url = reverse_lazy('list_wines')
+# class CreateWine(PermissionRequiredMixin, CreateView):
+#     permission_required = 'warket_viewer.add_wine'
+#     model = Wine
+#     fields = '__all__'
+#     template_name = 'create_wine.html'
+#     success_url = reverse_lazy('list_wines')
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['page_is'] = 'wines'
+#         return context
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['page_is'] = 'wines'
-        return context
+def create_wine(request):
+    if request.method == 'POST':
+        form = CreateWineForm(request.POST, request.FILES)
+        if form.is_valid():
+            create_wine_form = form.save(commit=False)
+            create_wine_form.user = request.user
+            create_wine_form.save()
+            messages.success(request, f'Wine has been listed')
+            return redirect('list_wines')
+    else:
+        form = CreateWineForm()
+    return render(request, 'create_wine.html', {'form': form})
 
 
 class EditWine(PermissionRequiredMixin, UpdateView):

@@ -5,8 +5,8 @@ from users.models import Profile
 from .models import Wine
 
 
-class CreateWine(forms.ModelForm):
+class CreateWineForm(forms.ModelForm):
     class Meta:
         model = Wine
         fields = ['name', 'image', 'description', 'vintage', 'alcohol_content', 'price_per_unit',
-                  'units_in_stock', 'manufacturer', 'type', 'variety', 'user']
+                  'units_in_stock', 'manufacturer', 'type', 'variety']
