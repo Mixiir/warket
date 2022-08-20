@@ -1,13 +1,21 @@
 {% extends "base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
+    <style>
+        #id_user, #div_id_user { display: none;}
+    </style>
+    <h3>Update wine listing</h3>
+    <div class="content-section">
+        {#<h2>Edit wine - <a href ="{% url 'detail_wine' wine.pk %}">{{ wine.name }}</a></h2>#}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit" value="Update">Update wine listing</button>
+            </div>
 
-<h2>Edit wine - <a href ="{% url 'detail_wine' wine.pk %}">{{ wine.name }}</a></h2>
-
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Update" class="btn btn-primary">
-</form>
-
+        </form>
+    </div>
 {% endblock %}
