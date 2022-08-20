@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <h2>Wine details </h2>
+    <div class="content-section">
     <p> Name: {{ wine_data.name }} </p>
     <p> Description {{ wine_data.description }}</p>
     <p> Rating: {{ wine_data.rating }} </p>
@@ -18,5 +19,5 @@
     <p> Seller: {{ wine_data.user }}</p>
     <a href="{% url 'edit_wine'  wine_data.pk %}">Edit</a>
     {#    <a href="{% url 'delete_wine'  wine_data.pk %}">Delete</a>#}
-
+    <div>
 {% endblock %}

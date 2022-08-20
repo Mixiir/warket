@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+import django.contrib.auth.decorators
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -6,8 +7,10 @@ from .constants import LANGUAGES, COUNTRIES
 from .models import Wine
 from django.db.models import Q
 from django.contrib import messages
+from django.forms import HiddenInput
 from users.forms import UserRegisterForm
-from .forms import CreateWineForm
+from .forms import CreateWineForm, EditWineForm
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -90,6 +93,7 @@ class EditWine(PermissionRequiredMixin, UpdateView):
     permission_required = 'warket_viewer.edit_wine'
     model = Wine
     fields = '__all__'
+    widgets = {'user': HiddenInput()}
     template_name = 'edit_wine.html'
     success_url = reverse_lazy('list_wines')
 
