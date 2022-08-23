@@ -1,10 +1,10 @@
 import django.contrib.auth.decorators
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, UpdateView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from .constants import LANGUAGES, COUNTRIES
-from .models import Wine
+from .models import Wine, Manufacturer
 from django.db.models import Q
 from django.contrib import messages
 from django.forms import HiddenInput
@@ -52,6 +52,65 @@ class WineListView(ListView):
         return context
 
 
+class ManufacturersListView(ListView):
+    model = Manufacturer
+    template_name = 'list_manufacturers.html'
+    context_object_name = 'manufacturers_data'
+
+    def get_queryset(self):
+        manufacturers = Manufacturer.objects.all()
+
+        search = self.request.GET.get('search')
+        if search:
+            manufacturers = manufacturers.filter(
+                Q(name__icontains=search) |
+                Q(country__icontains=search) |
+                Q(region__icontains=search) |
+                Q(bio__icontains=search) )
+
+        return manufacturers
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_is'] = 'manufacturers'
+        return context
+
+
+class DetailManufacturer(DetailView):
+    model = Manufacturer
+    template_name = 'detail_manufacturer.html'
+    context_object_name = 'manufacturer_data'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_is'] = 'manufacturer'
+        return context
+
+
+class CreateManufacturer(PermissionRequiredMixin, CreateView):
+    template_name = 'create_manufacturer.html'
+    model = Manufacturer
+    success_url = reverse_lazy('list_manufacturers')
+    fields = '__all__'
+    permission_required = 'viewer.add_manufacturer'
+
+
+class UpdateManufacturer(PermissionRequiredMixin, UpdateView):
+    template_name = 'update_manufacturer.html'
+    model = Manufacturer
+    success_url = reverse_lazy('list_manufacturers')
+    fields = '__all__'
+    permission_required = 'viewer.change_manufacturer'
+
+
+class DeleteManufacturer(PermissionRequiredMixin, DeleteView):
+    template_name = 'delete_manufacturer.html'
+    model = Manufacturer
+    success_url = reverse_lazy('list_manufacturers')
+    context_object_name = 'manufacturer'
+    permission_required = 'viewer.delete_manufacturer'
+
+
 class DetailWine(DetailView):
     model = Wine
     template_name = 'detail_wine.html'
@@ -74,6 +133,7 @@ class DetailWine(DetailView):
 #         context = super().get_context_data(**kwargs)
 #         context['page_is'] = 'wines'
 #         return context
+
 
 def create_wine(request):
     if request.method == 'POST':

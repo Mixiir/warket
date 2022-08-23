@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 class Manufacturer(models.Model):
     name = models.CharField(max_length=100)
+    image = models.ImageField(default='default.jpg', upload_to='images')
     country = models.CharField(max_length=100, choices=COUNTRIES)
     region = models.CharField(max_length=100)
     bio = models.TextField()
