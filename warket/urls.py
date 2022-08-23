@@ -17,13 +17,27 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
-from warket_viewer.views import WineListView, DetailWine, create_wine, EditWine
+from warket_viewer.views import (WineListView,
+                                 DetailWine,
+                                 create_wine,
+                                 EditWine,
+                                 ManufacturersListView,
+                                 DetailManufacturer,
+                                 CreateManufacturer,
+                                 UpdateManufacturer,
+                                 DeleteManufacturer,
+                                 )
 from users import views as user_views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', WineListView.as_view(), name="list_wines"),
+    path('manufacturers/', ManufacturersListView.as_view(), name="list_manufacturers"),
+    path('manufacturer/<int:pk>', DetailManufacturer.as_view(), name='detail_manufacturer'),
+    path('create_manufacturer/', CreateManufacturer.as_view(), name='create_manufacturer'),
+    path('manufacturer/<int:pk>/delete', DeleteManufacturer.as_view(), name='delete_manufacturer'),
+    path('manufacturer/<int:pk>/update', UpdateManufacturer.as_view(), name='update_manufacturer'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('wine/<int:pk>', DetailWine.as_view(), name="detail_wine"),
     path('create_wine/', create_wine, name="create_wine"),
