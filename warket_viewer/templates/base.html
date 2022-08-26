@@ -39,6 +39,9 @@
                             {% if user.is_authenticated %}
                                 <a class="dropdown-item" href="/admin/">Admin page</a>
                                 <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                                {% if user.is_staff %}
+                                    <a class="dropdown-item" href="{% url 'list_manufacturers' %}">Manufacturers list</a>
+                                {% endif %}
                                 <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                             {% else %}
                                 <a class="dropdown-item" href="{% url 'login' %}">Login</a>
