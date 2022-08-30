@@ -1,9 +1,5 @@
-from django.contrib import admin
-from django.contrib import admin
 from .models import Category, AuctionListing, Comment, Bid
-
-# Register your models here.
-
+from django.contrib import admin
 
 admin.site.register(Category)
 admin.site.register(AuctionListing)

@@ -1,14 +1,5 @@
-from django.db import models
-
-# Create your models here.
 from django.contrib.auth.models import User
 from django.db import models
-
-
-
-# class User(AbstractUser):
-#    watchlist = models.ManyToManyField(
-#         'AuctionListing', blank=True, related_name="userWatchlist")
 
 
 class Category(models.Model):
@@ -29,7 +20,14 @@ class AuctionListing(models.Model):
     active = models.BooleanField()
 
     def __str__(self):
-        return f"{self.id} : {self.name} in {self.category.name}\nPosted at : {self.date}\nValue : {self.startBid}\nDescription : {self.description}\nPosted By : {self.user.username} Active Status: {self.active}"
+        return f"{self.id} : " \
+               f"{self.name} in " \
+               f"{self.category.name}\nPosted at : " \
+               f"{self.date}\nValue : " \
+               f"{self.startBid}\nDescription : " \
+               f"{self.description}\nPosted By : " \
+               f"{self.user.username} Active Status: " \
+               f"{self.active}"
 
 
 class Bid(models.Model):
@@ -51,4 +49,9 @@ class Comment(models.Model):
     commentValue = models.CharField(max_length=250)
 
     def __str__(self):
-        return f"{self.id} : {self.user.username} commented on {self.auctionListing.name} posted by {self.auctionListing.user.username} at {self.date} : {self.commentValue}"
+        return f"{self.id} : " \
+               f"{self.user.username} commented on " \
+               f"{self.auctionListing.name} posted by " \
+               f"{self.auctionListing.user.username} at " \
+               f"{self.date} : " \
+               f"{self.commentValue}"

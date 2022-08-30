@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from warket_viewer.constants import COUNTRIES, LANGUAGES
+from warket_viewer.constants import COUNTRIES
 import datetime
 
 
@@ -10,7 +10,7 @@ class Profile(models.Model):
     birth_date = models.DateField("Date", default=datetime.date.today)
     bio = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=100, choices=COUNTRIES, blank=True, null=True)
-    language = models.CharField(max_length=100, choices=LANGUAGES, blank=True, null=True)
+    language = models.CharField(max_length=100, choices=COUNTRIES, blank=True, null=True)
     seller = models.BooleanField(default=False)
     buyer = models.BooleanField(default=False)
     auctioneer = models.BooleanField(default=False)

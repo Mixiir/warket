@@ -1,17 +1,11 @@
-from django.shortcuts import render
-
-# Create your views here.
-from django.urls import reverse
-from django.db.models import Max
-from django.utils import timezone
+from .models import Category, AuctionListing, Bid, Comment
 from django.contrib import messages
-from django.shortcuts import render
-from django.db import IntegrityError
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate, login, logout
-
-from .models import User, Category, AuctionListing, Bid, Comment
+from django.db.models import Max
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
+from django.utils import timezone
 
 
 def index(request):
@@ -28,72 +22,20 @@ def all(request):
     })
 
 
-def login_view(request):
-    if request.method == "POST":
-
-        # Attempt to sign user in
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
-
-        # Check if authentication successful
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse("index"))
-        else:
-            return render(request, "auctions/login.html", {
-                "message": "Invalid username and/or password."
-            })
-    else:
-        return render(request, "auctions/login.html")
-
-
 @login_required
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse("index"))
-
-
-def register(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        email = request.POST["email"]
-
-        # Ensure password matches confirmation
-        password = request.POST["password"]
-        confirmation = request.POST["confirmation"]
-        if password != confirmation:
-            return render(request, "auctions/register.html", {
-                "message": "Passwords must match."
-            })
-
-        # Attempt to create new user
-        try:
-            user = User.objects.create_user(username, email, password)
-            user.save()
-        except IntegrityError:
-            return render(request, "auctions/register.html", {
-                "message": "Username already taken."
-            })
-        login(request, user)
-        return HttpResponseRedirect(reverse("index"))
-    else:
-        return render(request, "auctions/register.html")
-
-
-@login_required
-def createListing(request):
+def create_listing(request):
     if request.method == 'POST':
         title = request.POST["title"]
         description = request.POST["description"]
-        startBid = request.POST["startBid"]
+        start_bid = request.POST["start_bid"]
         category = Category.objects.get(id=request.POST["category"])
         user = request.user
-        imageUrl = request.POST["url"]
-        if imageUrl == '':
-            imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png"
+        image_url = request.POST["url"]
+        if image_url == '':
+            image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png"
         listing = AuctionListing.objects.create(
-            name=title, category=category, date=timezone.now(), startBid=startBid, description=description, user=user, imageUrl=imageUrl, active=True)
+            name=title, category=category, date=timezone.now(), startBid=start_bid, description=description, user=user,
+            imageUrl=image_url, active=True)
         listing.save()
         return HttpResponseRedirect(reverse("index"))
     return render(request, "auctions/createListing.html", {
@@ -143,12 +85,12 @@ def filter(request, name):
 @login_required
 def comment(request, id):
     if request.method == 'POST':
-        auctionListing = AuctionListing.objects.get(id=id)
+        auction_listing = AuctionListing.objects.get(id=id)
         user = request.user
-        commentValue = request.POST["content"].strip()
-        if(commentValue != ""):
+        comment_value = request.POST["content"].strip()
+        if comment_value != "":
             comment = Comment.objects.create(date=timezone.now(
-            ), user=user, auctionListing=auctionListing, commentValue=commentValue)
+            ), user=user, auctionListing=auction_listing, commentValue=comment_value)
             comment.save()
         return HttpResponseRedirect(reverse("details", kwargs={'id': id}))
     return HttpResponseRedirect(reverse("index"))
@@ -157,57 +99,33 @@ def comment(request, id):
 @login_required
 def bid(request, id):
     if request.method == 'POST':
-        auctionListing = AuctionListing.objects.get(id=id)
-        bidValue = request.POST["bid"]
-        args = Bid.objects.filter(auctionListing=auctionListing)
-        value = args.aggregate(Max('bidValue'))['bidValue__max']
+        auction_listing = AuctionListing.objects.get(id=id)
+        bid_value = request.POST["bid"]
+        args = Bid.objects.filter(auctionListing=auction_listing)
+        value = args.aggregate(Max('bid_value'))['bidValue__max']
         if value is None:
             value = 0
-        if float(bidValue) < auctionListing.startBid or float(bidValue) <= value:
+        if float(bid_value) < auction_listing.startBid or float(bid_value) <= value:
             messages.warning(
-                request, f'Bid Higher than: {max(value, auctionListing.startBid)}!')
+                request, f'Bid Higher than: {max(value, auction_listing.startBid)}!')
             return HttpResponseRedirect(reverse("details", kwargs={'id': id}))
         user = request.user
         bid = Bid.objects.create(
-            date=timezone.now(), user=user, bidValue=bidValue, auctionListing=auctionListing)
+            date=timezone.now(), user=user, bidValue=bid_value, auctionListing=auction_listing)
         bid.save()
     return HttpResponseRedirect(reverse("details", kwargs={'id': id}))
 
 
 @login_required
-def end(request, itemId):
-    auctionListing = AuctionListing.objects.get(id=itemId)
+def end(request, item_id):
+    auction_listing = AuctionListing.objects.get(id=item_id)
     user = request.user
-    if auctionListing.user == user:
-        auctionListing.active = False
-        auctionListing.save()
+    if auction_listing.user == user:
+        auction_listing.active = False
+        auction_listing.save()
         messages.success(
-            request, f'Auction for {auctionListing.name} successfully closed!')
+            request, f'Auction for {auction_listing.name} successfully closed!')
     else:
         messages.info(
             request, 'You are not authorized to end this listing!')
-    return HttpResponseRedirect(reverse("details", kwargs={'id': itemId}))
-
-
-@login_required
-def watchlist(request):
-    if request.method == 'POST':
-        user = request.user
-        auctionListing = AuctionListing.objects.get(id=request.POST["item"])
-        if request.POST["status"] == '1':
-            user.watchlist.add(auctionListing)
-        else:
-            user.watchlist.remove(auctionListing)
-        user.save()
-        return HttpResponseRedirect(
-            reverse("details", kwargs={'id': auctionListing.id}))
-    return HttpResponseRedirect(reverse("index"))
-
-
-@login_required
-def watch(request):
-    user = request.user
-    obj = user.watchlist.all()
-    return render(request, "auctions/index.html", {
-        "objects": obj
-    })
+    return HttpResponseRedirect(reverse("details", kwargs={'id': item_id}))

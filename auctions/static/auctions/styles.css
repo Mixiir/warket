@@ -94,11 +94,6 @@ img {
     box-shadow: 0 0 8px #2BC0E4;
 }
 
-.watchlist {
-    background-image: linear-gradient(to right, #98FB98 0%, #FDF0AA 51%, #98FB98 100%);
-    color: rgba(0, 0, 0, 0.801);
-}
-
 .items-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
@@ -144,13 +139,6 @@ img {
     background: rgba(255, 190, 92, 0.8);
 }
 
-.status--watching {
-    background: rgba(172, 128, 255, 0.281);
-}
-
-.status--notwatching {
-    background: rgba(128, 194, 255, 0.8);
-}
 
 .container-body {
     margin-bottom: 1.5rem;
