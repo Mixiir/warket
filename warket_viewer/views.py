@@ -1,30 +1,19 @@
-import django.contrib.auth.decorators
-import django.db.models
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from .constants import LANGUAGES, COUNTRIES
+from .constants import COUNTRIES
 from .models import Wine, Manufacturer, Cart
 from django.db.models import Q
 from django.contrib import messages
 from django.forms import HiddenInput
 from .forms import CreateWineForm
-from django.http import HttpResponse
 
-
-# Create your views here.
 
 def get_country_name(country_code):
     for country in COUNTRIES:
         if country[0] == country_code:
             return country[1]
-
-
-def get_languages_name(language_code):
-    for language in LANGUAGES:
-        if language[0] == language_code:
-            return language[1]
 
 
 class WineSortedList(ListView):

@@ -1,7 +1,6 @@
-from .constants import COUNTRIES, LANGUAGES, WINE_VARIETY, WINE_TYPE, CART_OPTIONS
+from .constants import COUNTRIES, WINE_VARIETY, WINE_TYPE, CART_OPTIONS
 from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 
 
 class Manufacturer(models.Model):
