@@ -1,16 +1,16 @@
 import django.contrib.auth.decorators
+import django.db.models
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from .constants import LANGUAGES, COUNTRIES
-from .models import Wine, Manufacturer
+from .models import Wine, Manufacturer, Cart
 from django.db.models import Q
 from django.contrib import messages
 from django.forms import HiddenInput
-from users.forms import UserRegisterForm
-from .forms import CreateWineForm, EditWineForm
-from django.contrib.auth.decorators import login_required
+from .forms import CreateWineForm
+from django.http import HttpResponse
 
 
 # Create your views here.
@@ -27,6 +27,19 @@ def get_languages_name(language_code):
             return language[1]
 
 
+class WineSortedList(ListView):
+    model = Wine
+    template_name = 'list_wines.html'
+    context_object_name = 'wines_data'
+
+    def get_queryset(self):
+        wines = Wine.objects.all()
+        search = self.request.GET.get('show_only')
+        if search:
+            wines = wines.filter(Q(type__icontains=search))
+        return wines
+
+
 class WineListView(ListView):
     model = Wine
     template_name = 'list_wines.html'
@@ -41,10 +54,10 @@ class WineListView(ListView):
                 Q(name__icontains=search) |
                 Q(variety__icontains=search) |
                 Q(vintage__icontains=search) |
-                Q(type__icontains=search) |
-                Q(variety__icontains=search))
-
+                Q(type__icontains=search)
+            )
         return wines
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -56,19 +69,6 @@ class ManufacturersListView(ListView):
     model = Manufacturer
     template_name = 'list_manufacturers.html'
     context_object_name = 'manufacturers_data'
-
-    def get_queryset(self):
-        manufacturers = Manufacturer.objects.all()
-
-        search = self.request.GET.get('search')
-        if search:
-            manufacturers = manufacturers.filter(
-                Q(name__icontains=search) |
-                Q(country__icontains=search) |
-                Q(region__icontains=search) |
-                Q(bio__icontains=search) )
-
-        return manufacturers
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -122,19 +122,6 @@ class DetailWine(DetailView):
         return context
 
 
-# class CreateWine(PermissionRequiredMixin, CreateView):
-#     permission_required = 'warket_viewer.add_wine'
-#     model = Wine
-#     fields = '__all__'
-#     template_name = 'create_wine.html'
-#     success_url = reverse_lazy('list_wines')
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['page_is'] = 'wines'
-#         return context
-
-
 def create_wine(request):
     if request.method == 'POST':
         form = CreateWineForm(request.POST, request.FILES)
@@ -161,3 +148,36 @@ class EditWine(PermissionRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['page_is'] = 'wines'
         return context
+
+
+class CartListView(ListView):
+    model = Cart
+    template_name = 'cart.html'
+    context_object_name = 'cart_data'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_is'] = 'cart'
+        wine_full_price = 0
+        for wine in Cart.objects.filter(user=self.request.user):
+            wine_single_price = wine.wine.price_per_unit * wine.quantity
+            wine_full_price += wine_single_price
+        context['total'] = wine_full_price
+        return context
+
+
+class AddToCart(PermissionRequiredMixin, CreateView):
+    permission_required = 'warket_viewer.add_cart'
+    model = Cart
+    fields = '__all__'
+    template_name = 'add_to_cart.html'
+    context_object_name = 'cart_data'
+    success_url = reverse_lazy('list_wines')
+
+
+class RemoveFromCart(PermissionRequiredMixin, DeleteView):
+    permission_required = 'warket_viewer.delete_cart'
+    model = Cart
+    success_url = reverse_lazy('list_wines')
+    context_object_name = 'cart_data'
+    template_name = 'remove_from_cart.html'

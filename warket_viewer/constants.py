@@ -1304,3 +1304,4 @@ WINE_VARIETY = [("Abbuoto", "Abbuoto"),
                 ("Red Rose", "Red Rose"),
                 ("Zinfandel Rose", "Zinfandel Rose")
                 ]
+CART_OPTIONS = [("cart", "In cart"), ("checkout", "In checkout"), ("done", "Transaction completed")]
