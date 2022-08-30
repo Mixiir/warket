@@ -43,8 +43,8 @@
                        href="{% url "create_wine" %}">Sell
                         wines</a>
                 {% endif %}
-                <a class="navbar-brand {% if page_is == 'auction' %}nav-item nav-link active {% endif %}"
-                   href="/">Auctions</a>
+                <a class="navbar-brand {% if page_is == 'auctions' %}nav-item nav-link active {% endif %}"
+                   href="{% url 'index' %}">Auctions</a>
                 {% if user.is_authenticated %}
                     <a class="navbar-brand {% if page_is == 'cart' %}nav-item nav-link active {% endif %}"
                        href="/cart/">Cart</a>

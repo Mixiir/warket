@@ -32,6 +32,7 @@ from warket_viewer.views import (WineListView,
                                  WineSortedList
                                  )
 from users import views as user_views
+from auctions import views as auctions_views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -54,5 +55,17 @@ urlpatterns = [
     path('add_to_cart/', AddToCart.as_view(), name='add_to_cart'),
     path('cart/', CartListView.as_view(), name='cart'),
     path('remove_from_cart/<int:pk>', RemoveFromCart.as_view(), name='remove_from_cart'),
+
+    path("auctions/", auctions_views.index, name="index"),
+    path("auctions/createListing", auctions_views.createListing, name="createListing"),
+    path("auctions/details/<int:id>", auctions_views.details, name="details"),
+    path("auctions/categories", auctions_views.categories, name="categories"),
+    path("auctions/filter/<str:name>", auctions_views.filter, name="filter"),
+    path("auctions/comment/<int:id>", auctions_views.comment, name="comment"),
+    path("auctions/bid/<int:id>", auctions_views.bid, name="bid"),
+    path("auctions/end/<int:itemId>", auctions_views.end, name="end"),
+    path("auctions/all", auctions_views.all, name="all"),
+    path("auctions/watchlist", auctions_views.watchlist, name="watchlist"),
+    path("auctions/watch", auctions_views.watch, name="watch")
 ]
 urlpatterns += staticfiles_urlpatterns()

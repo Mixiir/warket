@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'users',
     'crispy_forms',
     'vertical_multi_columns',
+    'auctions',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +141,5 @@ DEFAULT_FILE_STORAGE = 'storages.backends.ftp.FTPStorage'
 FTP_STORAGE_LOCATION = config('FTP_STORAGE_LOCATION')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
