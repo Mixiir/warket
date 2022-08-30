@@ -1,4 +1,4 @@
-from .constants import COUNTRIES, LANGUAGES, WINE_VARIETY, WINE_TYPE
+from .constants import COUNTRIES, LANGUAGES, WINE_VARIETY, WINE_TYPE, CART_OPTIONS
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -28,11 +28,11 @@ class Wine(models.Model):
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, blank=True, null=True)
     type = models.CharField(max_length=100, choices=WINE_TYPE, default='red')
     variety = models.CharField(max_length=100, choices=WINE_VARIETY, default='')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True,)
 
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     wine = models.ForeignKey(Wine, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    status = models.CharField(max_length=100, default="cart")
+    status = models.CharField(max_length=100, choices=CART_OPTIONS, default="cart")

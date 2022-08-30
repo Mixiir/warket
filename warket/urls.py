@@ -26,6 +26,10 @@ from warket_viewer.views import (WineListView,
                                  CreateManufacturer,
                                  UpdateManufacturer,
                                  DeleteManufacturer,
+                                 CartListView,
+                                 AddToCart,
+                                 RemoveFromCart,
+                                 WineSortedList
                                  )
 from users import views as user_views
 from django.contrib.auth import views as auth_views
@@ -33,6 +37,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', WineListView.as_view(), name="list_wines"),
+    path('', WineSortedList.as_view(), name="list_wines_sorted"),
     path('manufacturers/', ManufacturersListView.as_view(), name="list_manufacturers"),
     path('manufacturer/<int:pk>', DetailManufacturer.as_view(), name='detail_manufacturer'),
     path('create_manufacturer/', CreateManufacturer.as_view(), name='create_manufacturer'),
@@ -46,5 +51,8 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('profile/', user_views.profile, name='profile'),
+    path('add_to_cart/', AddToCart.as_view(), name='add_to_cart'),
+    path('cart/', CartListView.as_view(), name='cart'),
+    path('remove_from_cart/<int:pk>', RemoveFromCart.as_view(), name='remove_from_cart'),
 ]
 urlpatterns += staticfiles_urlpatterns()
