@@ -16,7 +16,7 @@ class AuctionListing(models.Model):
     startBid = models.DecimalField(decimal_places=2, max_digits=7)
     description = models.CharField(max_length=250)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    imageUrl = models.URLField(blank=True)
+    imageUrl = models.URLField(blank=True, default="default.jpg")
     active = models.BooleanField()
 
     def __str__(self):
