@@ -99,18 +99,18 @@ def comment(request, id):
 def bid(request, id):
     if request.method == 'POST':
         auction_listing = AuctionListing.objects.get(id=id)
-        bid_value = request.POST["bid"]
+        bidValue = request.POST["bid"]
         args = Bid.objects.filter(auctionListing=auction_listing)
-        value = args.aggregate(Max('bid_value'))['bidValue__max']
+        value = args.aggregate(Max('bidValue'))['bidValue__max']
         if value is None:
             value = 0
-        if float(bid_value) < auction_listing.startBid or float(bid_value) <= value:
+        if float(bidValue) < auction_listing.startBid or float(bidValue) <= value:
             messages.warning(
                 request, f'Bid Higher than: {max(value, auction_listing.startBid)}!')
             return HttpResponseRedirect(reverse("details", kwargs={'id': id}))
         user = request.user
         bid = Bid.objects.create(
-            date=timezone.now(), user=user, bidValue=bid_value, auctionListing=auction_listing)
+            date=timezone.now(), user=user, bidValue=bidValue, auctionListing=auction_listing)
         bid.save()
     return HttpResponseRedirect(reverse("details", kwargs={'id': id}))
 
