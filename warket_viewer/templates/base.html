@@ -46,6 +46,16 @@
                     <a class="dropdown-item" href="{% url 'createListing' %}">Create Listing</a>
                 </div>
             </li>
+            {% if user.is_authenticated %}
+                {%  with total_items=cart|length %}
+                    {% if total_items %}
+                        <a class="navbar-brand" href="{% url 'cart:cart_detail' %}">
+                        Cart - {{ total_items }} items, {{ cart.get_total_price }} €</a>
+                    {% else %}
+                    You cart is empty.
+                    {% endif %}
+                {% endwith %}
+            {% endif %}
             <ul class="nav navbar-nav ml-auto">
                 <li class="navbar-brand dropdown">
                     <a class="navbar-brand dropdown-toggle" href="#" id="navbarDropdown" role="button"

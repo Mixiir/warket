@@ -14,7 +14,7 @@
                                 <a href="{% url 'details' obj.id %}">
                                     <img src="{{ obj.imageUrl }}" class="card-img-top" alt="..." width="350"
                                          height="250"></a>
-                                <h6>Price: $<strong>{{ obj.startBid }}</strong></h6>
+                                <h6>Price: <strong>{{ obj.startBid }}€</strong></h6>
                                 <small>Created: <strong>{{ obj.date|date:"d-m-Y" }}</strong></small><br>
                                 {% if obj.active %}
                                     <span class="badge">Active</span>
