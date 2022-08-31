@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from .constants import COUNTRIES
-from .models import Wine, Manufacturer, Cart
+from .models import Wine, Manufacturer
 from django.db.models import Q
 from django.contrib import messages
 from django.forms import HiddenInput
 from .forms import CreateWineForm
-
+from cart.forms import CartAddProductForm
 
 def get_country_name(country_code):
     for country in COUNTRIES:
@@ -53,6 +54,7 @@ class WineListView(ListView):
         return context
 
 
+@login_required
 class ManufacturersListView(ListView):
     model = Manufacturer
     template_name = 'list_manufacturers.html'
@@ -75,28 +77,28 @@ class DetailManufacturer(DetailView):
         return context
 
 
-class CreateManufacturer(PermissionRequiredMixin, CreateView):
+@login_required
+class CreateManufacturer(CreateView):
     template_name = 'create_manufacturer.html'
     model = Manufacturer
     success_url = reverse_lazy('list_manufacturers')
     fields = '__all__'
-    permission_required = 'viewer.add_manufacturer'
 
 
+@login_required
 class UpdateManufacturer(PermissionRequiredMixin, UpdateView):
     template_name = 'update_manufacturer.html'
     model = Manufacturer
     success_url = reverse_lazy('list_manufacturers')
     fields = '__all__'
-    permission_required = 'viewer.change_manufacturer'
 
 
+@login_required
 class DeleteManufacturer(PermissionRequiredMixin, DeleteView):
     template_name = 'delete_manufacturer.html'
     model = Manufacturer
     success_url = reverse_lazy('list_manufacturers')
     context_object_name = 'manufacturer'
-    permission_required = 'viewer.delete_manufacturer'
 
 
 class DetailWine(DetailView):
@@ -106,10 +108,13 @@ class DetailWine(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        cart_product_form = CartAddProductForm()
         context['page_is'] = 'wines'
+        context['cart_product_form'] = cart_product_form
         return context
 
 
+@login_required
 def create_wine(request):
     if request.method == 'POST':
         form = CreateWineForm(request.POST, request.FILES)
@@ -136,36 +141,3 @@ class EditWine(PermissionRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['page_is'] = 'wines'
         return context
-
-
-class CartListView(ListView):
-    model = Cart
-    template_name = 'cart.html'
-    context_object_name = 'cart_data'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['page_is'] = 'cart'
-        wine_full_price = 0
-        for wine in Cart.objects.filter(user=self.request.user):
-            wine_single_price = wine.wine.price_per_unit * wine.quantity
-            wine_full_price += wine_single_price
-        context['total'] = wine_full_price
-        return context
-
-
-class AddToCart(PermissionRequiredMixin, CreateView):
-    permission_required = 'warket_viewer.add_cart'
-    model = Cart
-    fields = '__all__'
-    template_name = 'add_to_cart.html'
-    context_object_name = 'cart_data'
-    success_url = reverse_lazy('list_wines')
-
-
-class RemoveFromCart(PermissionRequiredMixin, DeleteView):
-    permission_required = 'warket_viewer.delete_cart'
-    model = Cart
-    success_url = reverse_lazy('list_wines')
-    context_object_name = 'cart_data'
-    template_name = 'remove_from_cart.html'

@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'vertical_multi_columns',
     'auctions',
+    'cart'
 ]
 
 MIDDLEWARE = [
@@ -131,4 +132,4 @@ FTP_STORAGE_LOCATION = config('FTP_STORAGE_LOCATION')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-
+CART_SESSION_ID = 'cart'

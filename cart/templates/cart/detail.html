@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    Shopping Cart
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Shopping Cart</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Wine</th>
+                        <th>Image</th>
+                        <th>Quantity</th>
+                        <th>Remove</th>
+                        <th>Unit price</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in cart %}
+                        {% with product=item.wine %}
+                            <tr>
+                                <td>{{ product.name }}</td>
+                                <td>
+                                    <a href="{{ product.get_absolute_url }}">
+                                        <img src="{% if product.image %}{{ product.image.url }}
+                                                    {% else %}{% static 'img/no-image.png' %}{% endif %}"
+                                             alt="{{ product.name }}" class="img-responsive">
+                                    </a>
+                                </td>
+                                <td>{{ item.quantity }}</td>
+                                <td>
+                                    <form action="{% url "cart:cart_remove" product.id %}" method="post">
+                                        <input type="submit" value="Remove">
+                                        {% csrf_token %}
+                                    </form>
+                                </td>
+                                <td class="num">{{ product.price_per_unit }}€</td>
+                                <td>{{ item.total_price }}</td>
+                            </tr>
+                        {% endwith %}
+                    {% endfor %}
+                    <tr class="total">
+                        <td>Total</td>
+                        <td colspan="4"></td>
+                        <td class="num">{{ cart.get_total_price }}€</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <p class="text-right">
+            <a href="{% url 'list_wines' %}" class="buttonlight">Continue Shopping</a>
+            <a href="#" class="button">Checkout</a>
+        </p>
+
+{% endblock %}

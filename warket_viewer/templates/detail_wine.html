@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2>Wine details </h2>
     <div class="content-section">
     <p> Name: {{ wine_data.name }} </p>
     <p> Description {{ wine_data.description }}</p>
@@ -17,7 +16,14 @@
     <p> Variety: {{ wine_data.variety }}</p>
     <p> Image: <img src="{{ wine_data.image.url }}"></p>
     <p> Seller: {{ wine_data.user }}</p>
+    {% if user == wine_data.user %}
     <a href="{% url 'edit_wine'  wine_data.pk %}">Edit</a>
-    {#    <a href="{% url 'delete_wine'  wine_data.pk %}">Delete</a>#}
+    {% endif %}
+    <form action="{% url "cart:cart_add" wine_data.id %}" method="post">
+    {{ cart_product_form }}
+    {% csrf_token %}
+    <input type="submit" value="Add to cart">
+    </form>
     <div>
 {% endblock %}
+<h2>Wine details </h2>

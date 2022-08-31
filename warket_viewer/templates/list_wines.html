@@ -28,22 +28,8 @@
                                 <img src="{{ wine.image.url }}" class="card-img-top" alt="..." width="350" height="250"></a>
                             <p>{{ wine.vintage }} by {{ wine.manufacturer }}</p>
                             <p>{{ wine.price_per_unit }} €</p>
-                            <form method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="wine_id" value="{{ wine.pk }}">
-                                <input type="hidden" name="user_id" value="{{ user.user_id }}">
-                                <div class="slidecontainer">
-                                    <input type="range" min="0" max="{{ wine.units_in_stock }}"
-                                           value="{{ wine.units_in_stock }}" class="slider" id="myRange">
-                                    <p><label for="myRange">Amount: {% if wine.units_in_stock == 1 %}
-                                        1 {% endif %}</label><span id="bottles"></span></p>
-                                </div>
-                                {% if user.is_authenticated %}
-                                    <a href="{% url 'add_to_cart' %}" class="btn btn-primary"> Add to cart </a>
-                                {% endif %}
-                                <a href="{% url 'detail_wine' wine.pk %}" class="btn btn-primary"
-                                   style="float: right">View</a>
-                            </form>
+                            <a href="{% url 'detail_wine' wine.pk %}" class="btn btn-primary"
+                               style="float: right">View</a>
                         </div>
                     </div>
                 </td>
