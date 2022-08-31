@@ -23,19 +23,18 @@ def all(request):
 
 
 @login_required
-def create_listing(request):
+def createListing(request):
     if request.method == 'POST':
         title = request.POST["title"]
         description = request.POST["description"]
-        start_bid = request.POST["start_bid"]
+        startBid = request.POST["startBid"]
         category = Category.objects.get(id=request.POST["category"])
         user = request.user
-        image_url = request.POST["url"]
-        if image_url == '':
-            image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png"
+        imageUrl = request.POST["url"]
+        if imageUrl == '':
+            imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png"
         listing = AuctionListing.objects.create(
-            name=title, category=category, date=timezone.now(), startBid=start_bid, description=description, user=user,
-            imageUrl=image_url, active=True)
+            name=title, category=category, date=timezone.now(), startBid=startBid, description=description, user=user, imageUrl=imageUrl, active=True)
         listing.save()
         return HttpResponseRedirect(reverse("index"))
     return render(request, "auctions/createListing.html", {

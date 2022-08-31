@@ -28,10 +28,3 @@ class Wine(models.Model):
     type = models.CharField(max_length=100, choices=WINE_TYPE, default='red')
     variety = models.CharField(max_length=100, choices=WINE_VARIETY, default='')
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True,)
-
-
-class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    wine = models.ForeignKey(Wine, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
-    status = models.CharField(max_length=100, choices=CART_OPTIONS, default="cart")
