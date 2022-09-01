@@ -27,18 +27,18 @@
                     </thead>
                     <tbody>
                     {% for item in cart %}
-                        {% with product=item.wine %}
+                        {% with wine=item.wine %}
                             <tr>
-                                <td>{{ product.name }}</td>
+                                <td>{{ wine.name }}</td>
                                 <td>
-                                    <a href="{{ product.get_absolute_url }}">
-                                        <img src="{% if product.image %}{{ product.image.url }}
+                                    <a href="{{ wine.get_absolute_url }}">
+                                        <img src="{% if wine.image %}{{ wine.image.url }}
                                                     {% else %}{% static 'img/no-image.png' %}{% endif %}"
-                                             alt="{{ product.name }}" class="img-responsive">
+                                             alt="{{ wine.name }}" class="img-responsive">
                                     </a>
                                 </td>
                                 <td>
-                                <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                                <form action="{% url 'cart:cart_add' wine.id %}" method="post">
                                     {{ item.update_quantity_form.quantity }}
                                     {{ item.update_quantity_form.update }}
                                     <input type="submit" value="Update">
@@ -46,12 +46,12 @@
                                 </form>
                                 </td>
                                 <td>
-                                    <form action="{% url "cart:cart_remove" product.id %}" method="post">
+                                    <form action="{% url "cart:cart_remove" wine.id %}" method="post">
                                         <input type="submit" value="Remove">
                                         {% csrf_token %}
                                     </form>
                                 </td>
-                                <td class="num">{{ product.price_per_unit }}€</td>
+                                <td class="num">{{ wine.price_per_unit }}€</td>
                                 <td>{{ item.total_price }}</td>
                             </tr>
                         {% endwith %}
@@ -69,5 +69,5 @@
             <a href="{% url 'list_wines' %}" class="buttonlight">Continue Shopping</a>
             <a href="#" class="button">Checkout</a>
         </p>
-
+    </div>
 {% endblock %}
