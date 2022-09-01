@@ -85,6 +85,7 @@ class CreateManufacturer(CreateView):
 
 
 class UpdateManufacturer(PermissionRequiredMixin, UpdateView):
+    permission_required = 'warket_viewer.UpdateManufacturer'
     template_name = 'update_manufacturer.html'
     model = Manufacturer
     success_url = reverse_lazy('list_manufacturers')
@@ -92,6 +93,7 @@ class UpdateManufacturer(PermissionRequiredMixin, UpdateView):
 
 
 class DeleteManufacturer(PermissionRequiredMixin, DeleteView):
+    permission_required = 'warket_viewer.DeleteManufacturer'
     template_name = 'delete_manufacturer.html'
     model = Manufacturer
     success_url = reverse_lazy('list_manufacturers')
