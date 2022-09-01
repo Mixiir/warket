@@ -15,6 +15,7 @@ from warket_viewer.views import (WineListView,
                                  DeleteManufacturer,
                                  WineSortedList
                                  )
+from wine_search import views as wine_search_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -46,6 +47,8 @@ urlpatterns = [
     path("auctions/bid/<int:id>", auctions_views.bid, name="bid"),
     path("auctions/end/<int:item_id>", auctions_views.end, name="end"),
     path("auctions/all", auctions_views.all, name="all"),
+
+    path("search/", wine_search_views.upload_file, name="wine_search"),
 
 ]
 

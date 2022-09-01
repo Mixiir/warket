@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2 class="py-3 m-3">Search for wine info</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Search for wine label">
+    </form>
+    <hr>
+    {% if response %}
+        <table>
+            <tr>
+                <td>
+                    <h3>Status - {{ status }}</h3>
+                    <p>Returned info:</p>
+                    <img src="{{ image }}" alt="Label" height="300" width="150">
+                    {% for key, value in info.items %}
+                        <p>Name: {{ key|title }}</p>
+                        <p>Probability: {{ value|floatformat:2 }}</p>
+                        <br>
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+{% endblock %}

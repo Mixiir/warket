@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'vertical_multi_columns',
     'auctions',
-    'cart'
+    'cart',
+    'wine_search',
 ]
 
 MIDDLEWARE = [
