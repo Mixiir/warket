@@ -11,6 +11,7 @@ from django.forms import HiddenInput
 from .forms import CreateWineForm
 from cart.forms import CartAddProductForm
 
+
 def get_country_name(country_code):
     for country in COUNTRIES:
         if country[0] == country_code:
@@ -54,7 +55,6 @@ class WineListView(ListView):
         return context
 
 
-@login_required
 class ManufacturersListView(ListView):
     model = Manufacturer
     template_name = 'list_manufacturers.html'
@@ -77,7 +77,6 @@ class DetailManufacturer(DetailView):
         return context
 
 
-@login_required
 class CreateManufacturer(CreateView):
     template_name = 'create_manufacturer.html'
     model = Manufacturer
@@ -85,7 +84,6 @@ class CreateManufacturer(CreateView):
     fields = '__all__'
 
 
-@login_required
 class UpdateManufacturer(PermissionRequiredMixin, UpdateView):
     template_name = 'update_manufacturer.html'
     model = Manufacturer
@@ -93,7 +91,6 @@ class UpdateManufacturer(PermissionRequiredMixin, UpdateView):
     fields = '__all__'
 
 
-@login_required
 class DeleteManufacturer(PermissionRequiredMixin, DeleteView):
     template_name = 'delete_manufacturer.html'
     model = Manufacturer
