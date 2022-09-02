@@ -38,12 +38,12 @@
                                     </a>
                                 </td>
                                 <td>
-                                <form action="{% url 'cart:cart_add' wine.id %}" method="post">
-                                    {{ item.update_quantity_form.quantity }}
-                                    {{ item.update_quantity_form.update }}
-                                    <input type="submit" value="Update">
-                                    {% csrf_token %}
-                                </form>
+                                    <form action="{% url 'cart:cart_add' wine.id %}" method="post">
+                                        {{ item.update_quantity_form.quantity }}
+                                        {{ item.update_quantity_form.update }}
+                                        <input type="submit" value="Update">
+                                        {% csrf_token %}
+                                    </form>
                                 </td>
                                 <td>
                                     <form action="{% url "cart:cart_remove" wine.id %}" method="post">
@@ -67,7 +67,11 @@
         </div>
         <p class="text-right">
             <a href="{% url 'list_wines' %}" class="buttonlight">Continue Shopping</a>
-            <a href="#" class="button">Checkout</a>
+        <form action="{% url "cart:cart_clear" %}" method="post">
+            {{ cart_product_form }}
+            {% csrf_token %}
+            <input type="submit" value="Confirm order">
+        </form>
         </p>
     </div>
 {% endblock %}
