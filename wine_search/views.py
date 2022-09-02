@@ -6,11 +6,12 @@ import json
 
 
 def upload_file(request):
+    global wine_name
     if request.method == 'POST':
         form = WineSearchImageUpload(request.POST)
         if form.is_valid():
             url = "https://wine-recognition2.p.rapidapi.com/v1/results"
-            querystring = {"n": "3"}
+            querystring = {"n": "1"}
             payload = f"url={request.POST['url']}"
             headers = {
                 "content-type": "application/x-www-form-urlencoded",
@@ -22,11 +23,13 @@ def upload_file(request):
             status = data['results'][0]['status']['message']
             image = data['results'][0]['name']
             info = data['results'][0]['entities'][0]['classes']
+            wine_name = data['results'][0]['entities'][0]['classes']
+
             return render(request, 'search.html', {'form': form,
                                                    'response': response.text,
                                                    'image': image,
                                                    'status': status,
-                                                   'info': info})
+                                                   'info': info,})
         else:
             form = WineSearchImageUpload()
         return render(request, 'search.html', {'form': form})

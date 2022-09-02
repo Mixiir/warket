@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from betterforms.multiform import MultiForm
 
 from .models import Profile
 
@@ -19,7 +18,7 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email']
+        fields = ['email', 'birth_date']
 
 
 class ProfileUpdateForm(forms.ModelForm):

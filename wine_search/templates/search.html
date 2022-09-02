@@ -24,4 +24,7 @@
             </tr>
         </table>
     {% endif %}
+    <form method="">
+    <input type="text" name="wine_name" value="{% for key in info.items %}{{ key.0|title }}{% endfor %}">
+    </form>
 {% endblock %}
