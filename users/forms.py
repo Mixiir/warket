@@ -1,6 +1,8 @@
 from django import forms
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from betterforms.multiform import MultiForm
+
 from .models import Profile
 
 
@@ -9,7 +11,7 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        fields = ['username', 'first_name', 'last_name', 'birth_date', 'email', 'password1', 'password2']
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -23,4 +25,4 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image', 'birth_date', 'bio', 'location', 'language']
+        fields = ['image', 'bio', 'location', 'language']
