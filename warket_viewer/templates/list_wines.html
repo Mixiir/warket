@@ -28,8 +28,26 @@
                                 <img src="{{ wine.image.url }}" class="card-img-top" alt="..." width="350" height="250"></a>
                             <p>{{ wine.vintage }} by {{ wine.manufacturer }}</p>
                             <p>{{ wine.price_per_unit }} €</p>
-                            <a href="{% url 'detail_wine' wine.pk %}" class="btn btn-primary"
-                               style="float: right">View</a>
+                            {% if wine.units_in_stock %}
+                                <table>
+                                    <form action="{% url "cart:cart_add" wine.id %}" method="post">
+                                        {% csrf_token %}
+                                        {{ cart_product_form }}
+                                        <label for="id_quantity">Quantity:</label>
+                                        <select name="quantity" id="id_quantity">
+                                            {% for x in ''|center:wine.units_in_stock %}
+                                                <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <input type="hidden" name="update" value="False" id="id_update">
+                                        <input type="submit" value="Add to cart" class="btn btn-primary" style="float: right">
+                                    </form>
+                                </table>
+                            {% else %}
+                                <p><b>Out of stock</b></p>
+                            {% endif %}
+                        <br>
+                            <a href="{% url 'detail_wine' wine.pk %}" class="btn btn-primary" style="float: right">View</a>
                         </div>
                     </div>
                 </td>
