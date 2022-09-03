@@ -90,7 +90,7 @@
                     No Comments Yet
                 </div>
             {% endfor %}
-
+{% if item.commentsAllowed %}
             {% if user.is_authenticated %}
                 <form action="{% url 'comment' item.id %}" method="post">
                     {% csrf_token %}
@@ -100,6 +100,7 @@
                     <button class="btn btn-dark py-2 px-4" type="submit">Comment</button>
                 </form>
             {% endif %}
+{% endif %}
         </section>
 
 

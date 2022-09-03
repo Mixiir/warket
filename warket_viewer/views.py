@@ -89,6 +89,7 @@ class UpdateManufacturer(PermissionRequiredMixin, UpdateView):
     model = Manufacturer
     success_url = reverse_lazy('list_manufacturers')
     fields = '__all__'
+    permission_required = 'viewer.change_manufacturer'
 
 
 class DeleteManufacturer(PermissionRequiredMixin, DeleteView):
