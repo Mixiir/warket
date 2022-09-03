@@ -18,6 +18,7 @@ class AuctionListing(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     imageUrl = models.URLField(blank=True, default="default.jpg")
     active = models.BooleanField()
+    commentsAllowed = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.id} : " \

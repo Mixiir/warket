@@ -25,16 +25,25 @@ def all(request):
 @login_required
 def createListing(request):
     if request.method == 'POST':
+        print(request.POST)
         title = request.POST["title"]
         description = request.POST["description"]
         startBid = request.POST["startBid"]
         category = Category.objects.get(id=request.POST["category"])
+        if request.POST['commentsAllowed']:
+            commentsAllowed = request.POST["commentsAllowed"]
+#            return commentsAllowed
+        else:
+            commentsAllowed=False
+#            return commentsAllowed
+#       print(request.POST["commentsAllowed"])
         user = request.user
         imageUrl = request.POST["url"]
         if imageUrl == '':
             imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png"
         listing = AuctionListing.objects.create(
-            name=title, category=category, date=timezone.now(), startBid=startBid, description=description, user=user, imageUrl=imageUrl, active=True)
+            name=title, category=category, date=timezone.now(), startBid=startBid, description=description, user=user,
+            imageUrl=imageUrl, active=True, commentsAllowed=commentsAllowed,)
         listing.save()
         return HttpResponseRedirect(reverse("index"))
     return render(request, "auctions/createListing.html", {
