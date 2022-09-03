@@ -41,11 +41,13 @@
                     </select>
                 </div>
             </div>
-        <div class="form-group mt-2">
-                <label for="commentsAllowed">Allow comments</label>
-                <input type="checkbox" name="commentsAllowed" value="True" class='form-control'>
-            <input type="hidden" name="commentsAllowed" value="False" class="form-control">
-        </div>
+<div class="form-group mt-2">
+        <label for="commentsAllowed">Allow comments</label>
+        <select class="form-control" name="commentsAllowed">
+            <option value="True">Yes</option>
+            <option value="False">No</option>
+        </select>
+</div>
             <div class="text-center">
                 <button type="submit" class="gradient-button add-listing">Submit</button>
             </div>
