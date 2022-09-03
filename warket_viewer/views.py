@@ -37,8 +37,7 @@ class WineListView(ListView):
     context_object_name = 'wines_data'
 
     def get_queryset(self):
-        wines = Wine.objects.all()
-
+        wines = Wine.objects.exclude(units_in_stock=0)
         search = self.request.GET.get('search')
         if search:
             wines = wines.filter(
