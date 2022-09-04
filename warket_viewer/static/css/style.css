@@ -35,3 +35,11 @@
     background: url('https://www.infiror.eu/bottle.png') no-repeat;
     cursor: pointer;
 }
+
+#id_quantity {
+    display: none;
+}
+
+[for="id_quantity"] {
+    display: none;
+}

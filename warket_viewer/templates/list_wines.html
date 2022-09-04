@@ -33,8 +33,8 @@
                                     <form action="{% url "cart:cart_add" wine.id %}" method="post">
                                         {% csrf_token %}
                                         {{ cart_product_form }}
-                                        <label for="id_quantity">Quantity:</label>
-                                        <select name="quantity" id="id_quantity">
+                                        <label for="id_quantity_2">Quantity:</label>
+                                        <select name="quantity" id="id_quantity_2">
                                             {% for x in ''|center:wine.units_in_stock %}
                                                 <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
                                             {% endfor %}
