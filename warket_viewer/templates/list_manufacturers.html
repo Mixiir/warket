@@ -4,13 +4,13 @@
 <h2>Manufacturers list</h2>
 <ul>
   {% for m in manufacturers_data %}
-    <li><a href="{% url 'detail_manufacturer' m.id %}">{{m.name}}</a></li>
+    <li><a href="{% url "detail_manufacturer" m.id %}">{{m.name}}</a></li>
   {% endfor %}
 </ul>
 <br>
-<a href="{% url 'create_manufacturer' %}">Create  Manufacturer</a>
+<a href="{% url "create_manufacturer" %}">Create  Manufacturer</a>
 </br>
 <p>
-<a href="{% url 'list_manufacturers' %}">List of Manufacturers</a>
+<a href="{% url "list_manufacturers" %}">List of Manufacturers</a>
 </p>
 {% endblock %}

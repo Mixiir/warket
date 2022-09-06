@@ -6,7 +6,6 @@
     </style>
     <h3>Update wine listing</h3>
     <div class="content-section">
-        {#<h2>Edit wine - <a href ="{% url 'detail_wine' wine.pk %}">{{ wine.name }}</a></h2>#}
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <fieldset class="form-group">

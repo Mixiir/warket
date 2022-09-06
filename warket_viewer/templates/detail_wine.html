@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     {% load static %}
-    <link rel="stylesheet" href=" {% static '/css/style.css' %}">
+    <link rel="stylesheet" href=" {% static "/css/style.css" %}">
     <h2>Wine details </h2>
 
     <div class="content-section">
@@ -23,9 +23,9 @@
         <p> Seller: {{ wine_data.user }}</p>
         {% if user == wine_data.user %}
             <br>
-            <a href="{% url 'edit_wine'  wine_data.pk %}">Edit</a>
+            <a href="{% url "edit_wine"  wine_data.pk %}">Edit</a>
             <br>
-            <a href="{% url 'delete_wine'  wine_data.pk %}">Delete</a>
+            <a href="{% url "delete_wine"  wine_data.pk %}">Delete</a>
             <br>
             <br>
         {% endif %}
@@ -36,7 +36,7 @@
                     {{ cart_product_form }}
                     <th><label for="id_quantity_2">Quantity:</label></th>
                     <td><select name="quantity" id="id_quantity_2">
-                        {% for x in ''|center:wine_data.units_in_stock %}
+                        {% for x in ""|center:wine_data.units_in_stock %}
                             <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
                         {% endfor %}
                     </select>
@@ -46,6 +46,6 @@
                 </form>
             </table>
         {% endif %}
-        <script src="{% static '/js/script.js' %}"></script>
+        <script src="{% static "/js/script.js" %}"></script>
     </div>
 {% endblock %}
