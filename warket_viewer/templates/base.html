@@ -42,8 +42,16 @@
                 <a class="navbar-brand dropdown-toggle" href="#" id="navbarDropdown" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Auctions</a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{% url "index" %}">Active listings</a>
-                    <a class="dropdown-item" href="{% url 'createListing' %}">Create Listing</a>
+                    <a class="dropdown-item" href="{% url "auction_index" %}">Active listings</a>
+                    {% if user.is_authenticated %}
+                        <a class="dropdown-item" href="{% url "my_auction_listings" %}">My listings</a>
+                        <a class="dropdown-item" href="{% url "my_won_auction_listings" %}">Auctions won</a>
+                    {% endif %}
+                    <a class="dropdown-item" href="{% url "all_auction_listings" %}">All listings</a>
+                    <a class="dropdown-item" href="{% url "ended_auction_listings" %}">Ended listings</a>
+                    {% if user.is_authenticated %}
+                        <a class="dropdown-item" href="{% url 'create_listing' %}">Create Listing</a>
+                    {% endif %}
                 </div>
             </li>
             {% if user.is_authenticated %}
@@ -51,11 +59,11 @@
                 {% with total_items=cart|length %}
                     {% if total_items %}
                         <a class="navbar-brand" href="{% url 'cart:cart_detail' %}">
-                        Cart - {{ total_items }} items, {{ cart.get_total_price }} €</a>
+                            Cart - {{ total_items }} items, {{ cart.get_total_price }} €</a>
                     {% else %}
-                    <div class="navbar-brand">
-                        You cart is empty.
-                    </div>
+                        <div class="navbar-brand">
+                            You cart is empty.
+                        </div>
                     {% endif %}
                 {% endwith %}
             {% endif %}
@@ -70,12 +78,13 @@
                             <a class="dropdown-item" href="/admin/">Admin page</a>
                             <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
                             {% if user.is_staff %}
-                                <a class="dropdown-item" href="{% url 'list_manufacturers' %}">Manufacturers
-                                    list</a>
+                                <a class="dropdown-item" href="{% url 'list_manufacturers' %}">Manufacturers list</a>
+                                <a class="dropdown-item" href="{% url 'check_auctions' %}">Check auction endings</a>
                             {% endif %}
                             <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                         {% else %}
                             <a class="dropdown-item" href="{% url 'login' %}">Login</a>
+
                             <a class="dropdown-item" href="{% url 'register' %}">Register</a>
                         {% endif %}
                     </div>

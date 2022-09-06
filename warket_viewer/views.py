@@ -38,7 +38,7 @@ class WineListView(ListView):
 
     def get_queryset(self):
         wines = Wine.objects.exclude(units_in_stock=0)
-#        wines = Wine.objects.all()
+#        wines = Wine.objects.all_auction_listings()
         search = self.request.GET.get('search')
         if search:
             wines = wines.filter(

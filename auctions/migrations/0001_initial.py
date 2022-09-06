@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=50)),
                 ('date', models.DateTimeField()),
-                ('startBid', models.DecimalField(decimal_places=2, max_digits=7)),
+                ('start_bid', models.DecimalField(decimal_places=2, max_digits=7)),
                 ('description', models.CharField(max_length=250)),
                 ('imageUrl', models.URLField(blank=True)),
                 ('active', models.BooleanField()),

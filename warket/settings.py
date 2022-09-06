@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'auctions',
     'cart',
     'wine_search',
+    'django_crontab'
 ]
 
 MIDDLEWARE = [

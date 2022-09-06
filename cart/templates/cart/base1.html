@@ -43,7 +43,7 @@
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Auctions</a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="{% url "index" %}">Active listings</a>
-                    <a class="dropdown-item" href="{% url 'createListing' %}">Create Listing</a>
+                    <a class="dropdown-item" href="{% url 'create_listing' %}">Create Listing</a>
                 </div>
             </li>
             {% if user.is_authenticated %}
