@@ -37,8 +37,11 @@ def create_listing(request):
             comments_allowed = request.POST["comments_allowed"]
         else:
             comments_allowed = False
+            auction_period = 10
         user = request.user
         image_url = request.POST["url"]
+        auction_period = request.POST["auction_period"]
+        print(auction_period)
         if image_url == '':
             image_url = "https://infiror.eu/default.png"
         listing = AuctionListing.objects.create(
@@ -52,7 +55,8 @@ def create_listing(request):
             end_date=timezone.now(),
             image_url=image_url,
             active=True,
-            comments_allowed=comments_allowed, )
+            comments_allowed=comments_allowed,
+            auction_period=auction_period)
         listing.save()
         return HttpResponseRedirect(reverse("auction_index"))
     return render(request, "auctions/create_listing.html", {

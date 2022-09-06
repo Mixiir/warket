@@ -41,12 +41,18 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group mt-2">
-                <label for="comments_allowed">Allow comments</label>
-                <select class="form-control" name="comments_allowed">
-                    <option value="True">Yes</option>
-                    <option value="False">No</option>
-                </select>
+            <div class="form-row form-group mt-2">
+                <div class="col">
+                    <label for="comments_allowed">Allow comments</label>
+                    <select class="form-control" name="comments_allowed">
+                        <option value="True">Yes</option>
+                        <option value="False">No</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="auction_period">Auction ends in * days</label>
+                    <input type="number" name="auction_period" class="form-control" placeholder="1" step="1">
+                </div>
             </div>
             <div class="text-center">
                 <button type="submit" class="gradient-button add-listing">Submit</button>
