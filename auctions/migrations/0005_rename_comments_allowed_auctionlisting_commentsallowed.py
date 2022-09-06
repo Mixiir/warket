@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.RenameField(
             model_name='auctionlisting',
             old_name='comments_allowed',
-            new_name='commentsAllowed',
+            new_name='comments_allowed',
         ),
     ]

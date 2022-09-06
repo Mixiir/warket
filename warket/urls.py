@@ -40,16 +40,22 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('profile/', user_views.profile, name='profile'),
 
-    path("auctions/", auctions_views.index, name="index"),
-    path("auctions/createListing", auctions_views.createListing, name="createListing"),
-    path("auctions/details/<int:id>", auctions_views.details, name="details"),
+    path("auctions/", auctions_views.auction_index, name="auction_index"),
+    path("auctions/create_listing", auctions_views.create_listing, name="create_listing"),
+    path("auctions/details/<int:wine_id>", auctions_views.details, name="details"),
     path("auctions/categories", auctions_views.categories, name="categories"),
-    path("auctions/filter/<str:name>", auctions_views.filter, name="filter"),
-    path("auctions/comment/<int:id>", auctions_views.comment, name="comment"),
-    path("auctions/bid/<int:id>", auctions_views.bid, name="bid"),
-    path("auctions/end/<int:item_id>", auctions_views.end, name="end"),
-    path("auctions/all", auctions_views.all, name="all"),
-
+    path("auctions/comment/<int:wine_id>", auctions_views.comment, name="comment"),
+    path("auctions/bid/<int:wine_id>", auctions_views.bid, name="bid"),
+    path("auctions/end/<int:wine_id>", auctions_views.end, name="end"),
+    path("auctions/all_auction_listings", auctions_views.all_auction_listings, name="all_auction_listings"),
+    path("auctions/my_auction_listings", auctions_views.my_auction_listings, name="my_auction_listings"),
+    path("auctions/ended_auction_listings", auctions_views.ended_auction_listings, name="ended_auction_listings"),
+    path("auctions/my_ended_auction_listings",
+         auctions_views.my_ended_auction_listings,
+         name="my_ended_auction_listings"
+         ),
+    path("auctions/my_won_auction_listings", auctions_views.my_won_auction_listings, name="my_won_auction_listings"),
+    path("auctions/check_auctions", auctions_views.check_auctions, name="check_auctions"),
     path("search/", wine_search_views.upload_file, name="wine_search"),
 
 ]

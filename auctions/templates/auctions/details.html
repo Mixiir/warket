@@ -1,23 +1,25 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ item.name }}
+    {{ wine.name }}
 {% endblock %}
 
-{% block body %}
+{% block content %}
     <div class="container detail-page">
-        <h4 class="mb-3">Listing: <span class="title">{{ item.name }}</span></h4>
+        <h4 class="mb-3">Listing: <span class="title">{{ wine.name }}</span></h4>
         <div class="image">
-            <img class="big" src="{{ item.imageUrl }}" alt="{{ item.id }}">
+            <img class="big" src="{{ wine.image_url }}" alt="{{ wine.id }}">
         </div>
-        <div class="item-description">
-            {{ item.description }}
+        <div class="wine-description">
+            {{ wine.description }}
         </div>
         <div class="bid">
-            Start Bid : <strong>${{ item.startBid }}</strong>
+            Start Bid : <strong>${{ wine.start_bid }}</strong>
+            <br>
+            <b>HIGHEST BID : <strong> {{ max_bid }}</strong></b>
         </div>
         {% for bid in bids %}
-            <div class="text-center">{{ bid.user.username }} bid <strong>{{ bid.bidValue }}</strong> at
+            <div class="text-center">{{ bid.user.username }} bid <strong>{{ bid.bid_value }}</strong> at
                 {{ bid.date|date:'M d, h:i a' }}</div>
         {% empty %}
             <div class="alert alert-warning text-center">
@@ -33,28 +35,28 @@
                 {% endfor %}
             {% endif %}
 
-            {% if bid and item.active == False %}
+            {% if bid and wine.active == False %}
 
                 <div class="alert alert-dark text-center">
                     {% if bid.user.username == user.username %}
                         You Won The Auction!
                     {% else %}
-                        <strong>{{ bid.user.username }}</strong> won, with a bid of <strong>${{ bid.bidValue }}</strong>
+                        <strong>{{ bid.user.username }}</strong> won, with a bid of <strong>${{ bid.bid_value }}</strong>
                     {% endif %}
                 </div>
 
             {% endif %}
 
-            {% if item.active and user.is_authenticated %}
-                <form action="{% url 'bid' item.id %}" method="post">
+            {% if wine.active and user.is_authenticated %}
+                <form action="{% url 'bid' wine.id %}" method="post">
                     {% csrf_token %}
                     <div class="form-group">
                         <input type="number" name="bid" class="form-control" placeholder="Bid" step=".01">
                     </div>
                     <div class="row justify-content-around">
                         <button class="btn btn-primary" type="submit">Place Bid</button>
-                        {% if item.user.username == user.username %}
-                            <a href="{% url 'end' item.id %}">
+                        {% if wine.user.username == user.username %}
+                            <a href="{% url 'end' wine.id %}">
                                 <button class="btn btn-warning" type="button">End Auction</button>
                             </a>
                         {% endif %}
@@ -66,9 +68,10 @@
         <section>
             Details:
             <ul>
-                <li>Listed By: <strong>{{ item.user.username }}</strong></li>
-                <li>Category: <strong>{{ item.category.name }}</strong></li>
-                <li>Listed On: <strong>{{ item.date }}</strong></li>
+                <li>Listed By: <strong>{{ wine.user.username }}</strong></li>
+                <li>Category: <strong>{{ wine.category.name }}</strong></li>
+                <li>Listed On: <strong>{{ wine.date }}</strong></li>
+                <li>End date: <strong>{{ wine_end_date }}</strong></li>
             </ul>
         </section>
 
@@ -90,9 +93,9 @@
                     No Comments Yet
                 </div>
             {% endfor %}
-{% if item.commentsAllowed %}
+{% if wine.comments_allowed %}
             {% if user.is_authenticated %}
-                <form action="{% url 'comment' item.id %}" method="post">
+                <form action="{% url 'comment' wine.id %}" method="post">
                     {% csrf_token %}
                     <div class="form-group">
                         <textarea name="content" rows="4" class="form-control" placeholder="Enter a comment"></textarea>

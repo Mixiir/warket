@@ -6,67 +6,80 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
+from datetime import datetime
+from django.db.models import Q
+
 
 # TODO clean up the mess ...
 
-def index(request):
-    obj = AuctionListing.objects.filter(active=True)
-    return render(request, "auctions/index.html", {
-        "objects": obj
+def auction_index(request):
+    auction_wines = AuctionListing.objects.filter(active=True)
+    return render(request, "auctions/auction_index.html", {
+        "auction_wines": auction_wines,
     })
 
 
-def all(request):
-    obj = AuctionListing.objects.all()
-    return render(request, "auctions/index.html", {
-        "objects": obj
+def all_auction_listings(request):
+    auction_wines = AuctionListing.objects.all()
+    return render(request, "auctions/auction_index.html", {
+        "auction_wines": auction_wines
     })
 
 
 @login_required
-def createListing(request):
+def create_listing(request):
     if request.method == 'POST':
-        print(request.POST)
         title = request.POST["title"]
         description = request.POST["description"]
-        startBid = request.POST["startBid"]
+        start_bid = request.POST["start_bid"]
         category = Category.objects.get(id=request.POST["category"])
-        if request.POST['commentsAllowed']:
-            commentsAllowed = request.POST["commentsAllowed"]
-#            return commentsAllowed
+        if request.POST['comments_allowed']:
+            comments_allowed = request.POST["comments_allowed"]
         else:
-            commentsAllowed=False
-#            return commentsAllowed
-#       print(request.POST["commentsAllowed"])
+            comments_allowed = False
         user = request.user
-        imageUrl = request.POST["url"]
-        if imageUrl == '':
-            imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png"
-# TODO  split the rows
+        image_url = request.POST["url"]
+        if image_url == '':
+            image_url = "https://infiror.eu/default.png"
         listing = AuctionListing.objects.create(
-            name=title, category=category, date=timezone.now(), startBid=startBid, description=description, user=user,
-            imageUrl=imageUrl, active=True, commentsAllowed=commentsAllowed,)
+            name=title,
+            category=category,
+            date=timezone.now(),
+            start_bid=start_bid,
+            max_bid=start_bid,
+            description=description,
+            user=user,
+            end_date=timezone.now(),
+            image_url=image_url,
+            active=True,
+            comments_allowed=comments_allowed, )
         listing.save()
-        return HttpResponseRedirect(reverse("index"))
-    return render(request, "auctions/createListing.html", {
+        return HttpResponseRedirect(reverse("auction_index"))
+    return render(request, "auctions/create_listing.html", {
         'categories': Category.objects.all()
     })
 
+
 # TODO do not use id use it longer
 
-def details(request, id):
-    item = AuctionListing.objects.get(id=id)
-    bids = Bid.objects.filter(auctionListing=item)
-    comments = Comment.objects.filter(auctionListing=item)
-    value = bids.aggregate(Max('bidValue'))['bidValue__max']
-    bid = None
+def details(request, wine_id):
+    wine = AuctionListing.objects.get(id=wine_id)
+    bids = Bid.objects.filter(auctionListing=wine)
+    max_bid = Bid.objects.filter(auctionListing=wine).aggregate(Max('bid_value'))
+    max_bid = max_bid['bid_value__max']
+    comments = Comment.objects.filter(auctionListing=wine)
+    value = bids.aggregate(Max('bid_value'))['bid_value__max']
+    wine_end_date = wine.date + timezone.timedelta(days=wine.auction_period)
+    wine_bid = None
     if value is not None:
-        bid = Bid.objects.filter(bidValue=value)[0]
+        wine_bid = Bid.objects.filter(bid_value=value)[0]
     return render(request, "auctions/details.html", {
-        'item': item,
+        'wine': wine,
         'bids': bids,
         'comments': comments,
-        'bid': bid
+        'wine_bid': wine_bid,
+        'max_bid': max_bid,
+        'wine_end_date': wine_end_date,
     })
 
 
@@ -85,51 +98,47 @@ def categories(request):
     })
 
 
-def filter(request, name):
-    category = Category.objects.get(name=name)
-    obj = AuctionListing.objects.filter(category=category)
-    return render(request, "auctions/index.html", {
-        "objects": obj
-    })
-
-
 @login_required
-def comment(request, id):
+def comment(request, wine_id):
     if request.method == 'POST':
-        auction_listing = AuctionListing.objects.get(id=id)
+        auction_listing = AuctionListing.objects.get(id=wine_id)
         user = request.user
         comment_value = request.POST["content"].strip()
         if comment_value != "":
-            comment = Comment.objects.create(date=timezone.now(
+            written_comment = Comment.objects.create(date=timezone.now(
             ), user=user, auctionListing=auction_listing, commentValue=comment_value)
-            comment.save()
-        return HttpResponseRedirect(reverse("details", kwargs={'id': id}))
-    return HttpResponseRedirect(reverse("index"))
+            written_comment.save()
+        return HttpResponseRedirect(reverse("details", kwargs={'wine_id': wine_id}))
+    return HttpResponseRedirect(reverse("auction_index"))
 
 
 @login_required
-def bid(request, id):
+def bid(request, wine_id):
     if request.method == 'POST':
-        auction_listing = AuctionListing.objects.get(id=id)
-        bidValue = request.POST["bid"]
+        auction_listing = AuctionListing.objects.get(id=wine_id)
+        bid_value = request.POST["bid"]
         args = Bid.objects.filter(auctionListing=auction_listing)
-        value = args.aggregate(Max('bidValue'))['bidValue__max']
+        value = args.aggregate(Max('bid_value'))['bid_value__max']
         if value is None:
             value = 0
-        if float(bidValue) < auction_listing.startBid or float(bidValue) <= value:
+        if float(bid_value) < auction_listing.start_bid or float(bid_value) <= value:
             messages.warning(
-                request, f'Bid Higher than: {max(value, auction_listing.startBid)}!')
-            return HttpResponseRedirect(reverse("details", kwargs={'id': id}))
+                request, f'Bid Higher than: {max(value, auction_listing.start_bid)}!')
+            return HttpResponseRedirect(reverse("details", kwargs={'wine_id': wine_id}))
         user = request.user
-        bid = Bid.objects.create(
-            date=timezone.now(), user=user, bidValue=bidValue, auctionListing=auction_listing)
-        bid.save()
-    return HttpResponseRedirect(reverse("details", kwargs={'id': id}))
+        save_bid = Bid.objects.create(
+            date=timezone.now(), user=user, bid_value=bid_value, auctionListing=auction_listing)
+        save_bid.save()
+        auction_listing.max_bid = bid_value
+        auction_listing.last_bidder = user.username
+        auction_listing.end_date = auction_listing.date + timezone.timedelta(hours=1)
+        auction_listing.save()
+    return HttpResponseRedirect(reverse("details", kwargs={'wine_id': wine_id}))
 
 
 @login_required
-def end(request, item_id):
-    auction_listing = AuctionListing.objects.get(id=item_id)
+def end(request, wine_id):
+    auction_listing = AuctionListing.objects.get(id=wine_id)
     user = request.user
     if auction_listing.user == user:
         auction_listing.active = False
@@ -139,4 +148,46 @@ def end(request, item_id):
     else:
         messages.info(
             request, 'You are not authorized to end this listing!')
-    return HttpResponseRedirect(reverse("details", kwargs={'id': item_id}))
+    return HttpResponseRedirect(reverse("details", kwargs={'wine_id': wine_id}))
+
+
+def my_auction_listings(request):
+    auction_wines = AuctionListing.objects.filter(user=request.user).order_by("-active")
+    return render(request, "auctions/auction_index.html", {
+        "auction_wines": auction_wines
+    })
+
+
+def ended_auction_listings(request):
+    auction_wines = AuctionListing.objects.filter(active=False)
+    return render(request, "auctions/auction_index.html", {
+        "auction_wines": auction_wines
+    })
+
+
+def my_ended_auction_listings(request):
+    auction_wines = AuctionListing.objects.filter(user=request.user, active=False)
+    return render(request, "auctions/auction_index.html", {
+        "auction_wines": auction_wines
+    })
+
+
+def my_won_auction_listings(request):
+    auction_wines = AuctionListing.objects.filter(active=False, last_bidder=request.user)
+    return render(request, "auctions/auction_index.html", {
+        "auction_wines": auction_wines
+    })
+
+
+def check_auctions(request):
+    auctions_ending = AuctionListing.objects.filter(active=True)
+    for auction in auctions_ending:
+        if auction.end_date:
+            if auction.end_date + timezone.timedelta(days=auction.auction_period) < timezone.now():
+                auction.active = False
+                auction.save()
+        if auction.date + timezone.timedelta(days=auction.auction_period) < timezone.now() \
+                and auction.end_date is None:
+            auction.active = False
+            auction.save()
+    return HttpResponseRedirect(reverse("auction_index"))

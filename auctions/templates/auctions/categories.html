@@ -4,7 +4,7 @@
     Categories
 {% endblock %}
 
-{% block body %}
+{% block content %}
     <div class="grid-container text-center">
         {% for category in categories %}
             <a href="{% url 'filter' category.name %}">

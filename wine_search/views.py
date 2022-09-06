@@ -37,7 +37,7 @@ def upload_file(request):
                                                    'status': status,
                                                    'info': info,
                                                    'year': year})
-        # TODO make all returns into one return. Context needs to be changed to fit for it.
+        # TODO make all_auction_listings returns into one return. Context needs to be changed to fit for it.
         else:
             form = WineSearchImageUpload()
         return render(request, 'search.html', {'form': form})
