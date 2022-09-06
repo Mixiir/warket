@@ -47,7 +47,11 @@
                                 <p><b>Out of stock</b></p>
                             {% endif %}
                         <br>
+                        {% if user == wine.user %}
+                            <a href="{% url 'delete_wine' wine.pk %}" class="btn btn-primary" style="float: left">Delete</a>
+                        {% endif %}
                             <a href="{% url 'detail_wine' wine.pk %}" class="btn btn-primary" style="float: right">View</a>
+
                         </div>
                     </div>
                 </td>

@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 
+# TODO clean up the mess ...
 
 def index(request):
     obj = AuctionListing.objects.filter(active=True)
@@ -41,6 +42,7 @@ def createListing(request):
         imageUrl = request.POST["url"]
         if imageUrl == '':
             imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/300px-No_image_available.svg.png"
+# TODO  split the rows
         listing = AuctionListing.objects.create(
             name=title, category=category, date=timezone.now(), startBid=startBid, description=description, user=user,
             imageUrl=imageUrl, active=True, commentsAllowed=commentsAllowed,)
@@ -50,6 +52,7 @@ def createListing(request):
         'categories': Category.objects.all()
     })
 
+# TODO do not use id use it longer
 
 def details(request, id):
     item = AuctionListing.objects.get(id=id)
