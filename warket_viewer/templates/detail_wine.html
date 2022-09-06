@@ -25,6 +25,8 @@
             <br>
             <a href="{% url 'edit_wine'  wine_data.pk %}">Edit</a>
             <br>
+            <a href="{% url 'delete_wine'  wine_data.pk %}">Delete</a>
+            <br>
             <br>
         {% endif %}
         {% if wine_data.units_in_stock %}

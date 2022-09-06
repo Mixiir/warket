@@ -38,6 +38,7 @@ class WineListView(ListView):
 
     def get_queryset(self):
         wines = Wine.objects.exclude(units_in_stock=0)
+#        wines = Wine.objects.all()
         search = self.request.GET.get('search')
         if search:
             wines = wines.filter(
@@ -83,21 +84,25 @@ class CreateManufacturer(CreateView):
     fields = '__all__'
 
 
-class UpdateManufacturer(PermissionRequiredMixin, UpdateView):
-    permission_required = 'warket_viewer.UpdateManufacturer'
+class UpdateManufacturer(UpdateView):
     template_name = 'update_manufacturer.html'
     model = Manufacturer
     success_url = reverse_lazy('list_manufacturers')
     fields = '__all__'
-    permission_required = 'viewer.change_manufacturer'
 
 
-class DeleteManufacturer(PermissionRequiredMixin, DeleteView):
-    permission_required = 'warket_viewer.DeleteManufacturer'
+class DeleteManufacturer(DeleteView):
     template_name = 'delete_manufacturer.html'
     model = Manufacturer
     success_url = reverse_lazy('list_manufacturers')
     context_object_name = 'manufacturer'
+
+
+class DeleteWine(DeleteView):
+    template_name = 'delete_wine.html'
+    model = Wine
+    success_url = reverse_lazy('list_wines')
+    context_object_name = 'wine'
 
 
 class DetailWine(DetailView):
@@ -128,8 +133,9 @@ def create_wine(request):
     return render(request, 'create_wine.html', {'form': form})
 
 
-class EditWine(PermissionRequiredMixin, UpdateView):
-    permission_required = 'warket_viewer.edit_wine'
+# class EditWine(PermissionRequiredMixin, UpdateView):
+class EditWine(UpdateView):
+    # permission_required = 'warket_viewer.edit_wine'
     model = Wine
     fields = '__all__'
     widgets = {'user': HiddenInput()}

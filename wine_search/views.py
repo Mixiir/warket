@@ -3,7 +3,7 @@ from .forms import WineSearchImageUpload
 import decouple
 import requests
 import json
-
+from django.contrib import messages
 
 def upload_file(request):
     global wine_name
@@ -20,16 +20,24 @@ def upload_file(request):
             }
             response = requests.request("POST", url, data=payload, headers=headers, params=querystring)
             data = response.json()
+
+            # TODO results = data.get('results')
+            # if results:
+            # utility function checks whether the results are empty or not and if keys value is an list?
+
             status = data['results'][0]['status']['message']
             image = data['results'][0]['name']
             info = data['results'][0]['entities'][0]['classes']
-            wine_name = data['results'][0]['entities'][0]['classes']
-
+            name = list(info.keys())[0]
+            year = int(name[-4:])
+            messages.success(request, f'Wine image has been identified')
             return render(request, 'search.html', {'form': form,
                                                    'response': response.text,
                                                    'image': image,
                                                    'status': status,
-                                                   'info': info,})
+                                                   'info': info,
+                                                   'year': year})
+        # TODO make all returns into one return. Context needs to be changed to fit for it.
         else:
             form = WineSearchImageUpload()
         return render(request, 'search.html', {'form': form})
