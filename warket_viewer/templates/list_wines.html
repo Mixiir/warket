@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     {% load static %}
-    <link rel="stylesheet" href=" {% static '/css/style.css' %}">
+    <link rel="stylesheet" href=" {% static "/css/style.css" %}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <h2>Wines list</h2>
     <div class="container">
@@ -24,7 +24,7 @@
                             <h5>{{ wine.name }}</h5>
                             <br>
                             <p>{{ wine.description }}</p>
-                            <a href="{% url 'detail_wine' wine.pk %}">
+                            <a href="{% url "detail_wine" wine.pk %}">
                                 <img src="{{ wine.image.url }}" class="card-img-top" alt="..." width="350" height="250"></a>
                             <p>{{ wine.vintage }} by {{ wine.manufacturer }}</p>
                             <p>{{ wine.price_per_unit }} €</p>
@@ -35,7 +35,7 @@
                                         {{ cart_product_form }}
                                         <label for="id_quantity_2">Quantity:</label>
                                         <select name="quantity" id="id_quantity_2">
-                                            {% for x in ''|center:wine.units_in_stock %}
+                                            {% for x in ""|center:wine.units_in_stock %}
                                                 <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
                                             {% endfor %}
                                         </select>
@@ -48,9 +48,9 @@
                             {% endif %}
                         <br>
                         {% if user == wine.user %}
-                            <a href="{% url 'delete_wine' wine.pk %}" class="btn btn-primary" style="float: left">Delete</a>
+                            <a href="{% url "delete_wine" wine.pk %}" class="btn btn-primary" style="float: left">Delete</a>
                         {% endif %}
-                            <a href="{% url 'detail_wine' wine.pk %}" class="btn btn-primary" style="float: right">View</a>
+                            <a href="{% url "detail_wine" wine.pk %}" class="btn btn-primary" style="float: right">View</a>
 
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                 {% endif %}
             {% endfor %}
     </table>
-    <script src="{% static '/js/script.js' %}"></script>
+    <script src="{% static "/js/script.js" %}"></script>
 {% endblock %}
 
 

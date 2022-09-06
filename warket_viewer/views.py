@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-from django.contrib.auth.mixins import PermissionRequiredMixin
 from .constants import COUNTRIES
 from .models import Wine, Manufacturer
 from django.db.models import Q
@@ -20,12 +19,12 @@ def get_country_name(country_code):
 
 class WineSortedList(ListView):
     model = Wine
-    template_name = 'list_wines.html'
-    context_object_name = 'wines_data'
+    template_name = "list_wines.html"
+    context_object_name = "wines_data"
 
     def get_queryset(self):
         wines = Wine.objects.all()
-        search = self.request.GET.get('show_only')
+        search = self.request.GET.get("show_only")
         if search:
             wines = wines.filter(Q(type__icontains=search))
         return wines
@@ -33,13 +32,13 @@ class WineSortedList(ListView):
 
 class WineListView(ListView):
     model = Wine
-    template_name = 'list_wines.html'
-    context_object_name = 'wines_data'
+    template_name = "list_wines.html"
+    context_object_name = "wines_data"
 
     def get_queryset(self):
         wines = Wine.objects.exclude(units_in_stock=0)
 #        wines = Wine.objects.all_auction_listings()
-        search = self.request.GET.get('search')
+        search = self.request.GET.get("search")
         if search:
             wines = wines.filter(
                 Q(name__icontains=search) |
@@ -51,98 +50,98 @@ class WineListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_is'] = 'wines'
+        context["page_is"] = "wines"
         return context
 
 
 class ManufacturersListView(ListView):
     model = Manufacturer
-    template_name = 'list_manufacturers.html'
-    context_object_name = 'manufacturers_data'
+    template_name = "list_manufacturers.html"
+    context_object_name = "manufacturers_data"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_is'] = 'manufacturers'
+        context["page_is"] = "manufacturers"
         return context
 
 
 class DetailManufacturer(DetailView):
     model = Manufacturer
-    template_name = 'detail_manufacturer.html'
-    context_object_name = 'manufacturer_data'
+    template_name = "detail_manufacturer.html"
+    context_object_name = "manufacturer_data"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_is'] = 'manufacturer'
+        context["page_is"] = "manufacturer"
         return context
 
 
 class CreateManufacturer(CreateView):
-    template_name = 'create_manufacturer.html'
+    template_name = "create_manufacturer.html"
     model = Manufacturer
-    success_url = reverse_lazy('list_manufacturers')
-    fields = '__all__'
+    success_url = reverse_lazy("list_manufacturers")
+    fields = "__all__"
 
 
 class UpdateManufacturer(UpdateView):
-    template_name = 'update_manufacturer.html'
+    template_name = "update_manufacturer.html"
     model = Manufacturer
-    success_url = reverse_lazy('list_manufacturers')
-    fields = '__all__'
+    success_url = reverse_lazy("list_manufacturers")
+    fields = "__all__"
 
 
 class DeleteManufacturer(DeleteView):
-    template_name = 'delete_manufacturer.html'
+    template_name = "delete_manufacturer.html"
     model = Manufacturer
-    success_url = reverse_lazy('list_manufacturers')
-    context_object_name = 'manufacturer'
+    success_url = reverse_lazy("list_manufacturers")
+    context_object_name = "manufacturer"
 
 
 class DeleteWine(DeleteView):
-    template_name = 'delete_wine.html'
+    template_name = "delete_wine.html"
     model = Wine
-    success_url = reverse_lazy('list_wines')
-    context_object_name = 'wine'
+    success_url = reverse_lazy("list_wines")
+    context_object_name = "wine"
 
 
 class DetailWine(DetailView):
     model = Wine
-    template_name = 'detail_wine.html'
-    context_object_name = 'wine_data'
+    template_name = "detail_wine.html"
+    context_object_name = "wine_data"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cart_product_form = CartAddProductForm()
-        context['page_is'] = 'wines'
-        context['cart_product_form'] = cart_product_form
+        context["page_is"] = "wines"
+        context["cart_product_form"] = cart_product_form
         return context
 
 
 @login_required
 def create_wine(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CreateWineForm(request.POST, request.FILES)
         if form.is_valid():
             create_wine_form = form.save(commit=False)
             create_wine_form.user = request.user
             create_wine_form.save()
-            messages.success(request, f'Wine has been listed')
-            return redirect('list_wines')
+            messages.success(request, f"Wine has been listed")
+            return redirect("list_wines")
     else:
         form = CreateWineForm()
-    return render(request, 'create_wine.html', {'form': form})
+    return render(request, "create_wine.html", {"form": form})
 
 
 # class EditWine(PermissionRequiredMixin, UpdateView):
 class EditWine(UpdateView):
-    # permission_required = 'warket_viewer.edit_wine'
+    # permission_required = "warket_viewer.edit_wine"
     model = Wine
-    fields = '__all__'
-    widgets = {'user': HiddenInput()}
-    template_name = 'edit_wine.html'
-    success_url = reverse_lazy('list_wines')
+    fields = "__all__"
+    widgets = {"user": HiddenInput()}
+    template_name = "edit_wine.html"
+    success_url = reverse_lazy("list_wines")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_is'] = 'wines'
+        context["page_is"] = "wines"
         return context

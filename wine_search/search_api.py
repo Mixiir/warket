@@ -8,7 +8,7 @@ def search_api(address):
     payload = f"url={address}"
     headers = {
         "content-type": "application/x-www-form-urlencoded",
-        "X-RapidAPI-Key": decouple.config('RAPIDAPI_KEY'),
+        "X-RapidAPI-Key": decouple.config("RAPIDAPI_KEY"),
         "X-RapidAPI-Host": "wine-recognition2.p.rapidapi.com"
     }
 

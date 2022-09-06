@@ -14,7 +14,7 @@ class AuctionListing(models.Model):
     name = models.CharField(max_length=50)
     date = models.DateTimeField()
     start_bid = models.DecimalField(decimal_places=2, max_digits=7)
-    max_bid = models. PositiveIntegerField(default=0)
+    max_bid = models.PositiveIntegerField(default=0)
     description = models.CharField(max_length=250)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image_url = models.URLField(blank=True, default="default.jpg")
@@ -25,25 +25,31 @@ class AuctionListing(models.Model):
     auction_period = models.PositiveIntegerField(default=10)
 
     def __str__(self):
-        return f"{self.id} : " \
-               f"{self.name} in " \
-               f"{self.category.name}\nPosted at : " \
-               f"{self.date}\nValue : " \
-               f"{self.start_bid}\nDescription : " \
-               f"{self.description}\nPosted By : " \
-               f"{self.user.username} Active Status: " \
-               f"{self.active}"
+        return f"{self.id}: " \
+               f"{self.name}\n " \
+               f"{self.category.name}\n" \
+               f"Posted at :{self.date}\n " \
+               f"Value : {self.start_bid}\n" \
+               f"Description : {self.description}\n" \
+               f"Posted By : {self.user.username}\n" \
+               f"Active Status: {self.active}\n" \
+               f"Max bid: {self.max_bid}\n" \
+               f"Last bidder: {self.last_bidder}\n" \
+               f"Auction period: {self.auction_period}\n" \
+               f"Image URL : {self.image_url}\n" \
+               f"Comments allowed: {self.comments_allowed}\n" \
+               f"End date: {self.end_date}\n"
 
 
 class Bid(models.Model):
     date = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    bid_value = models.DecimalField(decimal_places=2, max_digits=7)
-    auctionListing = models.ForeignKey(
-        AuctionListing, on_delete=models.CASCADE)
+    bid_value = models.DecimalField(decimal_places=2, max_digits=10)
+    auctionListing = models.ForeignKey(AuctionListing, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f"{self.id} : {self.user.username} bid {self.bid_value} on {self.auctionListing.name} at {self.date}"
+
+def __str__(self):
+    return f"{self.id} : {self.user.username} bid {self.bid_value} on {self.auctionListing.name} at {self.date}"
 
 
 class Comment(models.Model):

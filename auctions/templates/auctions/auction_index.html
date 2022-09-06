@@ -6,21 +6,33 @@
         <tr>
             {% for wine in auction_wines %}
                 <td>
-                    <a href="{% url 'details' wine.id %}">
+                    <a href="{% url "details" wine.id %}">
                         <div class="card">
                             <div class="card-body item text-center">
                                 <h5>{{ wine.name }}</h5>
                                 <br>
-                                <a href="{% url 'details' wine.id %}">
+                                <a href="{% url "details" wine.id %}">
                                     <img src="{{ wine.image_url }}" class="card-img-top" alt="..." width="350"
                                          height="250"></a>
-                                <h6>Price: <strong>{{ wine.start_bid }}€</strong></h6>
+                                <h6>Price: {{ wine.start_bid }}€</h6>
                                 {% if wine.max_bid %}
-                                <b><h6>MAX BID: <strong>{{ wine.max_bid }}€</strong></h6></b>
+                                    <b><h6>Highest bid: <strong>{{ wine.max_bid }}€</strong></h6></b>
+                                {% else %}
+                                    <b><h6>Highest bid: <strong>{{ wine.start_bid }}€</strong></h6></b>
                                 {% endif %}
                                 <small>Created: <strong>{{ wine.date|date:"d-m-Y" }}</strong></small><br>
                                 {% if wine.active %}
                                     <span class="badge">Active</span>
+                                    <form action="{% url "bid" wine.id %}" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <input type="number" name="bid" class="form-control" placeholder="Bid"
+                                                   step=".01">
+                                        </div>
+                                        <div class="row justify-content-around">
+                                            <button class="btn btn-primary" type="submit">Place Bid</button>
+                                        </div>
+                                    </form>
                                 {% else %}
                                     <span class="badge">Ended</span>
                                 {% endif %}

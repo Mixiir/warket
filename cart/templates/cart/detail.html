@@ -33,12 +33,12 @@
                                 <td>
                                     <a href="{{ wine.get_absolute_url }}">
                                         <img src="{% if wine.image %}{{ wine.image.url }}
-                                                    {% else %}{% static 'img/no-image.png' %}{% endif %}"
-                                             alt="{{ wine.name }}" class="img-responsive">
+                                                    {% else %}{% static "img/no-image.png" %}{% endif %}"
+                                             alt="{{ wine.name }}" class="img-responsive" width="180" height="200">
                                     </a>
                                 </td>
                                 <td>
-                                    <form action="{% url 'cart:cart_add' wine.id %}" method="post">
+                                    <form action="{% url "cart:cart_add" wine.id %}" method="post">
                                         {{ item.update_quantity_form.quantity }}
                                         {{ item.update_quantity_form.update }}
                                         <input type="submit" value="Update">
@@ -66,7 +66,7 @@
             </div>
         </div>
         <p class="text-right">
-            <a href="{% url 'list_wines' %}" class="buttonlight">Continue Shopping</a>
+            <a href="{% url "list_wines" %}" class="buttonlight">Continue Shopping</a>
         <form action="{% url "cart:cart_clear" %}" method="post">
             {{ cart_product_form }}
             {% csrf_token %}

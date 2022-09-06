@@ -5,6 +5,7 @@ import requests
 import json
 from django.contrib import messages
 
+
 def upload_file(request):
     global wine_name
     if request.method == 'POST':

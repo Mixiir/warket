@@ -7,7 +7,7 @@
 {% block content %}
 
     <div class="pt-4 mt-4">
-        <form action="{% url 'create_listing' %}" method="post">
+        <form action="{% url "create_listing" %}" method="post">
             {% csrf_token %}
             <div class="form-row form-group mt-2">
                 <div class="col">
@@ -50,7 +50,7 @@
                     </select>
                 </div>
                 <div class="col">
-                    <label for="auction_period">Auction ends in * days</label>
+                    <label for="start_bid">Auction ends in * days</label>
                     <input type="number" name="auction_period" class="form-control" placeholder="1" step="1">
                 </div>
             </div>
