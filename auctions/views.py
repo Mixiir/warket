@@ -68,6 +68,8 @@ def create_listing(request):
                 comments_allowed=comments_allowed,
                 auction_period=auction_period)
             listing.save()
+        else:
+            messages.warning(request, "Form is not valid, please doublecheck entered info!")
         return HttpResponseRedirect(reverse("auction_index"))
     return render(request, "auctions/create_listing.html", {
         "categories": Category.objects.all()
