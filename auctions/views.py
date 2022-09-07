@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
+from .forms import CreateAuctionListingForm
 
 
 def auction_index(request):
@@ -25,37 +26,48 @@ def all_auction_listings(request):
     })
 
 
+def filter(request, name):
+    category = Category.objects.get(name=name)
+    obj = AuctionListing.objects.filter(category=category)
+    return render(request, "auctions/auction_index.html", {
+        "objects": obj
+    })
+
+
 @login_required
 def create_listing(request):
     check_auctions_auto()
+    form = CreateAuctionListingForm(request.POST, request.FILES)
+    print(form)
     if request.method == "POST":
-        title = request.POST["title"]
-        description = request.POST["description"]
-        start_bid = request.POST["start_bid"]
-        category = Category.objects.get(id=request.POST["category"])
-        if request.POST["comments_allowed"]:
-            comments_allowed = request.POST["comments_allowed"]
-        else:
-            comments_allowed = False
-        user = request.user
-        image_url = request.POST["url"]
-        auction_period = request.POST["auction_period"]
-        if image_url == "":
+        if form.is_valid():
+            name = request.POST["name"]
+            description = request.POST["description"]
+            start_bid = request.POST["start_bid"]
+            category = Category.objects.get(id=request.POST["category"])
+            if request.POST["comments_allowed"]:
+                comments_allowed = request.POST["comments_allowed"]
+            else:
+                comments_allowed = False
+            user = request.user
+            image = request.FILES["image"]
+            auction_period = request.POST["auction_period"]
             image_url = "https://infiror.eu/default.png"
-        listing = AuctionListing.objects.create(
-            name=title,
-            category=category,
-            date=timezone.now(),
-            start_bid=start_bid,
-            max_bid=start_bid,
-            description=description,
-            user=user,
-            end_date=timezone.now(),
-            image_url=image_url,
-            active=True,
-            comments_allowed=comments_allowed,
-            auction_period=auction_period)
-        listing.save()
+            listing = AuctionListing.objects.create(
+                name=name,
+                category=category,
+                date=timezone.now(),
+                start_bid=start_bid,
+                max_bid=start_bid,
+                description=description,
+                user=user,
+                end_date=timezone.now(),
+                image=image,
+                image_url=image_url,
+                active=True,
+                comments_allowed=comments_allowed,
+                auction_period=auction_period)
+            listing.save()
         return HttpResponseRedirect(reverse("auction_index"))
     return render(request, "auctions/create_listing.html", {
         "categories": Category.objects.all()
@@ -144,9 +156,9 @@ def bid(request, wine_id):
         auction_listing.max_bid = bid_value
         auction_listing.last_bidder = user.username
         if auction_listing.end_date:
-            auction_listing.end_date = auction_listing.end_date+timedelta(hours=1)
+            auction_listing.end_date = auction_listing.end_date + timedelta(hours=1)
         else:
-            auction_listing.end_date = auction_listing.date+timedelta(hours=1)
+            auction_listing.end_date = auction_listing.date + timedelta(hours=1)
         auction_listing.save()
     return HttpResponseRedirect(reverse("details", kwargs={"wine_id": wine_id}))
 

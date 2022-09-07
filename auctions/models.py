@@ -18,6 +18,7 @@ class AuctionListing(models.Model):
     description = models.CharField(max_length=250)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image_url = models.URLField(blank=True, default="default.jpg")
+    image = models.ImageField(default="default.jpg", upload_to="images")
     end_date = models.DateTimeField(blank=True, null=True)
     active = models.BooleanField()
     comments_allowed = models.BooleanField(default=True)
