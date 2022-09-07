@@ -7,12 +7,12 @@
 {% block content %}
 
     <div class="pt-4 mt-4">
-        <form action="{% url "create_listing" %}" method="post">
+        <form action="{% url "create_listing" %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-row form-group mt-2">
                 <div class="col">
                     <label for="title">Title</label>
-                    <input autofocus type="text" placeholder="Enter Title" name="title" class="form-control">
+                    <input autofocus type="text" placeholder="Enter Title" name="name" class="form-control">
                 </div>
                 <div class="col">
                     <label for="start_bid">Starting Bid</label>
@@ -27,8 +27,8 @@
             </div>
             <div class="form-row form-group mt-2">
                 <div class="col">
-                    <label for="url">Image Url</label>
-                    <input type="url" placeholder="Enter Image Url" name="url" class="form-control">
+                    <label for="image">Image Url</label>
+                    <input type="file" accept="image/*" name="image" class="form-control">
                 </div>
                 <div class="col">
                     <label for="category">Category</label>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="col">
                     <label for="start_bid">Auction ends in * days</label>
-                    <input type="number" name="auction_period" class="form-control" placeholder="1" step="1">
+                    <input type="number" name="auction_period" class="form-control" value="1" step="1">
                 </div>
             </div>
             <div class="text-center">

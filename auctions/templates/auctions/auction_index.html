@@ -12,7 +12,9 @@
                                 <h5>{{ wine.name }}</h5>
                                 <br>
                                 <a href="{% url "details" wine.id %}">
-                                    <img src="{{ wine.image_url }}" class="card-img-top" alt="..." width="350"
+                                    <img src="
+                                            {% if wine.image_url == "https://infiror.eu/default.png"  %}{{ wine.image.url }}{% else %}{{ wine.image_url }}{% endif %}"
+                                         class="card-img-top" alt="..." width="350"
                                          height="250"></a>
                                 <h6>Price: {{ wine.start_bid }}€</h6>
                                 {% if wine.max_bid %}

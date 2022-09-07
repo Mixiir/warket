@@ -44,6 +44,7 @@ urlpatterns = [
     path("auctions/create_listing", auctions_views.create_listing, name="create_listing"),
     path("auctions/details/<int:wine_id>", auctions_views.details, name="details"),
     path("auctions/categories", auctions_views.categories, name="categories"),
+    path("auctions/categories/<str:category>", auctions_views.filter, name="filter"),
     path("auctions/comment/<int:wine_id>", auctions_views.comment, name="comment"),
     path("auctions/bid/<int:wine_id>", auctions_views.bid, name="bid"),
     path("auctions/end/<int:wine_id>", auctions_views.end, name="end"),
