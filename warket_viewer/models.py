@@ -1,7 +1,12 @@
-from .constants import COUNTRIES, WINE_VARIETY, WINE_TYPE, CART_OPTIONS
+import PIL.Image
+
+from .constants import COUNTRIES, WINE_TYPE
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+import base64
+from io import BytesIO
+from PIL import Image
 
 
 class Manufacturer(models.Model):
@@ -18,6 +23,7 @@ class Manufacturer(models.Model):
 class Wine(models.Model):
     name = models.CharField(max_length=100)
     image = models.ImageField(default="default.jpg", upload_to="images")
+    thumbnail = models.ImageField(default="default.jpg", upload_to="images")
     description = models.TextField()
     rating = models.FloatField(default=0)
     vintage = models.PositiveIntegerField(default=1999)
@@ -27,5 +33,9 @@ class Wine(models.Model):
     units_in_auction = models.PositiveIntegerField(default=0)
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, blank=True, null=True)
     type = models.CharField(max_length=100, choices=WINE_TYPE, default="red")
-    # variety = models.CharField(max_length=100, choices=WINE_VARIETY, default="")
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+
+
+
+
+

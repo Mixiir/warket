@@ -1,6 +1,9 @@
+import io
 import os
+import uuid
 
 import decouple
+import django.core.files.uploadedfile
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -9,11 +12,13 @@ from django.forms import HiddenInput
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from cart.forms import CartAddProductForm
 from .constants import COUNTRIES
 from .forms import CreateWineForm, FormAPI
 from .models import Wine, Manufacturer
+from PIL import Image
 
 
 def get_country_name(country_code):
@@ -147,7 +152,7 @@ def create_wine(request):
     main_form = CreateWineForm(request.POST or None, request.FILES or None)
     search_form = FormAPI(request.POST or None, request.FILES or None)
     if request.method == "POST":
-        if search_form.is_valid():
+        if search_form.is_valid() and not request.POST.get("price_per_unit"):
             image = request.FILES['image']
             response = requests.post(
                 options[mode]["url"],
@@ -180,6 +185,20 @@ def create_wine(request):
                     messages.error(request, f"Error: {e}.")
         elif main_form.is_valid():
             create_wine_form = main_form.save(commit=False)
+            thumbnail = request.FILES['image']
+            thumbnail = Image.open(thumbnail)
+            thumbnail.thumbnail((50, 80), Image.ANTIALIAS)
+            thumbnail_io = io.BytesIO()
+            unique_filename = uuid.uuid4().hex
+            thumbnail.save(thumbnail_io, format="JPEG")
+            thumbnail_file = InMemoryUploadedFile(
+                thumbnail_io,
+                None,
+                unique_filename + ".jpg",
+                "image/jpeg",
+                thumbnail_io.getbuffer().nbytes,
+                None)
+            create_wine_form.thumbnail = thumbnail_file
             create_wine_form.user = request.user
             create_wine_form.save()
             messages.success(request, f"Wine has been listed")
