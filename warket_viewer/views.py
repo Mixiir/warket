@@ -47,7 +47,6 @@ class WineListView(ListView):
         if search:
             wines = wines.filter(
                 Q(name__icontains=search) |
-                Q(variety__icontains=search) |
                 Q(vintage__icontains=search) |
                 Q(type__icontains=search)
             )
@@ -157,7 +156,7 @@ def create_wine(request):
             if response.status_code == 200:
                 try:
                     data = response.json().get("results")
-                    if data[0]:
+                    if len(data) > 0:
                         results = data[0]
                         info = results.get("entities")[0].get("classes")
                         name = list(info.keys())[0]
@@ -175,6 +174,8 @@ def create_wine(request):
                                                                     "first_dict_name": first_dict_name,
                                                                     "main_form": main_form,
                                                                     })
+                    else:
+                        messages.error(request, f"data[0] not > 0")
                 except Exception as e:
                     messages.error(request, f"Error: {e}.")
         elif main_form.is_valid():

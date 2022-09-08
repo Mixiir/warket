@@ -15,7 +15,7 @@ class CreateWineForm(forms.ModelForm):
             "units_in_stock",
             "manufacturer",
             "type",
-            "variety"
+            # "variety"
         ]
 
 
@@ -32,7 +32,7 @@ class EditWineForm(forms.ModelForm):
             "units_in_stock",
             "manufacturer",
             "type",
-            "variety"
+            # "variety"
         ]
 
 

@@ -27,5 +27,5 @@ class Wine(models.Model):
     units_in_auction = models.PositiveIntegerField(default=0)
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, blank=True, null=True)
     type = models.CharField(max_length=100, choices=WINE_TYPE, default="red")
-    variety = models.CharField(max_length=100, choices=WINE_VARIETY, default="")
+    # variety = models.CharField(max_length=100, choices=WINE_VARIETY, default="")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,)

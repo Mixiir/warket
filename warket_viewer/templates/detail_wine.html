@@ -9,7 +9,6 @@
         <p> Description {{ wine_data.description }}</p>
         <p> Rating: {{ wine_data.rating }} </p>
         <p> Price: {{ wine_data.price }} </p>
-        <p> Grape variety: {{ wine_data.grape_variety }} </p>
         <p> Vintage: {{ wine_data.vintage }} </p>
         <p> Alcohol content: {{ wine_data.alcohol_content }} </p>
         <p> Price per Unit: {{ wine_data.price_per_unit }}</p>
@@ -18,7 +17,6 @@
         <p> Units in auction: {{ wine_data.units_in_auction }}</p>
         <p> Manufacturer: {{ wine_data.manufacturer }}</p>
         <p> Type: {{ wine_data.type }}</p>
-        <p> Variety: {{ wine_data.variety }}</p>
         <p> Image: <img src="{{ wine_data.image.url }}"></p>
         <p> Seller: {{ wine_data.user }}</p>
         {% if user == wine_data.user %}
