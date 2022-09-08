@@ -32,8 +32,6 @@ INSTALLED_APPS = [
     "vertical_multi_columns",
     "auctions",
     "cart",
-    "wine_search",
-    "django_crontab"
 ]
 
 MIDDLEWARE = [
@@ -116,7 +114,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "warket_viewer/static"), ]
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = [os.path.join(BASE_DIR, "media")]
 MEDIA_URL = config("IMAGE_SERVER")
 
 # Default primary key field type
@@ -134,3 +132,4 @@ FTP_STORAGE_LOCATION = config("FTP_STORAGE_LOCATION")
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 CART_SESSION_ID = "cart"
+

@@ -34,3 +34,17 @@ class EditWineForm(forms.ModelForm):
             "type",
             "variety"
         ]
+
+
+class FormAPI(forms.Form):
+    image = forms.ImageField(label="image")
+
+    def clean_image(self):
+        image = self.cleaned_data.get("image")
+        if image:
+            if image.size > 32 * 1024 * 1024:
+                raise forms.ValidationError("Image file too large ( > 32mb )")
+            return image
+        else:
+            raise forms.ValidationError("Couldn't read uploaded image")
+
