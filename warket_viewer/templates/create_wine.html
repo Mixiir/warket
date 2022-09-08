@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 {% block content %}
     {% if not first_dict_name %}
-    <h2>Add new wine</h2>
+    <h2>Add a new wine</h2>
         <p>Do you feel adventurous? Try uploading your wine label image to predict its name and vintage</p>
         <form name="search_form" method="post" class="py-3 m-3" enctype="multipart/form-data">
             {% csrf_token %}
@@ -13,6 +13,7 @@
             <input type="submit" value="Upload wine label">
         </form>
     {% endif %}
+    <hr>
         <div class="content-section">
             <form name="create_wine" method="post" enctype="multipart/form-data">
                 {% csrf_token %}

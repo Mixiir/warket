@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='auctionlisting',
             name='imageUrl',
-            field=models.URLField(blank=True, default='default.jpg'),
+            field=models.ImageField(blank=True, default='default.jpg', upload_to='images'),
         ),
     ]
