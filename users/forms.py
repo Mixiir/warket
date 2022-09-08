@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
-from .models import Profile
+User = get_user_model()
 
 
 class UserRegisterForm(UserCreationForm):
@@ -10,7 +10,8 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "birth_date", "email", "password1", "password2"]
+        fields = ["username", "first_name", "last_name", "birth_date", "email", "password1", "password2", "image",
+                  "country", ]
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -18,10 +19,4 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["email", "birth_date"]
-
-
-class ProfileUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        fields = ["image", "bio", "location", "language"]
+        fields = ["email", "birth_date", "image", "country", "bio", "language"]

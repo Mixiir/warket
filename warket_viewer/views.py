@@ -165,7 +165,7 @@ def create_wine(request):
                             year = int(name[-4:])
                             first_dict_name = (name[:-5]).title()
                         else:
-                            year = ""
+                            year = "."
                             first_dict_name = name
                         messages.success(request, f"Wine image has been identified")
 # TODO pass image to form?

@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -16,7 +17,7 @@ class AuctionListing(models.Model):
     start_bid = models.DecimalField(decimal_places=2, max_digits=7)
     max_bid = models.PositiveIntegerField(default=0)
     description = models.CharField(max_length=250)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image_url = models.URLField(blank=True, default="default.jpg")
     image = models.ImageField(default="default.jpg", upload_to="images")
     end_date = models.DateTimeField(blank=True, null=True)
@@ -44,7 +45,7 @@ class AuctionListing(models.Model):
 
 class Bid(models.Model):
     date = models.DateTimeField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     bid_value = models.DecimalField(decimal_places=2, max_digits=10)
     auctionListing = models.ForeignKey(AuctionListing, on_delete=models.CASCADE)
 
@@ -55,7 +56,7 @@ def __str__(self):
 
 class Comment(models.Model):
     date = models.DateTimeField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     auctionListing = models.ForeignKey(
         AuctionListing, on_delete=models.CASCADE)
     commentValue = models.CharField(max_length=250)

@@ -1,6 +1,7 @@
 from .constants import COUNTRIES, WINE_VARIETY, WINE_TYPE, CART_OPTIONS
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Manufacturer(models.Model):
@@ -27,4 +28,4 @@ class Wine(models.Model):
     manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, blank=True, null=True)
     type = models.CharField(max_length=100, choices=WINE_TYPE, default="red")
     variety = models.CharField(max_length=100, choices=WINE_VARIETY, default="")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True,)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True,)
