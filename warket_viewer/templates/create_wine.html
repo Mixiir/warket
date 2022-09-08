@@ -1,17 +1,27 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 {% block content %}
+    {% if not first_dict_name %}
     <h2>Add new wine</h2>
-    <div class="content-section">
-        <form method="post" enctype="multipart/form-data">
+        <p>Do you feel adventurous? Try uploading your wine label image to predict its name and vintage</p>
+        <form name="search_form" method="post" class="py-3 m-3" enctype="multipart/form-data">
             {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join us today</legend>
-                {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Create wine</button>
-            </div>
+            {{ search_form|crispy }}
+            <label for="id_image">Upload Image:</label>
+            <input type="file" name="image" accept="image/*" required id="id_image">
+            <input type="submit" value="Upload wine label">
         </form>
-    </div>
-{% endblock %}
+    {% endif %}
+        <div class="content-section">
+            <form name="create_wine" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    {{ main_form|crispy }}
+                </fieldset>
+                <div class="form-group">
+                    <button class="btn btn-outline-info" type="submit">Create wine</button>
+                </div>
+            </form>
+        </div>
+{% endblock content %}

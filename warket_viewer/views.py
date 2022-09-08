@@ -1,14 +1,19 @@
+import os
+
+import decouple
+import requests
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+from django.forms import HiddenInput
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-from .constants import COUNTRIES
-from .models import Wine, Manufacturer
-from django.db.models import Q
-from django.contrib import messages
-from django.forms import HiddenInput
-from .forms import CreateWineForm
+
 from cart.forms import CartAddProductForm
+from .constants import COUNTRIES
+from .forms import CreateWineForm, FormAPI
+from .models import Wine, Manufacturer
 
 
 def get_country_name(country_code):
@@ -37,7 +42,7 @@ class WineListView(ListView):
 
     def get_queryset(self):
         wines = Wine.objects.exclude(units_in_stock=0)
-#        wines = Wine.objects.all_auction_listings()
+        #        wines = Wine.objects.all_auction_listings()
         search = self.request.GET.get("search")
         if search:
             wines = wines.filter(
@@ -117,24 +122,7 @@ class DetailWine(DetailView):
         return context
 
 
-@login_required
-def create_wine(request):
-    if request.method == "POST":
-        form = CreateWineForm(request.POST, request.FILES)
-        if form.is_valid():
-            create_wine_form = form.save(commit=False)
-            create_wine_form.user = request.user
-            create_wine_form.save()
-            messages.success(request, f"Wine has been listed")
-            return redirect("list_wines")
-    else:
-        form = CreateWineForm()
-    return render(request, "create_wine.html", {"form": form})
-
-
-# class EditWine(PermissionRequiredMixin, UpdateView):
 class EditWine(UpdateView):
-    # permission_required = "warket_viewer.edit_wine"
     model = Wine
     fields = "__all__"
     widgets = {"user": HiddenInput()}
@@ -145,3 +133,58 @@ class EditWine(UpdateView):
         context = super().get_context_data(**kwargs)
         context["page_is"] = "wines"
         return context
+
+
+@login_required
+def create_wine(request):
+    mode = "rapidapi"
+    rapidapi_key = decouple.config("RAPIDAPI_KEY")
+    options = {
+        "rapidapi": {
+            "url": "https://wine-recognition2.p.rapidapi.com/v1/results",
+            "headers": {"X-RapidAPI-Key": rapidapi_key}
+        }
+    }
+    main_form = CreateWineForm(request.POST or None, request.FILES or None)
+    search_form = FormAPI(request.POST or None, request.FILES or None)
+    if request.method == "POST":
+        if search_form.is_valid():
+            image = request.FILES['image']
+            response = requests.post(
+                options[mode]["url"],
+                headers=options[mode]["headers"],
+                files={"image": (os.path.basename(image.name), image)})
+            if response.status_code == 200:
+                try:
+                    data = response.json().get("results")
+                    if data[0]:
+                        results = data[0]
+                        info = results.get("entities")[0].get("classes")
+                        name = list(info.keys())[0]
+                        if name[-4:].isnumeric():
+                            year = int(name[-4:])
+                            first_dict_name = (name[:-5]).title()
+                        else:
+                            year = ""
+                            first_dict_name = name
+                        messages.success(request, f"Wine image has been identified")
+# TODO pass image to form?
+                        main_form = CreateWineForm(initial={"name": first_dict_name, "vintage": year})
+                        return render(request, "create_wine.html", {"search_form": search_form,
+                                                                    "year": year,
+                                                                    "first_dict_name": first_dict_name,
+                                                                    "main_form": main_form,
+                                                                    })
+                except Exception as e:
+                    messages.error(request, f"Error: {e}.")
+        elif main_form.is_valid():
+            create_wine_form = main_form.save(commit=False)
+            create_wine_form.user = request.user
+            create_wine_form.save()
+            messages.success(request, f"Wine has been listed")
+            return redirect("list_wines")
+        else:
+            messages.error(request, "Error: Wine has not been listed, because form is not valid")
+    else:
+        main_form = CreateWineForm()
+    return render(request, "create_wine.html", {"main_form": main_form})
