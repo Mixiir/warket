@@ -1,4 +1,5 @@
 import django.contrib.auth.decorators
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
@@ -55,4 +56,5 @@ def cart_clear(request):
         for item in delete_from_cart:
             wine = get_object_or_404(Wine, pk=item)
             cart.remove(wine)
+            messages.success(request, f"Thank You for your purchase")
     return redirect("list_wines")

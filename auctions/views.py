@@ -231,7 +231,7 @@ def check_auctions_auto():
     auctions_ending = AuctionListing.objects.filter(active=True)
     for auction in auctions_ending:
         if auction.end_date:
-            if auction.end_date + timezone.timedelta(days=auction.auction_period) < timezone.now():
+            if auction.end_date < timezone.now():
                 auction.active = False
                 auction.save()
         if auction.date + timezone.timedelta(days=auction.auction_period) < timezone.now():
