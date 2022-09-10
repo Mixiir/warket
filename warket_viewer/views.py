@@ -32,12 +32,14 @@ class WineSortedList(ListView):
     template_name = "list_wines.html"
     context_object_name = "wines_data"
 
-    def get_queryset(self):
+    def get_queryset(self, **kwargs):
         wines = Wine.objects.all()
         search = self.request.GET.get("show_only")
+        context = super().get_context_data(**kwargs)
+        context["page_is"] = wines
         if search:
             wines = wines.filter(Q(type__icontains=search))
-        return wines
+        return wines, context
 
 
 class WineListView(ListView):
@@ -171,8 +173,8 @@ def create_wine(request):
                         else:
                             year = "."
                             first_dict_name = name
-                        messages.success(request, f"Wine image has been identified")
-# TODO pass image to form?
+                        messages.success(request, "Wine image has been identified")
+                        # TODO pass image to form?
                         main_form = CreateWineForm(initial={"name": first_dict_name, "vintage": year})
                         return render(request, "create_wine.html", {"search_form": search_form,
                                                                     "year": year,
@@ -180,7 +182,7 @@ def create_wine(request):
                                                                     "main_form": main_form,
                                                                     })
                     else:
-                        messages.error(request, f"data[0] not > 0")
+                        messages.error(request, "data[0] not > 0")
                 except Exception as e:
                     messages.error(request, f"Error: {e}.")
         elif main_form.is_valid():
@@ -201,7 +203,7 @@ def create_wine(request):
             create_wine_form.thumbnail = thumbnail_file
             create_wine_form.user = request.user
             create_wine_form.save()
-            messages.success(request, f"Wine has been listed")
+            messages.success(request, "Wine has been listed")
             return redirect("list_wines")
         else:
             messages.error(request, "Error: Wine has not been listed, because form is not valid")

@@ -23,11 +23,13 @@
                         <div class="card-body">
                             <h5>{{ wine.name }}</h5>
                             <br>
-                            <p>{{ wine.description }}</p>
+                                                <b><p> {{ wine.type }}</p></b>
+{#                            <p>{{ wine.description }}</p>#}
                             <a href="{% url "detail_wine" wine.pk %}">
                                 <img src="{{ wine.image.url }}" class="card-img-top" alt="..." width="350" height="250"></a>
                             <p>{{ wine.vintage }} by {{ wine.manufacturer }}</p>
                             <p>{{ wine.price_per_unit }} €</p>
+                        <p> {{ wine.type }}</p>
                             {% if wine.units_in_stock %}
                                 <table>
                                     <form action="{% url "cart:cart_add" wine.id %}" method="post">
@@ -47,10 +49,9 @@
                                 <p><b>Out of stock</b></p>
                             {% endif %}
                         <br>
-                        {% if user == wine.user %}
-                            <a href="{% url "delete_wine" wine.pk %}" class="btn btn-primary" style="float: left">Delete</a>
-                        {% endif %}
-                            <a href="{% url "detail_wine" wine.pk %}" class="btn btn-primary" style="float: right">View</a>
+{#                        {% if user == wine.user %}#}
+{#                            <a href="{% url "delete_wine" wine.pk %}" class="btn btn-primary" style="float: left">Delete</a>#}
+{#                        {% endif %}#}
 
                         </div>
                     </div>
