@@ -53,6 +53,7 @@ def create_listing(request):
             image = request.FILES["image"]
             auction_period = request.POST["auction_period"]
             image_url = "https://infiror.eu/default.png"
+            end_date = timezone.now() + timezone.timedelta(days=int(auction_period))
             listing = AuctionListing.objects.create(
                 name=name,
                 category=category,
@@ -61,12 +62,12 @@ def create_listing(request):
                 max_bid=start_bid,
                 description=description,
                 user=user,
-                end_date=timezone.now(),
                 image=image,
                 image_url=image_url,
                 active=True,
                 comments_allowed=comments_allowed,
-                auction_period=auction_period)
+                auction_period=auction_period,
+                end_date=end_date)
             listing.save()
         else:
             messages.warning(request, "Form is not valid, please doublecheck entered info!")
@@ -138,7 +139,6 @@ def bid(request, wine_id):
     check_auctions_auto()
     if request.method == "POST":
         auction_listing = AuctionListing.objects.get(id=wine_id)
-        print(auction_listing)
         if request.POST["bid"]:
             bid_value = request.POST["bid"]
         else:
@@ -213,20 +213,6 @@ def my_won_auction_listings(request):
     })
 
 
-# def check_auctions(request):
-#     auctions_ending = AuctionListing.objects.filter(active=True)
-#     for auction in auctions_ending:
-#         if auction.end_date:
-#             if auction.end_date + timezone.timedelta(days=auction.auction_period) < timezone.now():
-#                 auction.active = False
-#                 auction.save()
-#         if auction.date + timezone.timedelta(days=auction.auction_period) < timezone.now() \
-#                 and auction.end_date is None:
-#             auction.active = False
-#             auction.save()
-#     return HttpResponseRedirect(reverse("auction_index"))
-
-
 def check_auctions_auto():
     auctions_ending = AuctionListing.objects.filter(active=True)
     for auction in auctions_ending:
@@ -234,6 +220,7 @@ def check_auctions_auto():
             if auction.end_date < timezone.now():
                 auction.active = False
                 auction.save()
+                print(f"Auction for {auction.name} ended automatically! because {auction.end_date} < {timezone.now()}")
         if auction.date + timezone.timedelta(days=auction.auction_period) < timezone.now():
             auction.active = False
             auction.save()
