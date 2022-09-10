@@ -67,7 +67,7 @@
         </div>
         <p class="text-right">
             <a href="{% url "list_wines" %}" class="buttonlight">Continue Shopping</a>
-        <form action="{% url "cart:cart_clear" %}" method="post">
+        <form action="{% url "cart:cart_clear" %}" method="post" class="form-group">
             {{ cart_product_form }}
             {% csrf_token %}
             <input type="submit" value="Confirm order">
