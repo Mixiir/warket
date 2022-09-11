@@ -34,7 +34,10 @@ class WineSortedList(ListView):
 
     def get_queryset(self, **kwargs):
         wines = Wine.objects.all()
-        search = self.request.GET.get("show_only")
+        if self.request.GET.get("show_only"):
+            search = self.request.GET.get("show_only")
+        else:
+            search = ""
         context = super().get_context_data(**kwargs)
         context["page_is"] = wines
         if search:

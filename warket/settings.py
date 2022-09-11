@@ -77,6 +77,11 @@ DATABASES = {
         "HOST": config("DB_IP"),
         "PORT": "3306",
         "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
+        "TEST": {
+            "NAME": "d109366_tests",
+            # 'ENGINE': 'django.db.backends.sqlite3',
+            # 'NAME': os.path.join(BASE_DIR, 'test_db.sqlite3'),
+        }
     }
 }
 
