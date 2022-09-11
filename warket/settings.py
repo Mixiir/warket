@@ -1,6 +1,7 @@
-from decouple import config
-from pathlib import Path
 import os
+from pathlib import Path
+
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -90,16 +91,32 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django."
+                "contrib."
+                "auth."
+                "password_validation."
+                "UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME": "django."
+                "contrib."
+                "auth."
+                "password_validation."
+                "MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME": "django."
+                "contrib."
+                "auth."
+                "password_validation."
+                "CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME": "django."
+                "contrib."
+                "auth."
+                "password_validation."
+                "NumericPasswordValidator",
     },
 ]
 
@@ -119,7 +136,6 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "warket_viewer/static"), ]
-MEDIA_ROOT = [os.path.join(BASE_DIR, "media")]
 MEDIA_URL = config("IMAGE_SERVER")
 
 # Default primary key field type

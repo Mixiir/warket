@@ -1,12 +1,9 @@
 import django.utils.timezone
-from django.contrib.auth.models import User, AbstractUser, UserManager
-from warket_viewer.constants import COUNTRIES
-from django.contrib.auth.models import AbstractUser, Group
-from django.contrib.auth.models import AbstractBaseUser
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from warket_viewer.constants import COUNTRIES
 
 
 class MyUser(AbstractUser):
@@ -18,7 +15,8 @@ class MyUser(AbstractUser):
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,
-        help_text=_("Designates whether the user can log into this admin site."),
+        help_text=_(
+            "Designates whether the user can log into this admin site."),
     )
     is_active = models.BooleanField(
         _("active"),
@@ -28,11 +26,28 @@ class MyUser(AbstractUser):
             "Unselect this instead of deleting accounts."
         ),
     )
-    date_joined = models.DateTimeField(_("date joined"), default=django.utils.timezone.now)
-    image = models.ImageField(default="default.jpg", upload_to="profile_pics")
-    country = models.CharField(max_length=50, choices=COUNTRIES, default="United States")
-    bio = models.TextField(max_length=500, blank=True)
-    language = models.CharField(max_length=50, choices=COUNTRIES, default="English")
+    date_joined = models.DateTimeField(
+        _("date joined"),
+        default=django.utils.timezone.now
+    )
+    image = models.ImageField(
+        default="default.jpg",
+        upload_to="profile_pics"
+    )
+    country = models.CharField(
+        max_length=50,
+        choices=COUNTRIES,
+        default="United States"
+    )
+    bio = models.TextField(
+        max_length=500,
+        blank=True
+    )
+    language = models.CharField(
+        max_length=50,
+        choices=COUNTRIES,
+        default="English"
+    )
     seller = models.BooleanField(default=False)
     buyer = models.BooleanField(default=False)
     auctioneer = models.BooleanField(default=False)
@@ -45,5 +60,3 @@ class MyUser(AbstractUser):
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email", "birth_date"]
-
-

@@ -1,4 +1,5 @@
 from django import forms
+
 from .models import Wine
 
 
@@ -47,4 +48,3 @@ class FormAPI(forms.Form):
             return image
         else:
             raise forms.ValidationError("Couldn't read uploaded image")
-

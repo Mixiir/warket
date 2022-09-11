@@ -3,22 +3,23 @@ import os
 import uuid
 
 import decouple
-import django.core.files.uploadedfile
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import Q
 from django.forms import HiddenInput
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
+from PIL import Image
 
 from cart.forms import CartAddProductForm
+
 from .constants import COUNTRIES
 from .forms import CreateWineForm, FormAPI
-from .models import Wine, Manufacturer
-from PIL import Image
+from .models import Manufacturer, Wine
 
 
 def get_country_name(country_code):
@@ -176,14 +177,27 @@ def create_wine(request):
                         else:
                             year = "."
                             first_dict_name = name
-                        messages.success(request, "Wine image has been identified")
+                        messages.success(
+                            request,
+                            "Wine image has been identified"
+                        )
                         # TODO pass image to form?
-                        main_form = CreateWineForm(initial={"name": first_dict_name, "vintage": year})
-                        return render(request, "create_wine.html", {"search_form": search_form,
-                                                                    "year": year,
-                                                                    "first_dict_name": first_dict_name,
-                                                                    "main_form": main_form,
-                                                                    })
+                        main_form = CreateWineForm(
+                            initial={
+                                "name": first_dict_name,
+                                "vintage": year
+                            }
+                        )
+                        return render(
+                            request,
+                            "create_wine.html",
+                            {
+                                "search_form": search_form,
+                                "year": year,
+                                "first_dict_name": first_dict_name,
+                                "main_form": main_form,
+                            }
+                        )
                     else:
                         messages.error(request, "data[0] not > 0")
                 except Exception as e:
@@ -210,7 +224,10 @@ def create_wine(request):
             messages.success(request, "Wine has been listed")
             return redirect("list_wines")
         else:
-            messages.error(request, "Error: Wine has not been listed, because form is not valid")
+            messages.error(
+                request,
+                "Error: Wine has not been listed, because form is not valid"
+            )
     else:
         main_form = CreateWineForm()
     return render(request, "create_wine.html", {"main_form": main_form})

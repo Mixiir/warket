@@ -1,6 +1,8 @@
-from django.conf import settings
-from warket_viewer.models import Wine
 from decimal import Decimal
+
+from django.conf import settings
+
+from warket_viewer.models import Wine
 
 
 class Cart(object):
@@ -15,7 +17,10 @@ class Cart(object):
     def add(self, wine, quantity=1, update_quantity=False):
         wine_id = str(wine.id)
         if wine_id not in self.cart:
-            self.cart[wine_id] = {"quantity": 0, "price": str(wine.price_per_unit)}
+            self.cart[wine_id] = {
+                "quantity": 0,
+                "price": str(wine.price_per_unit)
+            }
         if update_quantity:
             self.cart[wine_id]["quantity"] = quantity
         else:
@@ -46,7 +51,8 @@ class Cart(object):
         return sum(item["quantity"] for item in self.cart.values())
 
     def get_total_price(self):
-        return sum(Decimal(item["price"]) * item["quantity"] for item in self.cart.values())
+        return sum(Decimal(item["price"]) * item["quantity"]
+                   for item in self.cart.values())
 
     def clear(self):
         del self.session[settings.CART_SESSION_ID]

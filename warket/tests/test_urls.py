@@ -1,19 +1,10 @@
-from django.urls import reverse, resolve
 from django.test import SimpleTestCase
+from django.urls import resolve, reverse
 
-from warket_viewer.views import (
-    WineListView,
-    create_wine,
-    DetailWine,
-    ManufacturersListView,
-    DetailManufacturer,
-    CreateManufacturer,
-    UpdateManufacturer,
-    DeleteManufacturer,
-    WineSortedList,
-    EditWine,
-    DeleteWine,
-)
+from warket_viewer.views import (CreateManufacturer, DeleteManufacturer,
+                                 DeleteWine, DetailManufacturer, DetailWine,
+                                 EditWine, ManufacturersListView,
+                                 UpdateManufacturer, WineListView, create_wine)
 
 
 class TestUrls(SimpleTestCase):
@@ -62,4 +53,4 @@ class TestUrls(SimpleTestCase):
     def test_list_manufacturers_url_is_resolved(self):
         url = reverse('list_manufacturers')
         print(resolve(url))
-        self.assertEquals(resolve(url).func.view_class, ManufacturersListView )
+        self.assertEquals(resolve(url).func.view_class, ManufacturersListView)
