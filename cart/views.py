@@ -33,9 +33,12 @@ def cart_remove(request, wine_id):
 def cart_detail(request):
     cart = Cart(request)
     for item in cart:
-        item["update_quantity_form"] = CartAddProductForm(initial=
-                                                          {"quantity": item["quantity"],
-                                                           "update": True})
+        item["update_quantity_form"] = CartAddProductForm(
+            initial={
+                "quantity": item["quantity"],
+                "update": True
+            }
+        )
     return render(request, "cart/detail.html", {"cart": cart})
 
 
@@ -56,5 +59,5 @@ def cart_clear(request):
         for item in delete_from_cart:
             wine = get_object_or_404(Wine, pk=item)
             cart.remove(wine)
-            messages.success(request, f"Thank You for your purchase")
+            messages.success(request, "Thank You for your purchase")
     return redirect("list_wines")

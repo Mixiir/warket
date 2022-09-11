@@ -27,7 +27,7 @@ class TestViews(TestCase):
             units_in_stock=10,
             type="red",
             user=1,
-            manufacturer=Manufacturer.objects.create(name="manufacturer"),
+            manufacturer="manufacturer",
         )
 
     def test_wine_list_GET(self):

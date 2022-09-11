@@ -202,7 +202,8 @@ def create_wine(request):
                 unique_filename + ".jpg",
                 "image/jpeg",
                 thumbnail_io.getbuffer().nbytes,
-                None)
+                None
+            )
             create_wine_form.thumbnail = thumbnail_file
             create_wine_form.user = request.user
             create_wine_form.save()
