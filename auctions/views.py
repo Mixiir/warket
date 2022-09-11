@@ -40,7 +40,6 @@ def filter(request, name):
 def create_listing(request):
     check_auctions_auto()
     form = CreateAuctionListingForm(request.POST, request.FILES)
-    print(form)
     if request.method == "POST":
         if form.is_valid():
             name = request.POST["name"]
@@ -51,8 +50,13 @@ def create_listing(request):
                 comments_allowed = request.POST["comments_allowed"]
             else:
                 comments_allowed = False
+                print(request.FILES)
+            if request.FILES:
+                image = request.FILES["image"]
+            else:
+                image = "default.jpg"
             user = request.user
-            image = request.FILES["image"]
+            print(request.FILES)
             auction_period = request.POST["auction_period"]
             image_url = "https://infiror.eu/default.png"
             end_date = timezone.now() + timezone.timedelta(

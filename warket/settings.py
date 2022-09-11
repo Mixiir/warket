@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 
 from decouple import config
@@ -71,6 +72,8 @@ WSGI_APPLICATION = "warket.wsgi.application"
 
 DATABASES = {
     "default": {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'test_d109366sd476154'),
         "ENGINE": "django.db.backends.mysql",
         "NAME": config("DB_NAME"),
         "USER": config("DB_USER"),
@@ -78,12 +81,7 @@ DATABASES = {
         "HOST": config("DB_IP"),
         "PORT": "3306",
         "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
-        "TEST": {
-            "NAME": "d109366_tests",
-            # 'ENGINE': 'django.db.backends.sqlite3',
-            # 'NAME': os.path.join(BASE_DIR, 'test_db.sqlite3'),
-        }
-    }
+    },
 }
 
 # Password validation
@@ -136,7 +134,9 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "warket_viewer/static"), ]
+MEDIA_ROOT = [os.path.join(BASE_DIR, "media")]
 MEDIA_URL = config("IMAGE_SERVER")
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -154,3 +154,9 @@ FTP_STORAGE_LOCATION = config("FTP_STORAGE_LOCATION")
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 CART_SESSION_ID = "cart"
 AUTH_USER_MODEL = 'users.MyUser'
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'test_d109366sd476154'
+    }
