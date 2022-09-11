@@ -1,11 +1,11 @@
-import django.contrib.auth.decorators
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
+
+from warket_viewer.models import Wine
+
 from .cart import Cart
 from .forms import CartAddProductForm
-from warket_viewer.models import Wine
 
 
 @require_POST
@@ -17,9 +17,17 @@ def cart_add(request, wine_id):
         cd = form.cleaned_data
         selected_wine = Wine.objects.get(pk=wine_id)
         if selected_wine.units_in_stock >= cd["quantity"]:
-            cart.add(wine=wine, quantity=cd["quantity"], update_quantity=cd["update"])
+            cart.add(
+                wine=wine,
+                quantity=cd["quantity"],
+                update_quantity=cd["update"]
+            )
         else:
-            cart.add(wine=wine, quantity=selected_wine.units_in_stock, update_quantity=cd["update"])
+            cart.add(
+                wine=wine,
+                quantity=selected_wine.units_in_stock,
+                update_quantity=cd["update"]
+            )
         return redirect("cart:cart_detail")
 
 

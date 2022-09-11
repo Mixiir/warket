@@ -7,18 +7,20 @@ import django.core.files.uploadedfile
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import Q
 from django.forms import HiddenInput
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
+from PIL import Image
 
 from cart.forms import CartAddProductForm
+
 from .constants import COUNTRIES
 from .forms import CreateWineForm, FormAPI
-from .models import Wine, Manufacturer
-from PIL import Image
+from .models import Manufacturer, Wine
 
 
 def get_country_name(country_code):

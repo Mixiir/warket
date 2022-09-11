@@ -1,21 +1,15 @@
-from auctions import views as auctions_views
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.urls import path, include
+from django.urls import include, path
+
+from auctions import views as auctions_views
 from users import views as user_views
-from warket_viewer.views import (WineListView,
-                                 DetailWine,
-                                 create_wine,
-                                 EditWine,
-                                 DeleteWine,
-                                 ManufacturersListView,
-                                 DetailManufacturer,
-                                 CreateManufacturer,
-                                 UpdateManufacturer,
-                                 DeleteManufacturer,
-                                 WineSortedList,
-                                 )
+from warket_viewer.views import (CreateManufacturer, DeleteManufacturer,
+                                 DeleteWine, DetailManufacturer, DetailWine,
+                                 EditWine, ManufacturersListView,
+                                 UpdateManufacturer, WineListView,
+                                 WineSortedList, create_wine)
 
 urlpatterns = [
     path("admin/", admin.site.urls),

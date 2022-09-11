@@ -1,12 +1,13 @@
-import PIL.Image
-
-from .constants import COUNTRIES, WINE_TYPE
-from django.db import models
-from django.contrib.auth.models import User
-from django.conf import settings
 import base64
 from io import BytesIO
+
+import PIL.Image
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.db import models
 from PIL import Image
+
+from .constants import COUNTRIES, WINE_TYPE
 
 
 class Manufacturer(models.Model):

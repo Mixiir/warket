@@ -1,19 +1,11 @@
-from django.urls import reverse, resolve
 from django.test import SimpleTestCase
+from django.urls import resolve, reverse
 
-from warket_viewer.views import (
-    WineListView,
-    create_wine,
-    DetailWine,
-    ManufacturersListView,
-    DetailManufacturer,
-    CreateManufacturer,
-    UpdateManufacturer,
-    DeleteManufacturer,
-    WineSortedList,
-    EditWine,
-    DeleteWine,
-)
+from warket_viewer.views import (CreateManufacturer, DeleteManufacturer,
+                                 DeleteWine, DetailManufacturer, DetailWine,
+                                 EditWine, ManufacturersListView,
+                                 UpdateManufacturer, WineListView,
+                                 WineSortedList, create_wine)
 
 
 class TestUrls(SimpleTestCase):

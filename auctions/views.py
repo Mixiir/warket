@@ -1,4 +1,5 @@
-from .models import Category, AuctionListing, Bid, Comment
+from datetime import timedelta
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Max
@@ -6,8 +7,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
-from datetime import timedelta
+
 from .forms import CreateAuctionListingForm
+from .models import AuctionListing, Bid, Category, Comment
 
 
 def auction_index(request):
@@ -53,7 +55,9 @@ def create_listing(request):
             image = request.FILES["image"]
             auction_period = request.POST["auction_period"]
             image_url = "https://infiror.eu/default.png"
-            end_date = timezone.now() + timezone.timedelta(days=int(auction_period))
+            end_date = timezone.now() + timezone.timedelta(
+                days=int(auction_period)
+            )
             listing = AuctionListing.objects.create(
                 name=name,
                 category=category,
@@ -71,7 +75,10 @@ def create_listing(request):
             )
             listing.save()
         else:
-            messages.warning(request, "Form is not valid, please doublecheck entered info!")
+            messages.warning(
+                request,
+                "Form is not valid, please doublecheck entered info!"
+            )
         return HttpResponseRedirect(reverse("auction_index"))
     return render(request, "auctions/create_listing.html", {
         "categories": Category.objects.all()
@@ -82,26 +89,36 @@ def details(request, wine_id):
     check_auctions_auto()
     wine = AuctionListing.objects.get(id=wine_id)
     bids = Bid.objects.filter(auctionListing=wine)
-    max_bid = Bid.objects.filter(auctionListing=wine).aggregate(Max("bid_value"))
+    max_bid = Bid.objects.filter(
+        auctionListing=wine
+    ).aggregate(
+        Max("bid_value")
+    )
     max_bid = max_bid["bid_value__max"]
     comments = Comment.objects.filter(auctionListing=wine)
     value = bids.aggregate(Max("bid_value"))["bid_value__max"]
     if wine.end_date:
-        wine_end_date = wine.end_date + timezone.timedelta(days=wine.auction_period)
+        wine_end_date = wine.end_date + timezone.timedelta(
+            days=wine.auction_period
+        )
     else:
-        wine_end_date = wine.date + timezone.timedelta(days=wine.auction_period)
+        wine_end_date = wine.date + timezone.timedelta(
+            days=wine.auction_period
+        )
 
     wine_bid = None
     if value is not None:
         wine_bid = Bid.objects.filter(bid_value=value)[0]
-    return render(request, "auctions/details.html", {
-        "wine": wine,
-        "bids": bids,
-        "comments": comments,
-        "wine_bid": wine_bid,
-        "max_bid": max_bid,
-        "wine_end_date": wine_end_date,
-    })
+    return render(
+        request, "auctions/details.html", {
+            "wine": wine,
+            "bids": bids,
+            "comments": comments,
+            "wine_bid": wine_bid,
+            "max_bid": max_bid,
+            "wine_end_date": wine_end_date,
+        }
+    )
 
 
 def categories(request):
@@ -135,7 +152,13 @@ def comment(request, wine_id):
                 commentValue=comment_value
             )
             written_comment.save()
-        return HttpResponseRedirect(reverse("details", kwargs={"wine_id": wine_id}))
+        return HttpResponseRedirect(
+            reverse(
+                "details", kwargs={
+                    "wine_id": wine_id
+                }
+            )
+        )
     return HttpResponseRedirect(reverse("auction_index"))
 
 
@@ -152,10 +175,16 @@ def bid(request, wine_id):
         value = args.aggregate(Max("bid_value"))["bid_value__max"]
         if value is None:
             value = 0
-        if float(bid_value) < auction_listing.start_bid or float(bid_value) <= value:
+        if float(bid_value) < auction_listing.start_bid \
+                or float(bid_value) <= value:
             messages.warning(
-                request, f"Bid Higher than: {max(value, auction_listing.start_bid)}!")
-            return HttpResponseRedirect(reverse("details", kwargs={"wine_id": wine_id}))
+                request,
+                "Bid Higher than: "
+                f"{max(value, auction_listing.start_bid)}!"
+            )
+            return HttpResponseRedirect(
+                reverse("details", kwargs={"wine_id": wine_id})
+            )
         user = request.user
         save_bid = Bid.objects.create(
             date=timezone.now(),
@@ -167,11 +196,15 @@ def bid(request, wine_id):
         auction_listing.max_bid = bid_value
         auction_listing.last_bidder = user.username
         if auction_listing.end_date:
-            auction_listing.end_date = auction_listing.end_date + timedelta(hours=1)
+            auction_listing.end_date = \
+                auction_listing.end_date + timedelta(hours=1)
         else:
-            auction_listing.end_date = auction_listing.date + timedelta(hours=1)
+            auction_listing.end_date = \
+                auction_listing.date + timedelta(hours=1)
         auction_listing.save()
-    return HttpResponseRedirect(reverse("details", kwargs={"wine_id": wine_id}))
+    return HttpResponseRedirect(
+        reverse("details", kwargs={"wine_id": wine_id})
+    )
 
 
 @login_required
@@ -183,44 +216,62 @@ def end(request, wine_id):
         auction_listing.active = False
         auction_listing.save()
         messages.success(
-            request, f"Auction for {auction_listing.name} successfully closed!")
+            request,
+            f"Auction for {auction_listing.name} successfully closed!"
+        )
     else:
         messages.info(
             request, "You are not authorized to end this listing!"
         )
-    return HttpResponseRedirect(reverse("details", kwargs={"wine_id": wine_id}))
+    return HttpResponseRedirect(
+        reverse("details", kwargs={"wine_id": wine_id})
+    )
 
 
 def my_auction_listings(request):
     check_auctions_auto()
-    auction_wines = AuctionListing.objects.filter(user=request.user).order_by("-active")
-    return render(request, "auctions/auction_index.html", {
-        "auction_wines": auction_wines
-    })
+    auction_wines = AuctionListing.objects.filter(
+        user=request.user
+    ).order_by("-active")
+    return render(
+        request,
+        "auctions/auction_index.html",
+        {"auction_wines": auction_wines}
+    )
 
 
 def ended_auction_listings(request):
     check_auctions_auto()
     auction_wines = AuctionListing.objects.filter(active=False)
-    return render(request, "auctions/auction_index.html", {
-        "auction_wines": auction_wines
-    })
+    return render(
+        request,
+        "auctions/auction_index.html",
+        {"auction_wines": auction_wines}
+    )
 
 
 def my_ended_auction_listings(request):
     check_auctions_auto()
-    auction_wines = AuctionListing.objects.filter(user=request.user, active=False)
-    return render(request, "auctions/auction_index.html", {
-        "auction_wines": auction_wines
-    })
+    auction_wines = AuctionListing.objects.filter(
+        user=request.user,
+        active=False
+    )
+    return render(
+        request,
+        "auctions/auction_index.html",
+        {"auction_wines": auction_wines}
+    )
 
 
 def my_won_auction_listings(request):
     check_auctions_auto()
-    auction_wines = AuctionListing.objects.filter(active=False, last_bidder=request.user)
-    return render(request, "auctions/auction_index.html", {
-        "auction_wines": auction_wines
-    })
+    auction_wines = AuctionListing.objects.filter(active=False,
+                                                  last_bidder=request.user)
+    return render(
+        request,
+        "auctions/auction_index.html",
+        {"auction_wines": auction_wines}
+    )
 
 
 def check_auctions_auto():
@@ -230,7 +281,6 @@ def check_auctions_auto():
             if auction.end_date < timezone.now():
                 auction.active = False
                 auction.save()
-                print(f"Auction for {auction.name} ended automatically! because {auction.end_date} < {timezone.now()}")
         if auction.date + timezone.timedelta(
                 days=auction.auction_period
         ) < timezone.now():
