@@ -1,8 +1,5 @@
-from django.db import models
 from django import forms
-from django.contrib.auth.models import User
-from django.forms import ModelForm, Form
-from .models import AuctionListing, Bid, Comment, Category
+from .models import Category
 
 
 class CreateAuctionListingForm(forms.Form):
@@ -13,4 +10,3 @@ class CreateAuctionListingForm(forms.Form):
     image = forms.ImageField(label="image_url", required=False)
     auction_period = forms.IntegerField(label="auction_period", min_value=1, max_value=30)
     comments_allowed = forms.BooleanField(label="comments_allowed", required=False)
-

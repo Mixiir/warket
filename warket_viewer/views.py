@@ -34,7 +34,10 @@ class WineSortedList(ListView):
 
     def get_queryset(self, **kwargs):
         wines = Wine.objects.all()
-        search = self.request.GET.get("show_only")
+        if self.request.GET.get("show_only"):
+            search = self.request.GET.get("show_only")
+        else:
+            search = ""
         context = super().get_context_data(**kwargs)
         context["page_is"] = wines
         if search:
@@ -199,7 +202,8 @@ def create_wine(request):
                 unique_filename + ".jpg",
                 "image/jpeg",
                 thumbnail_io.getbuffer().nbytes,
-                None)
+                None
+            )
             create_wine_form.thumbnail = thumbnail_file
             create_wine_form.user = request.user
             create_wine_form.save()

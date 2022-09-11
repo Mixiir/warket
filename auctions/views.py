@@ -67,7 +67,8 @@ def create_listing(request):
                 active=True,
                 comments_allowed=comments_allowed,
                 auction_period=auction_period,
-                end_date=end_date)
+                end_date=end_date
+            )
             listing.save()
         else:
             messages.warning(request, "Form is not valid, please doublecheck entered info!")
@@ -127,8 +128,12 @@ def comment(request, wine_id):
         user = request.user
         comment_value = request.POST["content"].strip()
         if comment_value != "":
-            written_comment = Comment.objects.create(date=timezone.now(
-            ), user=user, auctionListing=auction_listing, commentValue=comment_value)
+            written_comment = Comment.objects.create(
+                date=timezone.now(),
+                user=user,
+                auctionListing=auction_listing,
+                commentValue=comment_value
+            )
             written_comment.save()
         return HttpResponseRedirect(reverse("details", kwargs={"wine_id": wine_id}))
     return HttpResponseRedirect(reverse("auction_index"))
@@ -153,7 +158,11 @@ def bid(request, wine_id):
             return HttpResponseRedirect(reverse("details", kwargs={"wine_id": wine_id}))
         user = request.user
         save_bid = Bid.objects.create(
-            date=timezone.now(), user=user, bid_value=bid_value, auctionListing=auction_listing)
+            date=timezone.now(),
+            user=user,
+            bid_value=bid_value,
+            auctionListing=auction_listing
+        )
         save_bid.save()
         auction_listing.max_bid = bid_value
         auction_listing.last_bidder = user.username
@@ -177,7 +186,8 @@ def end(request, wine_id):
             request, f"Auction for {auction_listing.name} successfully closed!")
     else:
         messages.info(
-            request, "You are not authorized to end this listing!")
+            request, "You are not authorized to end this listing!"
+        )
     return HttpResponseRedirect(reverse("details", kwargs={"wine_id": wine_id}))
 
 
@@ -221,6 +231,8 @@ def check_auctions_auto():
                 auction.active = False
                 auction.save()
                 print(f"Auction for {auction.name} ended automatically! because {auction.end_date} < {timezone.now()}")
-        if auction.date + timezone.timedelta(days=auction.auction_period) < timezone.now():
+        if auction.date + timezone.timedelta(
+                days=auction.auction_period
+        ) < timezone.now():
             auction.active = False
             auction.save()
