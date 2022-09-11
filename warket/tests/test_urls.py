@@ -52,5 +52,4 @@ class TestUrls(SimpleTestCase):
 
     def test_list_manufacturers_url_is_resolved(self):
         url = reverse('list_manufacturers')
-        print(resolve(url))
         self.assertEquals(resolve(url).func.view_class, ManufacturersListView)

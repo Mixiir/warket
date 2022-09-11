@@ -159,7 +159,10 @@ def create_wine(request):
     search_form = FormAPI(request.POST or None, request.FILES or None)
     if request.method == "POST":
         if search_form.is_valid() and not request.POST.get("price_per_unit"):
-            image = request.FILES['image']
+            if request.FILES:
+                image = request.FILES["image"]
+            else:
+                image = "default.jpg"
             response = requests.post(
                 options[mode]["url"],
                 headers=options[mode]["headers"],
@@ -204,20 +207,23 @@ def create_wine(request):
                     messages.error(request, f"Error: {e}.")
         elif main_form.is_valid():
             create_wine_form = main_form.save(commit=False)
-            thumbnail = request.FILES['image']
-            thumbnail = Image.open(thumbnail)
-            thumbnail.thumbnail((50, 80), Image.ANTIALIAS)
-            thumbnail_io = io.BytesIO()
-            unique_filename = uuid.uuid4().hex
-            thumbnail.save(thumbnail_io, format="JPEG")
-            thumbnail_file = InMemoryUploadedFile(
-                thumbnail_io,
-                None,
-                unique_filename + ".jpg",
-                "image/jpeg",
-                thumbnail_io.getbuffer().nbytes,
-                None
-            )
+            if request.FILES:
+                thumbnail = request.FILES["image"]
+                thumbnail = Image.open(thumbnail)
+                thumbnail.thumbnail((50, 80), Image.ANTIALIAS)
+                thumbnail_io = io.BytesIO()
+                unique_filename = uuid.uuid4().hex
+                thumbnail.save(thumbnail_io, format="JPEG")
+                thumbnail_file = InMemoryUploadedFile(
+                    thumbnail_io,
+                    None,
+                    unique_filename + ".jpg",
+                    "image/jpeg",
+                    thumbnail_io.getbuffer().nbytes,
+                    None
+                )
+            else:
+                thumbnail_file = "default.jpg"
             create_wine_form.thumbnail = thumbnail_file
             create_wine_form.user = request.user
             create_wine_form.save()
