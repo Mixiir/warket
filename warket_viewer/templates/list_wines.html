@@ -1,72 +1,81 @@
 {% extends "base.html" %}
 {% block content %}
     {% load static %}
-    <link rel="stylesheet" href="{% static "/css/style.css" %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <h2>Wines list</h2>
-    <div class="container">
-    <form method="get">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for a delicious wine" name="search">
-            <div class="input-group-append">
-                <button class="btn btn-secondary" type="submit">
-                    <i class="bi bi-search">Search</i>
-                </button>
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static "images/bg_2.jpg" %}');"
+             data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate mb-5 text-center">
+                    <p class="breadcrumbs mb-0"><span class="mr-2"><a href="{% url "list_wines" %}">Home <i
+                            class="fa fa-chevron-right"></i></a></span> <span>E-Shop <i class="fa fa-chevron-right"></i></span>
+                    </p>
+                    <h2 class="mb-0 bread">E-shop</h2>
+                </div>
             </div>
         </div>
-    </form>
-    <table>
-        <tr>
-            {% for wine in wines_data %}
-                <td>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5>{{ wine.name }}</h5>
-                            <br>
-                                                <b><p> {{ wine.type }}</p></b>
-{#                            <p>{{ wine.description }}</p>#}
-                            <a href="{% url "detail_wine" wine.pk %}">
-                                <img src="{{ wine.image.url }}" class="card-img-top" alt="..." width="350" height="250"></a>
-                            <p>{{ wine.vintage }} by {{ wine.manufacturer }}</p>
-                            <p>{{ wine.price_per_unit }} €</p>
-                        <p> {{ wine.type }}</p>
-                            {% if wine.units_in_stock %}
-                                <table>
-                                    <form action="{% url "cart:cart_add" wine.id %}" method="post">
-                                        {% csrf_token %}
-                                        {{ cart_product_form }}
-                                        <label for="id_quantity_2">Quantity:</label>
-                                        <select name="quantity" id="id_quantity_2">
-                                            {% for x in ""|center:wine.units_in_stock %}
-                                                <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <input type="hidden" name="update" value="False" id="id_update">
-                                        <input type="submit" value="Add to cart" class="btn btn-primary" style="float: right">
-                                    </form>
-                                </table>
+    </section>
+    <section class="ftco-section">
+        <div class="container">
+            <form method="get">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for a delicious wine" name="search">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="submit">
+                            <i class="bi bi-search">Search</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        {% for wine in wines_data %}
+                            <div class="col-md-4 d-flex">
+                                <div class="product ftco-animate">
+                                    <div class="card-body">
+                                        <div class="img d-flex align-items-center justify-content-center"
+                                             style="background-image: url({{ wine.image.url }});">
+                                            <div class="desc">
+                                                <p class="meta-prod d-flex">
+                                                    <a href="#" class="d-flex align-items-center justify-content-center">
+                                                        <span class="flaticon-shopping-bag"></span></a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="text text-center">
+                                            <span class="category">{{ wine.name }}</span>
+                                            <h2>{{ wine.description }}</h2>
+                                            <span class="price">€{{ wine.price_per_unit }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if forloop.last %}
+                                </div>
                             {% else %}
-                                <p><b>Out of stock</b></p>
+                                {% if forloop.counter|divisibleby:"3" %}
+                                    </div>
+                                    <div class="row mt-5">
+                                {% endif %}
                             {% endif %}
-                        <br>
-{#                        {% if user == wine.user %}#}
-{#                            <a href="{% url "delete_wine" wine.pk %}" class="btn btn-primary" style="float: left">Delete</a>#}
-{#                        {% endif %}#}
-
+                        {% endfor %}
+                        </div>
+                <div class="col-md-3">
+                    <div class="sidebar-box ftco-animate p-3">
+                        <div class="categories">
+                            <h3>Product Types</h3>
+                            <form action="{% url "list_wines_sorted" %}" method="get">
+                                <input type="submit" name="search" value="Red" class="dropdown-item">
+                                <input type="submit" name="search" value="White" class="dropdown-item">
+                                <input type="submit" name="search" value="Sparkling" class="dropdown-item">
+                                <input type="submit" name="search" value="Rose" class="dropdown-item">
+                                <input type="submit" name="search" value="Dessert" class="dropdown-item">
+                                <input type="submit" name="search" value="Other" class="dropdown-item">
+                            </form>
                         </div>
                     </div>
-                </td>
-                {% if forloop.last %}
-                    </tr>
-                {% else %}
-                    {% if forloop.counter|divisibleby:"3" %}
-                        </tr>
-                        <tr>
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
-    </table>
-    <script src="{% static "/js/script.js" %}"></script>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 {% endblock %}
-
-

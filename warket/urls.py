@@ -9,7 +9,7 @@ from warket_viewer.views import (CreateManufacturer, DeleteManufacturer,
                                  DeleteWine, DetailManufacturer, DetailWine,
                                  EditWine, ManufacturersListView,
                                  UpdateManufacturer, WineListView,
-                                 WineSortedList, create_wine)
+                                 WineSortedList, create_wine, Home,)
 
 urlpatterns = [
     path(
@@ -26,12 +26,12 @@ urlpatterns = [
     ),
 
     path(
-        "",
+        "wine/",
         WineListView.as_view(),
         name="list_wines"
     ),
     path(
-        "",
+        "wine/",
         WineSortedList.as_view(),
         name="list_wines_sorted"
     ),
@@ -172,6 +172,8 @@ urlpatterns = [
         auctions_views.my_won_auction_listings,
         name="my_won_auction_listings"
     ),
+    path(
+        "", Home.as_view(), name="home")
 ]
 
 urlpatterns += staticfiles_urlpatterns()
