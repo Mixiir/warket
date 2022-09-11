@@ -48,4 +48,3 @@ class FormAPI(forms.Form):
             return image
         else:
             raise forms.ValidationError("Couldn't read uploaded image")
-

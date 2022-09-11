@@ -7,10 +7,13 @@ from .forms import UserRegisterForm, UserUpdateForm
 
 def register(request):
     if request.method == "POST":
-        form = UserRegisterForm(request.POST, request.FILES,)
+        form = UserRegisterForm(request.POST, request.FILES, )
         if form.is_valid():
             form.save()
-            messages.success(request, f"Your account has been created! You are now able to log in")
+            messages.success(
+                request,
+                "Your account has been created! You are now able to log in"
+            )
             return redirect("login")
     else:
         form = UserRegisterForm()
@@ -20,11 +23,18 @@ def register(request):
 @login_required
 def profile(request):
     if request.method == "POST":
-        u_form = UserUpdateForm(request.POST, request.FILES, instance=request.user)
+        u_form = UserUpdateForm(
+            request.POST,
+            request.FILES,
+            instance=request.user
+        )
         if u_form.is_valid():
             u_form.save()
-            messages.success(request, f"Your account has been updated!")
-            return redirect("profile")  # Redirect back to profile page
+            messages.success(
+                request,
+                "Your account has been updated!"
+            )
+            return redirect("profile")
 
     else:
         u_form = UserUpdateForm(instance=request.user)

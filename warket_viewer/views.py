@@ -3,7 +3,6 @@ import os
 import uuid
 
 import decouple
-import django.core.files.uploadedfile
 import requests
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -178,14 +177,27 @@ def create_wine(request):
                         else:
                             year = "."
                             first_dict_name = name
-                        messages.success(request, "Wine image has been identified")
+                        messages.success(
+                            request,
+                            "Wine image has been identified"
+                        )
                         # TODO pass image to form?
-                        main_form = CreateWineForm(initial={"name": first_dict_name, "vintage": year})
-                        return render(request, "create_wine.html", {"search_form": search_form,
-                                                                    "year": year,
-                                                                    "first_dict_name": first_dict_name,
-                                                                    "main_form": main_form,
-                                                                    })
+                        main_form = CreateWineForm(
+                            initial={
+                                "name": first_dict_name,
+                                "vintage": year
+                            }
+                        )
+                        return render(
+                            request,
+                            "create_wine.html",
+                            {
+                                "search_form": search_form,
+                                "year": year,
+                                "first_dict_name": first_dict_name,
+                                "main_form": main_form,
+                            }
+                        )
                     else:
                         messages.error(request, "data[0] not > 0")
                 except Exception as e:
@@ -212,7 +224,10 @@ def create_wine(request):
             messages.success(request, "Wine has been listed")
             return redirect("list_wines")
         else:
-            messages.error(request, "Error: Wine has not been listed, because form is not valid")
+            messages.error(
+                request,
+                "Error: Wine has not been listed, because form is not valid"
+            )
     else:
         main_form = CreateWineForm()
     return render(request, "create_wine.html", {"main_form": main_form})

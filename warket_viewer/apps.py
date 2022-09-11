@@ -1,5 +1,4 @@
 from django.apps import AppConfig
-from django.utils import timezone
 
 
 class WarketViewerConfig(AppConfig):

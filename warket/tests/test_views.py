@@ -1,9 +1,5 @@
-import json
-
 from django.test import Client, TestCase
 from django.urls import reverse
-
-from warket_viewer.models import Manufacturer, Wine
 
 
 class TestViews(TestCase):
