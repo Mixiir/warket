@@ -30,10 +30,6 @@ class TestUrls(SimpleTestCase):
         url = reverse('detail_wine', args=[1])
         self.assertEquals(resolve(url).func.view_class, DetailWine)
 
-    def test_list_manufacturers_url_is_resolved(self):
-        url = reverse('list_manufacturers')
-        self.assertEquals(resolve(url).func.view_class, ManufacturersListView)
-
     def test_detail_manufacturer_url_is_resolved(self):
         url = reverse('detail_manufacturer', args=[1])
         self.assertEquals(resolve(url).func.view_class, DetailManufacturer)
@@ -62,3 +58,8 @@ class TestUrls(SimpleTestCase):
     def test_edit_wine_url_is_resolved(self):
         url = reverse('edit_wine', args=[1])
         self.assertEquals(resolve(url).func.view_class, EditWine)
+
+    def test_list_manufacturers_url_is_resolved(self):
+        url = reverse('list_manufacturers')
+        print(resolve(url))
+        self.assertEquals(resolve(url).func.view_class, ManufacturersListView )
