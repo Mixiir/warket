@@ -12,7 +12,7 @@ from django.forms import HiddenInput
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
-                                  UpdateView)
+                                  UpdateView, TemplateView)
 from PIL import Image
 
 from cart.forms import CartAddProductForm
@@ -237,3 +237,12 @@ def create_wine(request):
     else:
         main_form = CreateWineForm()
     return render(request, "create_wine.html", {"main_form": main_form})
+
+
+class Home(TemplateView):
+    template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_is"] = "home"
+        return context
