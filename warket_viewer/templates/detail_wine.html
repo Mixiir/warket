@@ -1,49 +1,91 @@
 {% extends "base.html" %}
 {% block content %}
     {% load static %}
-    <link rel="stylesheet" href=" {% static "/css/style.css" %}">
-    <h2>Wine details </h2>
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static "images/wallpaper_small.jpg" %}');"
+             data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate mb-5 text-center">
+                    <p class="breadcrumbs mb-0"><span class="mr-2"><a href="{% url "list_wines" %}">Home <i
+                            class="fa fa-chevron-right"></i></a></span> <span><a href="{% url "list_wines" %}">E-Shop <i
+                            class="fa fa-chevron-right"></i></a></span> <span>{{ wine_data.name }} <i
+                            class="fa fa-chevron-right"></i></span></p>
+                    <h2 class="mb-0 bread mt-3">{{ wine_data.name }}</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-auto ftco-animate">
+                    <a href="{{ wine_data.image.url }}" class="image-popup prod-img-bg"><img
+                            src="{{ wine_data.image.url }}" class="img-fluid" alt="Wine image"></a>
+                </div>
+                <div class="col-lg-6 product-details pl-md-5 ftco-animate border-left">
+                    <h3>{{ wine_data.name }}</h3>
+                    <p class="price"><span>€{{ wine_data.price_per_unit }}</span></p>
+                    <p class="price h4 border-bottom">{{ wine_data.description }}</p>
+                    <div class="row mt-4">
+                    {% if wine_data.units_in_stock %}
+                        <form action="{% url "cart:cart_add" wine_data.id %}" method="post">
+                            {% csrf_token %}
+                                                    <label for="id_quantity_2" class="price h5 p-3">Quantity:</label>
+                                                    <select class="form-select form-select-lg " name="quantity" id="id_quantity_2">
+                                                        {% for x in ""|center:wine_data.units_in_stock %}
+                                                            <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                            <input type="hidden" name="update" value="False" id="id_update">
+                            <input type="submit" value="Add to cart" class="btn btn-primary ml-2 pt-3 pb-3"
+                                   style="float: right">
+                        </form>
+                        {% endif %}
+                    </div>
+                    <div class="w-10"></div>
+                    <div >
+                        {% if wine_data.units_in_stock %}<p style="color: #000;">{{ wine_data.units_in_stock }} piece available</p>{% else %}
+                                    <b>Out of stock</b>{% endif %}
+                    </div>
+                </div>
+            </div>
 
-    <div class="content-section">
-        <p> Name: {{ wine_data.name }} </p>
-        <p> Description {{ wine_data.description }}</p>
-        <p> Rating: {{ wine_data.rating }} </p>
-        <p> Price: {{ wine_data.price }} </p>
-        <p> Vintage: {{ wine_data.vintage }} </p>
-        <p> Alcohol content: {{ wine_data.alcohol_content }} </p>
-        <p> Price per Unit: {{ wine_data.price_per_unit }}</p>
-        <p> Units in stock:
-            {% if wine_data.units_in_stock %}{{ wine_data.units_in_stock }}{% else %}<b>Out of stock</b>{% endif %}</p>
-        <p> Units in auction: {{ wine_data.units_in_auction }}</p>
-        <p> Manufacturer: {{ wine_data.manufacturer }}</p>
-        <p> Type: {{ wine_data.type }}</p>
-        <p> Image: <img src="{{ wine_data.image.url }}"></p>
-        <p> Seller: {{ wine_data.user }}</p>
-        {% if user == wine_data.user %}
-            <br>
-            <a href="{% url "edit_wine"  wine_data.pk %}">Edit</a>
-            <br>
-            <a href="{% url "delete_wine"  wine_data.pk %}">Delete</a>
-            <br>
-            <br>
-        {% endif %}
-        {% if wine_data.units_in_stock %}
-            <table>
-                <form action="{% url "cart:cart_add" wine_data.id %}" method="post">
-                    {% csrf_token %}
-                    {{ cart_product_form }}
-                    <th><label for="id_quantity_2">Quantity:</label></th>
-                    <td><select name="quantity" id="id_quantity_2">
-                        {% for x in ""|center:wine_data.units_in_stock %}
-                            <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
-                        {% endfor %}
-                    </select>
-                    </td>
-                    <input type="hidden" name="update" value="False" id="id_update">
-                    <input type="submit" value="Add to cart" class="btn btn-primary">
-                </form>
-            </table>
-        {% endif %}
-        <script src="{% static "/js/script.js" %}"></script>
-    </div>
+        <div class="row mt-5">
+            <div class="col-md-12 nav-link-wrap">
+                <div class="nav nav-pills d-flex text-center" id="v-pills-tab" role="tablist"
+                     aria-orientation="vertical">
+                    <a class="nav-link ftco-animate active mr-lg-1" id="v-pills-1-tab" data-toggle="pill"
+                       href="#v-pills-1" role="tab" aria-controls="v-pills-1" aria-selected="true">Description</a>
+
+                    <a class="nav-link ftco-animate mr-lg-1" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2"
+                       role="tab" aria-controls="v-pills-2" aria-selected="false">Manufacturer</a>
+                </div>
+            </div>
+            <div class="col-md-12 tab-wrap">
+
+                <div class="tab-content bg-light" id="v-pills-tabContent">
+
+                    <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="day-1-tab">
+                        <div class="p-4">
+                            <h3 class="mb-4">{{ wine_data.name}}</h3>
+                            <p>{{ wine_data.description}}</p>
+                            <p> Vintage: {{ wine_data.vintage }} </p>
+                            <p> Alcohol content: {{ wine_data.alcohol_content }} </p>
+                            <p> Manufacturer: {{ wine_data.manufacturer }}</p>
+                            <p> Type: {{ wine_data.type }}</p>
+                            <p> Seller: {{ wine_data.user }}</p>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-day-2-tab">
+                        <div class="p-4">
+                            <h3 class="mb-4">Manufactured By {{ wine_data.manufacturer.name}}</h3>
+                            <p>{{ wine_data.manufacturer.bio}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
 {% endblock %}

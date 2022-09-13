@@ -11,7 +11,7 @@ from warket_viewer.views import (CreateManufacturer, DeleteManufacturer,
                                  DeleteWine, DetailManufacturer, DetailWine,
                                  EditWine, ManufacturersListView,
                                  UpdateManufacturer, WineListView,
-                                 WineSortedList, create_wine, Home,)
+                                 WineSortedList, create_wine, Home, Base)
 
 urlpatterns = [
     path(
@@ -179,6 +179,8 @@ urlpatterns = [
     path('favicon.ico', RedirectView.as_view(
         url=staticfiles_storage.url('/images/favicon.ico'))
     ),
+    path(
+        "base/", Base.as_view(), name="base"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
