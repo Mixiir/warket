@@ -9964,7 +9964,7 @@ textarea.form-control {
 
 .background_fade {
   background: #466368;
-  background: -webkit-linear-gradient(#402F39, #080808);
-  background:    -moz-linear-gradient(#402F39, #080808);
-  background:         linear-gradient(#402F39, #080808);
+  background: -webkit-linear-gradient(rgba(8, 8, 8, 0.68), #402F39);
+  background:    -moz-linear-gradient(rgba(8, 8, 8, 0.68), #402F39);
+  background:         linear-gradient(rgba(8, 8, 8, 0.68), #402F39);
 }

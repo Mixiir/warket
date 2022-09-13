@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
+from django.views.generic import RedirectView
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 from auctions import views as auctions_views
 from users import views as user_views
@@ -173,7 +175,10 @@ urlpatterns = [
         name="my_won_auction_listings"
     ),
     path(
-        "", Home.as_view(), name="home")
+        "", Home.as_view(), name="home"),
+    path('favicon.ico', RedirectView.as_view(
+        url=staticfiles_storage.url('/images/favicon.ico'))
+    ),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

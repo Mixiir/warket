@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     {% load static %}
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static "images/bg_2.jpg" %}');"
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static "images/wallpaper_small.jpg" %}');"
              data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
         <div class="container">
@@ -27,13 +27,13 @@
                     </div>
                 </div>
             </form>
-            <div class="row">
+            <div class="row p-3">
                 <div class="col-md-9">
                     <div class="row">
                         {% for wine in wines_data %}
                             <div class="col-md-4 d-flex">
                                 <div class="product ftco-animate">
-                                    <div class="card-body">
+                                    <div class="card-body background_fade">
                                         <div class="img d-flex align-items-center justify-content-center"
                                              style="background-image: url({{ wine.image.url }});">
                                             <div class="desc">
@@ -61,7 +61,7 @@
                             {% endif %}
                         {% endfor %}
                         </div>
-                <div class="col-md-3">
+                <div class="col-md-3 p-3">
                     <div class="sidebar-box ftco-animate p-3">
                         <div class="categories">
                             <h3>Product Types</h3>
