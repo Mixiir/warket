@@ -7997,7 +7997,7 @@ a.text-dark:hover, a.text-dark:focus {
 body {
   font-family: "Spectral", serif;
   background: #fff;
-  font-size: 16px;
+  font-size: 20px;
   line-height: 1.8;
   font-weight: 300;
   color: gray; }
@@ -8693,7 +8693,7 @@ h1, h2, h3, h4, h5,
   background: #fff;
   -webkit-box-shadow: inset 0px 0px 101px 21px rgba(0, 0, 0, 0.09);
   -moz-box-shadow: inset 0px 0px 101px 21px rgba(0, 0, 0, 0.09);
-  box-shadow: inset 0px 0px 101px 21px rgba(0, 0, 0, 0.09);
+  box-shadow: inset 0px 0px 101px 21px rgba(0, 0, 0, 0);
   height: 100%;
   display: block; }
 

@@ -246,3 +246,7 @@ class Home(TemplateView):
         context = super().get_context_data(**kwargs)
         context["page_is"] = "home"
         return context
+
+
+class Base(TemplateView):
+    template_name = "base.html"
