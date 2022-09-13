@@ -1,55 +1,142 @@
 {% extends "base.html" %}
-
 {% block content %}
-    <h2>Auction Listings</h2>
-    <table>
-        <tr>
-            {% for wine in auction_wines %}
-                <td>
-                    <a href="{% url "details" wine.id %}">
-                        <div class="card">
-                            <div class="card-body item text-center">
-                                <h5>{{ wine.name }}</h5>
-                                <br>
-                                <a href="{% url "details" wine.id %}">
-                                    <img src="
-                                            {% if wine.image_url == "https://infiror.eu/default.png"  %}{{ wine.image.url }}{% else %}{{ wine.image_url }}{% endif %}"
-                                         class="card-img-top" alt="..." width="350"
-                                         height="250"></a>
-                                <h6>Price: {{ wine.start_bid }}€</h6>
-                                {% if wine.max_bid %}
-                                    <b><h6>Highest bid: <strong>{{ wine.max_bid }}€</strong></h6></b>
-                                {% else %}
-                                    <b><h6>Highest bid: <strong>{{ wine.start_bid }}€</strong></h6></b>
-                                {% endif %}
-                                <small>Created: <strong>{{ wine.date|date:"d-m-Y" }}</strong></small><br>
-                                {% if wine.active %}
-                                    <span class="badge">Active</span>
-                                    <form action="{% url "bid" wine.id %}" method="post">
-                                        {% csrf_token %}
-                                        <div class="form-group">
-                                            <input type="number" name="bid" class="form-control" placeholder="Bid"
-                                                   step=".01">
-                                        </div>
-                                        <div class="row justify-content-around">
-                                            <button class="btn btn-primary" type="submit">Place Bid</button>
-                                        </div>
-                                    </form>
-                                {% else %}
-                                    <span class="badge">Ended</span>
-                                {% endif %}
-                            </div>
+    {% load static %}
+    {#  Below navbarn  #}
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static "images/wallpaper_small.jpg" %}');"
+             data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate mb-5 text-center">
+                    <p class="breadcrumbs mb-0"><span class="mr-2"><a href="{% url "home" %}">Home <i
+                            class="fa fa-chevron-right"></i></a></span> <span>Auctions <i
+                            class="fa fa-chevron-right"></i></span>
+                    </p>
+                    <h2 class="mb-0 bread mt-3">Auctions</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    {#  File body  #}
+    <section class="ftco-section ftco-no-pb">
+        <div class="container">
+            <div class="row">
+                                <div class="col-lg-2 col-md-4 ">
+                    <a href="{% url "create_listing" %}">
+                        <div class="sort w-100 text-center ftco-animate">
+                            <div class="img" style="background-image: url({% static "images/vermut.png" %});"></div>
+                            <h3 class="alert-danger">Create auction</h3>
                         </div>
                     </a>
-                </td>
-                {% if forloop.last %}
-                    </tr>
-                {% else %}
-                    {% if forloop.counter|divisibleby:"3" %}
-                        </tr>
-                        <tr>
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
-    </table>
+                </div>
+                <div class="col-lg-2 col-md-4 ">
+                    <a href="{% url "auction_index" %}">
+                        <div class="sort w-100 text-center ftco-animate">
+                            <div class="img" style="background-image: url({% static "images/red.png" %});"></div>
+                            <h3>Auctions</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-2 col-md-4 ">
+                    <a href="{% url "my_auction_listings" %}">
+                        <div class="sort w-100 text-center ftco-animate">
+                            <div class="img" style="background-image: url({% static "images/white.jpg" %});"></div>
+                            <h3>My auctions</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-2 col-md-4 ">
+                    <a href="{% url "my_won_auction_listings" %}">
+                        <div class="sort w-100 text-center ftco-animate">
+                            <div class="img" style="background-image: url({% static "images/sparkling.png" %});"></div>
+                            <h3>Won auctions</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-2 col-md-4 ">
+                    <a href="{% url "ended_auction_listings" %}">
+                        <div class="sort w-100 text-center ftco-animate">
+                            <div class="img" style="background-image: url({% static "images/rose.jpg" %});"></div>
+                            <h3>Ended auctions</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-2 col-md-4 ">
+                    <a href="{% url "all_auction_listings" %}">
+                        <div class="sort w-100 text-center ftco-animate">
+                            <div class="img" style="background-image: url({% static "images/dessert.jpg" %});"></div>
+                            <h3>All auctions</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row p-4 h-25">
+                <div class="col-md-12">
+                    <div class="row">
+                        {% for wine in auction_wines %}
+                            <div class="col-md-4 d-flex">
+                                <div class="product ftco-animate" style="height: 800px;">
+                                    <div class="card-body  border-left border-right border-top border-bottom h-auto">
+                                        <div class="img d-flex align-items-center justify-content-center"
+                                             style="background-image: url({{ wine.image.url }});">
+                                            <div class="desc">
+                                                <p class="meta-prod d-flex">
+                                                    <a href="{% url "details" wine.id %}"
+                                                       class="d-flex align-items-center justify-content-center">
+                                                        <span class="flaticon-visibility"></span></a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="text text-center"><a href="{% url "details" wine.id %}">
+                                            <span class="category h3 font-weight-bold mt-2">{{ wine.name|slice:18 }}
+                                                {% if wine.name|length > 18 %}...{% endif %}</span>
+                                            <br>
+                                            <span class="price h4 font-weight-bold mt-2">{{ wine.description }}</span>
+                                            <hr/>
+                                            <span class="price h3 font-weight-bold">Highest bid: €{{ wine.max_bid }}</span>
+                                            <br>
+                                            <span class="price h5 font-weight-bold">Bid holder:
+                                                {% if wine.last_bidder %}{{ wine.last_bidder }}{% else %}
+                                                    {{ wine.user.username }}{% endif %}</span>
+                                            <br>
+                                            <span class="price h5 font-weight-bold">Ending in:
+                                                {% if wine.end_date %}{{ wine.end_date }}{% else %}
+                                                    ???{% endif %}</span>
+                                        </a>
+                                            <br>
+                                            {% if wine.active %}
+                                                <span class="badge text-success">Status - Active</span>
+                                                <form action="{% url "bid" wine.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+                                                        <input type="number" name="bid" step=".1"
+                                                               value="{{ wine.max_bid|add:"1" }}" style="width: 35%">
+                                                        <button class="btn btn-primary" type="submit">Bid</button>
+                                                    </div>
+                                                </form>
+                                            {% else %}
+                                                <span class="badge text-danger">Ended</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if forloop.last %}
+                                </div>
+                            {% else %}
+                                {% if forloop.counter|divisibleby:"3" %}
+                                    </div>
+                                    <div class="row mt-5">
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+            </div>
+        </div>
+        </div>
+    </section>
 {% endblock %}
