@@ -141,8 +141,24 @@ class EditWine(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["manufacturer"] = Manufacturer.objects.all()
         context["page_is"] = "wines"
         return context
+
+
+@login_required
+def edit_wine(request, pk):
+    wine = Wine.objects.get(pk=pk)
+    form = CreateWineForm(request.POST or None, instance=wine)
+    manufacturer = Manufacturer.objects.all()
+    if form.is_valid():
+        form.save()
+        return redirect("list_wines")
+    return render(
+        request,
+        "edit_wine.html",
+        {"form": form, "manufacturer": manufacturer, "wine": wine},
+    )
 
 
 @login_required

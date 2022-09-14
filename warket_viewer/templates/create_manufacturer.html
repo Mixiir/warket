@@ -1,13 +1,36 @@
 {% extends "base.html" %}
-
+{% load crispy_forms_filters %}
+{% load static %}
 {% block content %}
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static "images/wallpaper_small.jpg" %}');"
+             data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate mb-5 text-center">
+                    <p class="breadcrumbs mb-0"><span class="mr-2"><a href="{% url "list_wines" %}">Home <i
+                            class="fa fa-chevron-right"></i></a></span> <span>Manufacturers <i class="fa fa-chevron-right"></i></span>
+                    </p>
+                    <h2 class="mb-0 bread mt-3">Edit wine - {{ wine.name }}</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tag }} text-center h2">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <section class="testimony-section img" style="background-image: url({% static "images/winebackground2.jpg" %});">1
+        <div class="container text-center w-25">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Create Manufacturer" class="mb-3">
 
-<form method = "post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type ="submit" value ="Create Manufacturer">
-
-</form>
-
-
+            </form>
+        </div>
+    </section>
 {% endblock %}

@@ -18,9 +18,10 @@
         </div>
     </section>
     {#  File body  #}
-    <section class="ftco-section ftco-no-pb" style="background-color: darkgray">
+    <div class="testimony-section img" style="background-image: url({% static "images/winebackground2.jpg" %});">
+    <section class="mt-3">
         <div class="container">
-            <div class="row">
+            <div class="row" style="transform: scale(0.7)">
                 <div class="col-lg-2 col-md-4">
                     <a href="{% url "create_listing" %}">
                         <div class="sort w-100 text-center ftco-animate">
@@ -72,17 +73,17 @@
             </div>
         </div>
     </section>
-    <section class="ftco-section" style="background-color: darkgray">
+    <section>
         <div class="container">
             <div class="row p-4 h-25">
-                <div class="col-md-12">
+                <div class="col">
                     <div class="row">
                         {% for wine in auction_wines %}
-                            <div class="col-md-4 d-flex">
+                            <div class="col-md-3 d-flex">
                                 <div class="product ftco-animate" style="height: 800px;">
-                                    <div class="card-body  border-left border-right border-top border-bottom h-auto" style="border-radius: 10%">
+                                    <div class="card-body  border-left border-right border-top border-bottom h-auto" style="border-radius: 10%;">
                                         <div class="img d-flex align-items-center justify-content-center"
-                                             style="background-image: url({{ wine.image.url }}); border-radius: 10%">
+                                             style="background-image: url({{ wine.image.url }}); border-radius: 10%; height: 200px; width: auto">
                                             <div class="desc">
                                                 <p class="meta-prod d-flex">
                                                     <a href="{% url "details" wine.id %}"
@@ -92,18 +93,18 @@
                                             </div>
                                         </div>
                                         <div class="text text-center"><a href="{% url "details" wine.id %}">
-                                            <span class="category h3 font-weight-bold mt-2">{{ wine.name|slice:18 }}
+                                            <span class="category font-weight-bold mt-2">{{ wine.name|slice:18 }}
                                                 {% if wine.name|length > 18 %}...{% endif %}</span>
                                             <br>
-                                            <span class="price h4 font-weight-bold mt-2">{{ wine.description }}</span>
+                                            <span class="mt-2">{{ wine.description }}</span>
                                             <hr/>
-                                            <span class="price h3 font-weight-bold">Highest bid: €{{ wine.max_bid }}</span>
+                                            <span class="font-weight-bold">Highest bid: €{{ wine.max_bid }}</span>
                                             <br>
-                                            <span class="price h5 font-weight-bold">Bid holder:
+                                            <span style="color: #0b0b0b">Bid holder:
                                                 {% if wine.last_bidder %}{{ wine.last_bidder }}{% else %}
                                                     {{ wine.user.username }}{% endif %}</span>
                                             <br>
-                                            <span class="price h5 font-weight-bold">Ending at:
+                                            <span>Ending at<br>
                                                 {% if wine.end_date %}{{ wine.end_date|date:"d M y H:m" }}{% else %}
                                                     ???{% endif %}</span>
                                         </a>
@@ -128,7 +129,7 @@
                             {% if forloop.last %}
                                 </div>
                             {% else %}
-                                {% if forloop.counter|divisibleby:"3" %}
+                                {% if forloop.counter|divisibleby:"4" %}
                                     </div>
                                     <div class="row mt-5">
                                 {% endif %}
@@ -137,6 +138,6 @@
                         </div>
             </div>
         </div>
-        </div>
     </section>
+    </div>
 {% endblock %}

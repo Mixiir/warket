@@ -1,20 +1,43 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
-<h2>Details of manufacturer</h2>
-<p> Name - {{ manufacturer_data.name}}</p>
-<p> Image - {{ manufacturer_data.image}}</p>
-<p><img src="{{ manufacturer_data.image.url }}" alt="Image"></p>
-<p> Country - {{ manufacturer_data.country}}</p>
-<p> Region - {{ manufacturer_data.region}}</p>
-<p> Bio - {{ manufacturer_data.bio}}</p>
-<p></p>
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static "images/wallpaper_small.jpg" %}');"
+             data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate mb-5 text-center">
+                    <p class="breadcrumbs mb-0"><span class="mr-2"><a href="{% url "list_wines" %}">Home <i
+                            class="fa fa-chevron-right"></i></a></span> <span>Manufacturers <i
+                            class="fa fa-chevron-right"></i></span>
+                    </p>
+                    <h2 class="mb-0 bread mt-3">Edit wine - {{ wine.name }}</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tag }} text-center h2">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <section class="testimony-section img" style="background-image: url({% static "images/winebackground2.jpg" %});">
+    <div class="container">
+        <p> Name - {{ manufacturer_data.name }}</p>
+        <p> Image - {{ manufacturer_data.image }}</p>
+        <p><img src="{{ manufacturer_data.image.url }}" alt="Image"></p>
+        <p> Country - {{ manufacturer_data.country }}</p>
+        <p> Region - {{ manufacturer_data.region }}</p>
+        <p> Bio - {{ manufacturer_data.bio }}</p>
+        <p></p>
 
-<a href="{% url "create_manufacturer" %}">Create new Manufacturer</a>
-<p></p>
-<a href="{% url "update_manufacturer" manufacturer_data.pk  %}">Update Manufacturer</a>
-<p></p>
-<a href="{% url "delete_manufacturer" manufacturer_data.pk  %}">Delete Manufacturer</a>
-<p></p>
-
+        <a href="{% url "create_manufacturer" %}">Create new Manufacturer</a>
+        <p></p>
+        <a href="{% url "update_manufacturer" manufacturer_data.pk %}">Update Manufacturer</a>
+        <p></p>
+        <a href="{% url "delete_manufacturer" manufacturer_data.pk %}">Delete Manufacturer</a>
+        </div>
+    </section>
 {% endblock %}

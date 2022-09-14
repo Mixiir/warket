@@ -1,11 +1,14 @@
 from datetime import timedelta
 
+import requests
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Max
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse
+from django.views.generic import DeleteView
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 
 from .forms import CreateAuctionListingForm
@@ -291,3 +294,10 @@ def check_auctions_auto():
         ) < timezone.now():
             auction.active = False
             auction.save()
+
+
+class DeleteCategory(DeleteView):
+    template_name = "auctions/delete_category.html"
+    model = Category
+    success_url = reverse_lazy("categories")
+    context_object_name = "category"

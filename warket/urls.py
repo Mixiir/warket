@@ -5,13 +5,14 @@ from django.urls import include, path
 from django.views.generic import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
 
+import auctions.views
 from auctions import views as auctions_views
 from users import views as user_views
 from warket_viewer.views import (CreateManufacturer, DeleteManufacturer,
                                  DeleteWine, DetailManufacturer, DetailWine,
                                  EditWine, ManufacturersListView,
                                  UpdateManufacturer, WineListView,
-                                 WineSortedList, create_wine, Home, Base)
+                                 WineSortedList, create_wine, Home, Base, edit_wine)
 
 urlpatterns = [
     path(
@@ -78,7 +79,7 @@ urlpatterns = [
     ),
     path(
         "wine/<int:pk>/edit/",
-        EditWine.as_view(),
+        edit_wine,
         name="edit_wine"
     ),
     path(
@@ -174,8 +175,12 @@ urlpatterns = [
         auctions_views.my_won_auction_listings,
         name="my_won_auction_listings"
     ),
+    path("auctions/categories/<int:pk>/delete",
+         auctions.views.DeleteCategory.as_view(), name="delete_category"),
+
     path(
         "", Home.as_view(), name="home"),
+
     path('favicon.ico', RedirectView.as_view(
         url=staticfiles_storage.url('/images/favicon.ico'))
     ),

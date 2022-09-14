@@ -126,9 +126,7 @@
         </div>
     </div>
 </nav>
-<div style="background-color: darkgray">
     {% block content %}{% endblock %}
-</div>
 <footer class="ftco-footer">
     <div class="container">
         <div class="row mb-5">
@@ -159,16 +157,18 @@
                     </ul>
                 </div>
             </div>
-{#            <div class="col-sm-12 col-md">#}
-{#                <div class="ftco-footer-widget mb-4 ml-md-4">#}
-{#                    <h2 class="ftco-heading-2">Information</h2>#}
-{#                    <ul class="list-unstyled">#}
-{#                        <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About us</a></li>#}
-{#                        <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact us</a></li>#}
-{#                        <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Term &amp; Conditions</a></li>#}
-{#                    </ul>#}
-{#                </div>#}
-{#            </div>#}
+            {% if user.is_staff %}
+            <div class="col-sm-12 col-md">
+                <div class="ftco-footer-widget mb-4 ml-md-4">
+                    <h2 class="ftco-heading-2">Administration</h2>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url "list_manufacturers"%}"><span class="fa fa-chevron-right mr-2"></span>Manufacturers list</a></li>
+                        <li><a href="{% url "categories"%}"><span class="fa fa-chevron-right mr-2"></span>Auction categories</a></li>
+                        <li><a href="admin/"><span class="fa fa-chevron-right mr-2"></span>Admin panel</a></li>
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
             <div class="col-sm-12 col-md">
                 <div class="ftco-footer-widget mb-4">
                     <h2 class="ftco-heading-2">Quick Link</h2>

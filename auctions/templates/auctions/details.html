@@ -26,12 +26,12 @@
             </div>
         {% endfor %}
     {% endif %}
-    <section class="ftco-section">
+    <section class="ftco-section testimony-section img" style="background-image: url({% static "images/winebackground2.jpg" %});">
         <div class="container">
             <div class="row">
                 <div class="col-lg-5 ftco-animate ml-auto mr-0">
                     <a href="{{ wine.image.url }}" class="image-popup">
-                        <img src="{{ wine.image.url }}" class="img-fluid  ml-auto mr-0" alt="Wine image " style="max-width: 50%;" ></a>
+                        <img src="{{ wine.image.url }}" class="float-right" alt="Wine image " style="max-width: 50%;" ></a>
                 </div>
                 <div class="col-lg-5 product-details pl-md-5 ftco-animate border-left">
                     <h3>{{ wine.name }}</h3>

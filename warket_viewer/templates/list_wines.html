@@ -23,15 +23,15 @@
             </div>
         {% endfor %}
     {% endif %}
-    {#  File body  #}
-    <section class="ftco-section ftco-no-pb " style="background-color: darkgray;">
+    <div class ="testimony-section img" style="background-image: url({% static "images/winebackground2.jpg" %});">
+    <section>
         <div class="container">
-            <div class="row">
+            <div class="row" style="transform: scale(0.7)">
                 <div class="col-lg-2 col-md-4 ">
                     <a href="./?search=Red">
                         <div class="sort w-100 text-center ftco-animate">
                             <div class="img" style="background-image: url({% static "images/red.png" %});"></div>
-                            <h3>Red</h3>
+                            <h2>Red</h2>
                         </div>
                     </a>
                 </div>
@@ -39,7 +39,7 @@
                     <a href="./?search=White">
                         <div class="sort w-100 text-center ftco-animate">
                             <div class="img" style="background-image: url({% static "images/white.jpg" %});"></div>
-                            <h3>White</h3>
+                            <h2>White</h2>
                         </div>
                     </a>
                 </div>
@@ -47,7 +47,7 @@
                     <a href="./?search=Sparkling">
                         <div class="sort w-100 text-center ftco-animate">
                             <div class="img" style="background-image: url({% static "images/sparkling.png" %});"></div>
-                            <h3>Sparkling</h3>
+                            <h2>Sparkling</h2>
                         </div>
                     </a>
                 </div>
@@ -55,7 +55,7 @@
                     <a href="./?search=Rose">
                         <div class="sort w-100 text-center ftco-animate">
                             <div class="img" style="background-image: url({% static "images/rose.jpg" %});"></div>
-                            <h3>Rose</h3>
+                            <h2>Rose</h2>
                         </div>
                     </a>
                 </div>
@@ -63,7 +63,7 @@
                     <a href="./?search=Dessert">
                         <div class="sort w-100 text-center ftco-animate">
                             <div class="img" style="background-image: url({% static "images/dessert.jpg" %});"></div>
-                            <h3>Dessert</h3>
+                            <h2>Dessert</h2>
                         </div>
                     </a>
                 </div>
@@ -71,14 +71,13 @@
                     <a href="./?search=Other">
                         <div class="sort w-100 text-center ftco-animate">
                             <div class="img" style="background-image: url({% static "images/vermut.png" %});"></div>
-                            <h3>Other</h3>
+                            <h2>Other</h2>
                         </div>
                     </a>
                 </div>
             </div>
         </div>
     </section>
-    <section class="ftco-section" style="background-color: darkgray">
         <div class="container">
             <form method="get">
                 <div class="input-group">
@@ -93,15 +92,15 @@
                 </div>
             </form>
             <div class="row p-4">
-                <div class="col-md-12">
+                <div class="col-md-11">
                     <div class="row">
                         {% for wine in wines_data %}
-                            <div class="col-md-4 d-flex" style="transform: scale(1)">
+                            <div class="col-md-3 d-flex" style="transform: scale(1)">
                                 <div class="product ftco-animate">
                                     <div class="card-body">
                                         <div class="img d-flex align-items-center justify-content-center"
                                              style="background-image: url(
-                                                     {% if wine.image %}{{ wine.image.url }}{% else %}{{ wine.thumbnail.url }}{% endif %}); border-radius: 10%">
+                                                     {% if wine.image %}{{ wine.image.url }}{% else %}{{ wine.thumbnail.url }}{% endif %}); border-radius: 10%; height:150px; width: auto">
                                             <div class="desc">
                                                 <p class="meta-prod d-flex">
                                                     <a href="{% url "detail_wine" wine.id %}"
@@ -111,26 +110,29 @@
                                             </div>
                                         </div>
                                         <div class="text text-center"><a href="{% url "detail_wine" wine.id %}">
-                                            <span class="category h3 font-weight-bold mt-2">{{ wine.name }}</span>
+                                            <span class="category font-weight-bold mt-2">{{ wine.name }}</span>
                                             <br>
-                                            <span class="price h4 font-weight-bold mt-2">{{ wine.description }}</span>
+                                            <span class="mt-2">{{ wine.description }}</span>
                                             <hr/>
-                                            <span class="price h3 font-weight-bold">Price: €{{ wine.price_per_unit }}</span>
+                                            <span>Price: €{{ wine.price_per_unit }}</span>
                                         </a>
                                             <form action="{% url "cart:cart_add" wine.id %}" method="post" class="mt-3">
                                                 {% csrf_token %}
-                                                <span class="price h4">
-                                                    <label for="id_quantity_2">Quantity:</label>
-                                                    <select name="quantity" id="id_quantity_2">
+                                                <span class="price">
+                                                    <label for="id_quantity_2">Amount:</label>
+                                                    <select name="quantity" id="id_quantity_2" class="btn">
                                                         {% for x in ""|center:wine.units_in_stock %}
-                                                            <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                                                            <option value="{{ forloop.counter }}">{{ forloop.counter }} pc</option>
                                                         {% endfor %}
                                                     </select>
                                                 </span>
                                                 <input type="hidden" name="update" value="False" id="id_update">
-                                                <input type="submit" value="Add to cart" class="btn btn-primary"
-                                                       style="float: right">
+                                                <input type="submit" value="Add to cart" class="btn btn-primary">
                                             </form>
+                                        {% if user.username == wine.user.username %}
+                                            <a href="{% url "edit_wine" wine.id %}" class="btn btn-warning mt-3">Edit</a>
+                                            <a href="{% url "delete_wine" wine.id %}" class="btn btn-danger mt-3">Delete</a>
+                                        {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -138,7 +140,7 @@
                             {% if forloop.last %}
                                 </div>
                             {% else %}
-                                {% if forloop.counter|divisibleby:"3" %}
+                                {% if forloop.counter|divisibleby:"4" %}
                                     </div>
                                     <div class="row mt-5">
                                 {% endif %}
@@ -148,4 +150,5 @@
             </div>
         </div>
     </section>
+    </div>
 {% endblock %}
