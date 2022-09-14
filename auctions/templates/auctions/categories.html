@@ -1,38 +1,53 @@
 {% extends "base.html" %}
-
-{% block title %}
-    Categories
-{% endblock %}
-
+{% load static %}
 {% block content %}
-    <div class="grid-container text-center">
-        {% for category in categories %}
-            <a href="{% url "filter" category.name %}">
-                <div class="grid-item">
-                    {{ category.name|title }}
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static "images/wallpaper_small.jpg" %}');"
+             data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate mb-5 text-center">
+                    <p class="breadcrumbs mb-0"><span class="mr-2"><a href="{% url "home" %}">Home <i
+                            class="fa fa-chevron-right"></i></a></span> <span>Auctions <i
+                            class="fa fa-chevron-right"></i></span>
+                    </p>
+                    <h2 class="mb-0 bread mt-3">Auctions</h2>
                 </div>
-            </a>
-        {% endfor %}
-    </div>
-
-    {% if user.is_authenticated %}
-        <div class="add-category">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
-                         role="alert">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-            <form action="{% url "categories" %}" method="post">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="form-group col">
-                        <input type="text" name="category" class="form-control category-input" value="Red">
-                    </div>
-                    <button class="gradient-button category col">Add new Category</button>
-                </div>
-            </form>
+            </div>
         </div>
-    {% endif %}
+    </section>
+    {#  File body  #}
+    <div class="testimony-section img" style="background-image: url({% static "images/winebackground2.jpg" %});">
+        <section>
+            <div class="container">
+                <div class="grid-container text-center">
+                    {% for category in categories %}
+                            <div class="grid-item">
+                                {{ category.name|title }} <a href="{% url "delete_category" category.id %}">Delete</a>
+                            </div>
+                    {% endfor %}
+                </div>
+
+                {% if user.is_authenticated %}
+                    <div class="add-category">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+                                     role="alert">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                        <form action="{% url "categories" %}" method="post">
+                            {% csrf_token %}
+                            <div class="row w-50 mr-auto ml-auto">
+                                <div class="form-group">
+                                    <input type="text" name="category" class="form-control" value="Red">
+                                </div>
+                                <button class="btn btn-success mb-3">Add new Category</button>
+                            </div>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
 
 {% endblock %}

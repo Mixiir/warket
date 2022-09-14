@@ -1,20 +1,120 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
     <style>
-        #id_user, #div_id_user { display: none;}
+        #id_user, #div_id_user {
+            display: none;
+        }
     </style>
-    <h3>Update wine listing</h3>
-    <div class="content-section">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit" value="Update">Update wine listing</button>
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static "images/wallpaper_small.jpg" %}');"
+             data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate mb-5 text-center">
+                    <p class="breadcrumbs mb-0"><span class="mr-2"><a href="{% url "list_wines" %}">Home <i
+                            class="fa fa-chevron-right"></i></a></span> <span>E-Shop <i class="fa fa-chevron-right"></i></span>
+                    </p>
+                    <h2 class="mb-0 bread mt-3">Edit wine - {{ wine.name }}</h2>
+                </div>
             </div>
+        </div>
+    </section>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tag }} text-center h2">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="testimony-section img" style="background-image: url({% static "images/winebackground2.jpg" %});">
+        <section class="ml-auto mr-auto w-50">
+            <div class="container">
+                <form method="post" enctype="multipart/form-data">
+                <fieldset class="form-group">
+                    {% csrf_token %}
+                    <div class="form-row form-group mt-2">
+                        <div class="col">
+                            <label for="id_name" class="category h5 requiredField">
+                                Name<span class="asteriskField">*</span> </label>
+                            <input type="text" name="name" maxlength="100" class="form-control" required id="id_name"
+                                   value="{{ wine.name }}">
+                        </div>
+                        <div class="col">
+                            <label for="id_image" class="category h5 w-100 requiredField">
+                                Image<span class="asteriskField">*</span> </label>
+                            <input type="file" name="image" accept="image/*"
+                                   class="clearablefileinput form-control" id="id_image">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label for="id_description" class="category h5 w-100 requiredField">
+                            Description<span class="asteriskField">*</span> </label>
+                        <textarea name="description" cols="40" rows="3" class="textarea form-control"
+                                  required id="id_description">{{ wine.description }}</textarea>
 
-        </form>
+                    </div>
+                    <div class="form-row form-group mt-2">
+                        <div class="col">
+                            <label for="id_vintage" class="category h5 w-100 mt-2 requiredField">Vintage<span
+                                    class="asteriskField">*</span> </label>
+                            <input type="number" name="vintage" value="{{ wine.vintage }}"
+                                   min="0" class="numberinput form-control" required id="id_vintage">
+                        </div>
+                        <div class="col">
+                            <label for="id_alcohol_content" class="category h5 w-100 mt-2">Alcohol content</label>
+                            <input type="number" name="alcohol_content" step="any" value="{{ wine.alcohol_content }}"
+                                   class="numberinput form-control" id="id_alcohol_content" placeholder="10 %">
+                        </div>
+                        <div class="col">
+                            <label for="id_price_per_unit" class="category h5 w-100 mt-2 requiredField">Unit price<span
+                                    class="asteriskField">*</span> </label>
+                            <input type="number" value="{{ wine.price_per_unit }}" name="price_per_unit"
+                                   placeholder="€ 0" min="0" class="numberinput form-control" required
+                                   id="id_price_per_unit">
+                        </div>
+                        <div class="col">
+                            <label for="id_units_in_stock" class="category h5 w-100 mt-2 requiredField">Amount<span
+                                    class="asteriskField">*</span> </label>
+                            <input type="number" name="units_in_stock" value="{{ wine.units_in_stock }}" min="0"
+                                   class="numberinput form-control" required id="id_units_in_stock">
+                        </div>
+                    </div>
+                    <div class="form-row form-group mt-2">
+                        <div class="col">
+                            <label for="id_manufacturer" class="category h5 w-100 mt-2">Manufacturer</label>
+                            <select name="manufacturer" class="select form-control" id="id_manufacturer">
+                                {% for name in manufacturer %}
+                                    <option value="{{ name.id }}">{{ name.name }}</option>
+                                {% empty %}
+                                    <option value="{{ wine.manufacturer.id }}"
+                                            selected>{{ wine.manufacturer.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="id_type" class="category h5 w-100 mt-2 requiredField">
+                                Type<span class="asteriskField">*</span> </label>
+                            <select name="type" class="select form-control" id="id_type">
+                                <option value="{{ wine.type|title }}" selected>{{ wine.type }}</option>
+                                <option value="Red">Red</option>
+                                <option value="White">White</option>
+                                <option value="Sparkling">Sparkling</option>
+                                <option value="Rose">Rose</option>
+                                <option value="Dessert">Dessert</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+                    <input type="hidden" name="id_user" value="{{ wine.user.id }}" id="id_user">
+                    <div class="form-row form-group mt-2 d-flex justify-content-center pb-3">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </section>
     </div>
 {% endblock %}
