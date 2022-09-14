@@ -6,14 +6,14 @@ from .models import Category
 class CreateAuctionListingForm(forms.Form):
     name = forms.CharField(
         label="name",
-        max_length=64
+        max_length=50
     )
     category = forms.ModelChoiceField(
         queryset=Category.objects.all()
     )
     description = forms.CharField(
         label="description",
-        max_length=256
+        max_length=250
     )
     start_bid = forms.DecimalField(
         label="start_bid",

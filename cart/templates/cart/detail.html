@@ -1,77 +1,87 @@
 {% extends "base.html" %}
 {% load static %}
-
-{% block title %}
-    Shopping Cart
-{% endblock %}
-
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>Shopping Cart</h1>
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static "images/wallpaper_small.jpg" %}');"
+             data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate mb-5 text-center">
+                    <p class="breadcrumbs mb-0"><span class="mr-2"><a href="{% url "home" %}">Home <i
+                            class="fa fa-chevron-right"></i></a></span> <span>Cart <i
+                            class="fa fa-chevron-right"></i></span>
+                    </p>
+                    <h2 class="mb-0 bread mt-3">Cart</h2>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Wine</th>
-                        <th>Image</th>
-                        <th>Quantity</th>
-                        <th>Remove</th>
-                        <th>Unit price</th>
-                        <th>Total</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for item in cart %}
-                        {% with wine=item.wine %}
-                            <tr>
-                                <td>{{ wine.name }}</td>
-                                <td>
-                                    <a href="{{ wine.get_absolute_url }}">
-                                        <img src="{% if wine.image %}{{ wine.image.url }}
+    </section>
+
+    <div class="container w-50" style="transform: scale(1)">
+        <div class="row border-bottom  text-center" style="color: #0b0b0b">
+            <div class="col w-25"><span class="category">Wine</span>
+            </div>
+            <div class="col w-auto border-left"><span class="category">Image</span>
+            </div>
+            <div class="col border-left"><span class="category">Quantity</span>
+            </div>
+            <div class="col border-left"><span class="category">Remove</span>
+            </div>
+            <div class="col border-left"><span class="category">Price</span>
+            </div>
+            <div class="col border-left"><span class="category">Total</span>
+            </div>
+        </div>
+        {% for item in cart %}
+            {% with wine=item.wine %}
+                <div class="row border-bottom pb-3 pt-3  text-center">
+                    <div class="col">
+                        <span class="category h5 font-weight-bold"
+                              style="color: #b7472a; font-style: italic;">{{ wine.name }}</span></div>
+                    <div class="col">
+                        <a class="category" href="{{ wine.get_absolute_url }}"><img
+                                src="{% if wine.image %}{{ wine.image.url }}
                                                     {% else %}{% static "img/no-image.png" %}{% endif %}"
-                                             alt="{{ wine.name }}" class="img-responsive" width="180" height="200">
-                                    </a>
-                                </td>
-                                <td>
-                                    <form action="{% url "cart:cart_add" wine.id %}" method="post">
-                                        {{ item.update_quantity_form.quantity }}
-                                        {{ item.update_quantity_form.update }}
-                                        <input type="submit" value="Update">
-                                        {% csrf_token %}
-                                    </form>
-                                </td>
-                                <td>
-                                    <form action="{% url "cart:cart_remove" wine.id %}" method="post">
-                                        <input type="submit" value="Remove">
-                                        {% csrf_token %}
-                                    </form>
-                                </td>
-                                <td class="num">{{ wine.price_per_unit }}€</td>
-                                <td>{{ item.total_price }}</td>
-                            </tr>
-                        {% endwith %}
-                    {% endfor %}
-                    <tr class="total">
-                        <td>Total</td>
-                        <td colspan="4"></td>
-                        <td class="num">{{ cart.get_total_price }}€</td>
-                    </tr>
-                    </tbody>
-                </table>
+                                alt="{{ wine.name }}" class="img-responsive" width="100" height="100"></a>
+                    </div>
+                    <div class="col">
+                        <span class="category h5">{{ wine.units_in_stock }}</span>
+                    </div>
+                    <div class="col">
+                        <form action="{% url "cart:cart_remove" wine.id %}" method="post">
+                            <input type="submit" class="btn btn-danger" value="Remove">
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                    <div class="col">
+                        <span class="category h5">€{{ wine.price_per_unit }}</span>
+                    </div>
+                    <div class="col">
+                        <span class="category h5">{{ item.total_price }}</span>
+                    </div>
+                </div>
+            {% endwith %}
+        {% endfor %}
+        <div class="row">
+            <div class="col text-right">
+                <span class="category h5 font font-weight-bold">Total: €{{ cart.get_total_price }}</span>
             </div>
         </div>
-        <p class="text-right">
-            <a href="{% url "list_wines" %}" class="buttonlight">Continue Shopping</a>
-        <form action="{% url "cart:cart_clear" %}" method="post" class="form-group">
-            {{ cart_product_form }}
-            {% csrf_token %}
-            <input type="submit" value="Confirm order">
-        </form>
-        </p>
+        <div class="row">
+            <div class="col text-right">
+{#                    <a href="{% url "list_wines" %}" class="buttonlight">Continue Shopping</a>#}
+                <form action="{% url "list_wines" %}">
+                <input type="submit" class="btn btn-success" value="Continue Shopping"/>
+                </form>
+            </div>
+            <div class="col">
+                <form action="{% url "cart:cart_clear" %}" method="post" class="form-group">
+                    {{ cart_product_form }}
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-primary" value="Confirm order">
+                </form>
+            </div>
+        </div>
     </div>
+
 {% endblock %}

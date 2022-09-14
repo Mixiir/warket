@@ -1,63 +1,79 @@
 {% extends "base.html" %}
-
-{% block title %}
-    Create Listing
-{% endblock %}
-
+{% load static %}
 {% block content %}
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static "images/wallpaper_small.jpg" %}');"
+             data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate mb-5 text-center">
+                    <p class="breadcrumbs mb-0"><span class="mr-2"><a href="{% url "home" %}">Home <i
+                            class="fa fa-chevron-right"></i></a></span> <span><a href="{% url "auction_index" %}">Auctions</a> <i
+                            class="fa fa-chevron-right"></i></span> <span>Create auction <i
+                            class="fa fa-chevron-right"></i></span></p>
+                    </p>
+                    <h2 class="mb-0 bread mt-3">Auctions</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="w-100" style="background-color: darkgray">
+        <div class="container">
+            <form action="{% url "create_listing" %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row form-group mt-2">
+                    <div class="col">
+                        <label class="category h5" for="title">Title</label>
+                        <input autofocus type="text" placeholder="Enter Title" name="name" class="form-control" required
+                               maxlength="50">
+                    </div>
+                    <div class="col">
+                        <label class="category h5" for="start_bid">Starting Bid</label>
+                        <input type="number" name="start_bid" class="form-control" placeholder="0.0" step=".01" required
+                               maxlength="5">
+                    </div>
+                </div>
 
-    <div class="pt-4 mt-4">
-        <form action="{% url "create_listing" %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-row form-group mt-2">
-                <div class="col">
-                    <label for="title">Title</label>
-                    <input autofocus type="text" placeholder="Enter Title" name="name" class="form-control">
+                <div class="form-group mt-2">
+                    <label class="category h5" for="description">Description</label>
+                    <textarea class="form-control" name="description" rows="3"
+                              placeholder="Enter Description of Product" required maxlength="250"></textarea>
                 </div>
-                <div class="col">
-                    <label for="start_bid">Starting Bid</label>
-                    <input type="number" name="start_bid" class="form-control" placeholder="0.0" step=".01">
+                <div class="form-row form-group mt-2">
+                    <div class="col">
+                        <label class="category h5 w-100 mt-2" for="image">Upload Image
+                            <input type="file" accept="image/*" name="image" class="form-control">
+                        </label>
+                    </div>
+                    <div class="col">
+                        <label class="category h5" for="category">Category</label>
+                        <select class="form-control" name="category" required>
+                            {% for category in categories %}
+                                <option value={{ category }}>
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
-            </div>
-
-            <div class="form-group mt-2">
-                <label for="description">Description</label>
-                <textarea class="form-control" name="description" rows="3"
-                          placeholder="Enter Description of Product"></textarea>
-            </div>
-            <div class="form-row form-group mt-2">
-                <div class="col">
-                    <label for="image">Upload Image</label>
-                    <input type="file" accept="image/*" name="image" class="form-control">
+                <div class="form-row form-group mt-2">
+                    <div class="col">
+                        <label class="category h5" for="comments_allowed">Allow comments</label>
+                        <select class="form-control" name="comments_allowed">
+                            <option value="True">Yes</option>
+                            <option value="False">No</option>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label class="category h5" for="start_bid">Auction ends in * days</label>
+                        <input type="number" name="auction_period" class="form-control" value="1" step="1" required
+                               max="30">
+                    </div>
                 </div>
-                <div class="col">
-                    <label for="category">Category</label>
-                    <select class="form-control" name="category">
-                        {% for category in categories %}
-                            <option value={{ category }}>
-                                {{ category.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
+                <div class="text-center">
+                    <button class="btn btn-primary gradient-button mb-3" type="submit">Submit</button>
                 </div>
-            </div>
-            <div class="form-row form-group mt-2">
-                <div class="col">
-                    <label for="comments_allowed">Allow comments</label>
-                    <select class="form-control" name="comments_allowed">
-                        <option value="True">Yes</option>
-                        <option value="False">No</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <label for="start_bid">Auction ends in * days</label>
-                    <input type="number" name="auction_period" class="form-control" value="1" step="1">
-                </div>
-            </div>
-            <div class="text-center">
-                <button class="btn btn-outline-info" type="submit" class="gradient-button add-listing">Submit</button>
-            </div>
-        </form>
-    </div>
-
+            </form>
+        </div>
+    </section>
 {% endblock %}

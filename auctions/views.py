@@ -199,6 +199,7 @@ def bid(request, wine_id):
         save_bid.save()
         auction_listing.max_bid = bid_value
         auction_listing.last_bidder = user.username
+        messages.success(request, f"Your bid of {bid_value} was successful!")
         if auction_listing.end_date:
             auction_listing.end_date = \
                 auction_listing.end_date + timedelta(hours=1)

@@ -184,7 +184,6 @@ def create_wine(request):
                             request,
                             "Wine image has been identified"
                         )
-                        # TODO pass image to form?
                         main_form = CreateWineForm(
                             initial={
                                 "name": first_dict_name,
@@ -195,7 +194,6 @@ def create_wine(request):
                             request,
                             "create_wine.html",
                             {
-                                "search_form": search_form,
                                 "year": year,
                                 "first_dict_name": first_dict_name,
                                 "main_form": main_form,
@@ -210,7 +208,7 @@ def create_wine(request):
             if request.FILES:
                 thumbnail = request.FILES["image"]
                 thumbnail = Image.open(thumbnail)
-                thumbnail.thumbnail((50, 80), Image.ANTIALIAS)
+                thumbnail.thumbnail((200, 320), Image.ANTIALIAS)
                 thumbnail_io = io.BytesIO()
                 unique_filename = uuid.uuid4().hex
                 thumbnail.save(thumbnail_io, format="JPEG")
@@ -236,7 +234,15 @@ def create_wine(request):
             )
     else:
         main_form = CreateWineForm()
-    return render(request, "create_wine.html", {"main_form": main_form})
+        manufacturer = Manufacturer.objects.all()
+    return render(
+        request,
+        "create_wine.html",
+        {
+            "main_form": main_form,
+            "manufacturer": manufacturer
+        }
+    )
 
 
 class Home(TemplateView):
