@@ -1,28 +1,128 @@
 {% extends "base.html" %}
+{% load static %}
 {% load crispy_forms_filters %}
 {% load crispy_forms_tags %}
 {% block content %}
-    {% if not first_dict_name %}
-        <h2>Add a new wine</h2>
-        <p>Do you feel adventurous? Try uploading your wine label image to predict its name and vintage</p>
-        <form name="search_form" method="post" class="py-3 m-3" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ search_form|crispy }}
-            <label for="id_image">Upload Image:</label>
-            <input class="btn btn-outline-info" type="file" name="image" accept="image/*" required id="id_image">
-            <input class="btn btn-outline-info" type="submit" value="Upload wine label">
-        </form>
-    {% endif %}
-    <hr>
-    <div class="content-section">
-        <form name="create_wine" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                {{ main_form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Create wine</button>
+    {#  Below navbarn  #}
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('{% static "images/wallpaper_small.jpg" %}');"
+             data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-center">
+                <div class="col-md-9 ftco-animate mb-5 text-center">
+                    <p class="breadcrumbs mb-0"><span class="mr-2"><a href="{% url "list_wines" %}">Home <i
+                            class="fa fa-chevron-right"></i></a></span> <span>E-Shop <i class="fa fa-chevron-right"></i></span>
+                    </p>
+                    <h2 class="mb-0 bread mt-3">Sell wine</h2>
+                </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </section>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tag }} text-center h2">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <section>
+        <div class="container pt-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-center">
+                        <div class="col-md-6 border align" style="background-color: #f3eeff">
+                            {% if not first_dict_name %}
+                                <p>Do you feel adventurous? Try uploading your wine label image to predict its
+                                    name and
+                                    vintage</p>
+                                <form name="search_form" method="post" enctype="multipart/form-data">
+                                    <div class="form-row form-group">
+                                        {% csrf_token %}
+                                        <input class="form-control w-15" type="file" name="image"
+                                               accept="image/*"
+                                               required id="id_image">
+                                    </div>
+                                    <input class="btn btn-outline-info h-100" type="submit"
+                                           value="Upload wine label">
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+    </section>
+    <section class="ftco-section ftco-no-pb ml-auto mr-auto w-50">
+        <div class="container">
+            <form name="main_form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row form-group mt-2">
+                    <div class="col">
+                        <label for="id_name" class="category h5 requiredField">
+                            Name<span class="asteriskField">*</span> </label>
+                        <input type="text" name="name" maxlength="100" class="form-control" required id="id_name"
+                               value="{{ first_dict_name|title }}">
+                    </div>
+                    <div class="col">
+                        <label for="id_image" class="category h5 w-100 requiredField">
+                            Image<span class="asteriskField">*</span> </label>
+                        <input type="file" name="image" accept="image/*"
+                               class="clearablefileinput form-control" id="id_image">
+                    </div>
+                </div>
+                <div class="form-row">
+                   <label for="id_description" class="category h5 w-100 requiredField">
+                        Description<span class="asteriskField">*</span> </label>
+                     <textarea name="description" cols="40" rows="3" class="textarea form-control"
+                                        required id="id_description"></textarea>
+
+                </div>
+                <div class="form-row form-group mt-2">
+                <div class="col">
+                    <label for="id_vintage" class="category h5 w-100 mt-2 requiredField">Vintage<span class="asteriskField">*</span> </label>
+                        <input type="number" name="vintage" {% if year|length >= "4" %}value="{{ year }}"{% else %}placeholder="2001" {% endif %}
+                                    min="0" class="numberinput form-control" required id="id_vintage">
+                </div>
+                <div class="col">
+                        <label for="id_alcohol_content" class="category h5 w-100 mt-2">Alcohol content</label>
+                        <input type="number" name="alcohol_content" step="any"
+                                    class="numberinput form-control" id="id_alcohol_content" placeholder="10 %">
+                </div>
+                <div class="col">
+                        <label for="id_price_per_unit" class="category h5 w-100 mt-2 requiredField">Unit price<span class="asteriskField">*</span> </label>
+                        <input type="number" name="price_per_unit" placeholder="€ 0" min="0" class="numberinput form-control" required id="id_price_per_unit">
+                </div>
+                <div class="col">
+                        <label for="id_units_in_stock" class="category h5 w-100 mt-2 requiredField">Amount<span class="asteriskField">*</span> </label>
+                        <input type="number" name="units_in_stock" value="1" min="0" class="numberinput form-control" required id="id_units_in_stock">
+                </div>
+                    </div>
+                <div class="form-row form-group mt-2">
+                <div class="col">
+                    <label for="id_manufacturer" class="category h5 w-100 mt-2">Manufacturer</label>
+                    <select name="manufacturer" class="select form-control" id="id_manufacturer">
+                            {% for name in manufacturer %}
+                                <option value="{{ name.id }}">{{ name.name }}</option>
+                            {% empty %}
+                                <option value="" selected>---------</option>
+                            {% endfor %}
+                        </select>
+                </div>
+                <div class="col">
+                    <label for="id_type" class="category h5 w-100 mt-2 requiredField">
+                        Type<span class="asteriskField">*</span> </label>
+                        <select name="type" class="select form-control" id="id_type">
+                            <option value="Red">Red</option>
+                            <option value="White">White</option>
+                            <option value="Sparkling">Sparkling</option>
+                            <option value="Rose">Rose</option>
+                            <option value="Dessert">Dessert</option>
+                            <option value="Other">Other</option>
+                        </select>
+                </div>
+                </div>
+                <div class="form-row form-group mt-2 d-flex justify-content-center pb-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </section>
 {% endblock content %}

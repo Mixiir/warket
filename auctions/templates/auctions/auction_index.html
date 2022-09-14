@@ -18,7 +18,7 @@
         </div>
     </section>
     {#  File body  #}
-    <section class="ftco-section ftco-no-pb">
+    <section class="ftco-section ftco-no-pb" style="background-color: darkgray">
         <div class="container">
             <div class="row">
                                 <div class="col-lg-2 col-md-4 ">
@@ -72,7 +72,7 @@
             </div>
         </div>
     </section>
-    <section class="ftco-section">
+    <section class="ftco-section" style="background-color: darkgray">
         <div class="container">
             <div class="row p-4 h-25">
                 <div class="col-md-12">
@@ -80,9 +80,9 @@
                         {% for wine in auction_wines %}
                             <div class="col-md-4 d-flex">
                                 <div class="product ftco-animate" style="height: 800px;">
-                                    <div class="card-body  border-left border-right border-top border-bottom h-auto">
+                                    <div class="card-body  border-left border-right border-top border-bottom h-auto" style="border-radius: 10%">
                                         <div class="img d-flex align-items-center justify-content-center"
-                                             style="background-image: url({{ wine.image.url }});">
+                                             style="background-image: url({{ wine.image.url }}); border-radius: 10%">
                                             <div class="desc">
                                                 <p class="meta-prod d-flex">
                                                     <a href="{% url "details" wine.id %}"

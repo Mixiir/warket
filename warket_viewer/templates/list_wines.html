@@ -16,8 +16,15 @@
             </div>
         </div>
     </section>
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tag }} text-center h2">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     {#  File body  #}
-    <section class="ftco-section ftco-no-pb">
+    <section class="ftco-section ftco-no-pb" style="background-color: darkgray">
         <div class="container">
             <div class="row">
                 <div class="col-lg-2 col-md-4 ">
@@ -71,7 +78,7 @@
             </div>
         </div>
     </section>
-    <section class="ftco-section">
+    <section class="ftco-section" style="background-color: darkgray">
         <div class="container">
             <form method="get">
                 <div class="input-group">
@@ -93,7 +100,7 @@
                                 <div class="product ftco-animate">
                                     <div class="card-body">
                                         <div class="img d-flex align-items-center justify-content-center"
-                                             style="background-image: url({{ wine.image.url }});">
+                                             style="background-image: url({{ wine.thumbnail.url }}); border-radius: 10%">
                                             <div class="desc">
                                                 <p class="meta-prod d-flex">
                                                     <a href="{% url "detail_wine" wine.id %}"
@@ -140,6 +147,4 @@
             </div>
         </div>
     </section>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 {% endblock %}

@@ -7997,7 +7997,7 @@ a.text-dark:hover, a.text-dark:focus {
 body {
   font-family: "Spectral", serif;
   background: #fff;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1.8;
   font-weight: 300;
   color: gray; }
@@ -8693,7 +8693,7 @@ h1, h2, h3, h4, h5,
   background: #fff;
   -webkit-box-shadow: inset 0px 0px 101px 21px rgba(0, 0, 0, 0.09);
   -moz-box-shadow: inset 0px 0px 101px 21px rgba(0, 0, 0, 0.09);
-  box-shadow: inset 0px 0px 101px 21px rgba(0, 0, 0, 0);
+  box-shadow: inset 0px 0px 101px 21px rgba(0, 0, 0, 0.09);
   height: 100%;
   display: block; }
 
@@ -9962,9 +9962,69 @@ textarea.form-control {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
 
-.background_fade {
-  background: #466368;
-  background: -webkit-linear-gradient(rgba(8, 8, 8, 0.68), #402F39);
-  background:    -moz-linear-gradient(rgba(8, 8, 8, 0.68), #402F39);
-  background:         linear-gradient(rgba(8, 8, 8, 0.68), #402F39);
-}
+input::file-selector-button {
+    font-weight: bold;
+    color: dodgerblue;
+    padding: 0.5em;
+    border: thin solid grey;
+    border-radius: 3px;
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+  -o-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out; }
+  @media screen and (prefers-reduced-motion: reduce) {
+    .input::file-selector-button {
+      -webkit-transition: none;
+      -o-transition: none;
+      transition: none; } }
+  .input::file-selector-button:hover {
+    color: #212529;
+    text-decoration: none; }
+  .input::file-selector-button:focus, .input::file-selector-button.focus {
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }
+  .input::file-selector-button.disabled, .input::file-selector-button:disabled {
+    opacity: 0.65; }
+  .input::file-selector-button:not(:disabled):not(.disabled) {
+    cursor: pointer; }
+  input::file-selector-button {
+  color: #464646;
+  background-color: #87c5ff;
+  border-color: #007bff; }
+  .btn-primary:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc; }
+  .btn-primary:focus, .btn-primary.focus {
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5); }
+  .btn-primary.disabled, .btn-primary:disabled {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff; }
+  .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active,
+  .show > .btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #0062cc;
+    border-color: #005cbf; }
+    .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus,
+    .show > .btn-primary.dropdown-toggle:focus {
+      -webkit-box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+      box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5); }

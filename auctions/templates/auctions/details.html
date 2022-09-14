@@ -19,21 +19,21 @@
         </div>
     </section>
     {#  Wine auction body  #}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tag }} text-center h2">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tag }} text-center h2">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <section class="ftco-section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 ftco-animate ml-auto mr-0">
-                    <a href="{{ wine.image.url }}" class="image-popup prod-img-bg">
+                <div class="col-lg-5 ftco-animate ml-auto mr-0">
+                    <a href="{{ wine.image.url }}" class="image-popup">
                         <img src="{{ wine.image.url }}" class="img-fluid  ml-auto mr-0" alt="Wine image " style="max-width: 50%;" ></a>
                 </div>
-                <div class="col-lg-6 product-details pl-md-5 ftco-animate border-left">
+                <div class="col-lg-5 product-details pl-md-5 ftco-animate border-left">
                     <h3>{{ wine.name }}</h3>
                     <p class="price h4 border-bottom">{{ wine.description }}</p>
                     <p class="h5"><span>Start bid: €{{ wine.start_bid }}</span></p>
@@ -58,9 +58,10 @@
                     {% endif %}
                 </div>
         </div>
+        <div class="pt-5">
+        </div>
             {% for bid in bids %}
-                <div class="text-center">{{ bid.user.username }} bid <strong>€{{ bid.bid_value }}</strong> at
-                    {{ bid.date|date:"M d, h:i a" }}</div>
+                <div class="text-center h5">{{ bid.user.username }} bid €{{ bid.bid_value }} at {{ bid.date|date:"M d, h:i a" }}</div>
             {% empty %}
                 <div class="alert alert-warning text-center">
                     No Bids Yet!
@@ -98,7 +99,7 @@
                             <button class="btn btn-primary" type="submit">Place Bid</button>
                             {% if wine.user.username == user.username and user.is_staff %}
                                 <a href="{% url "end" wine.id %}">
-                                    <button class="btn btn-warning" type="button">End Auction</button>
+                                    <button class="btn btn-warning disabled" type="button">End Auction</button>
                                 </a>
                             {% endif %}
                         </div>
@@ -106,7 +107,7 @@
                 {% endif %}
             </section>
 
-            <section>
+            <section class="h5">
                 Details:
                 <ul>
                     <li>Listed By: <strong>{{ wine.user.username }}</strong></li>
@@ -116,7 +117,7 @@
                 </ul>
             </section>
 
-            <section>
+            <section class="h5">
                 Comments:
                 {% for comment in comments %}
                     <div class="card comment">
@@ -135,7 +136,7 @@
                     </div>
                 {% endfor %}
                 {% if wine.comments_allowed %}
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated and wine.active %}
                         <form action="{% url "comment" wine.id %}" method="post">
                             {% csrf_token %}
                             <div class="form-group">
