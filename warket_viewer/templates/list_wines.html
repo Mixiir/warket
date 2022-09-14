@@ -16,7 +16,7 @@
             </div>
         </div>
     </section>
-        {% if messages %}
+    {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tag }} text-center h2">
                 {{ message }}
@@ -24,7 +24,7 @@
         {% endfor %}
     {% endif %}
     {#  File body  #}
-    <section class="ftco-section ftco-no-pb" style="background-color: darkgray">
+    <section class="ftco-section ftco-no-pb " style="background-color: darkgray;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-2 col-md-4 ">
@@ -96,11 +96,12 @@
                 <div class="col-md-12">
                     <div class="row">
                         {% for wine in wines_data %}
-                            <div class="col-md-4 d-flex">
+                            <div class="col-md-4 d-flex" style="transform: scale(1)">
                                 <div class="product ftco-animate">
                                     <div class="card-body">
                                         <div class="img d-flex align-items-center justify-content-center"
-                                             style="background-image: url({{ wine.thumbnail.url }}); border-radius: 10%">
+                                             style="background-image: url(
+                                                     {% if wine.image %}{{ wine.image.url }}{% else %}{{ wine.thumbnail.url }}{% endif %}); border-radius: 10%">
                                             <div class="desc">
                                                 <p class="meta-prod d-flex">
                                                     <a href="{% url "detail_wine" wine.id %}"

@@ -21,11 +21,11 @@
     <section class="ftco-section ftco-no-pb" style="background-color: darkgray">
         <div class="container">
             <div class="row">
-                                <div class="col-lg-2 col-md-4 ">
+                <div class="col-lg-2 col-md-4">
                     <a href="{% url "create_listing" %}">
                         <div class="sort w-100 text-center ftco-animate">
                             <div class="img" style="background-image: url({% static "images/vermut.png" %});"></div>
-                            <h3 class="alert-danger">Create auction</h3>
+                            <h3 class="btn-success">Create auction</h3>
                         </div>
                     </a>
                 </div>
@@ -103,8 +103,8 @@
                                                 {% if wine.last_bidder %}{{ wine.last_bidder }}{% else %}
                                                     {{ wine.user.username }}{% endif %}</span>
                                             <br>
-                                            <span class="price h5 font-weight-bold">Ending in:
-                                                {% if wine.end_date %}{{ wine.end_date }}{% else %}
+                                            <span class="price h5 font-weight-bold">Ending at:
+                                                {% if wine.end_date %}{{ wine.end_date|date:"d M y H:m" }}{% else %}
                                                     ???{% endif %}</span>
                                         </a>
                                             <br>

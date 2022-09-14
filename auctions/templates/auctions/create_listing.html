@@ -17,18 +17,20 @@
             </div>
         </div>
     </section>
-    <section class="ftco-section ftco-no-pb ml-auto mr-auto w-50" style="background-color: darkgray">
+    <section class="w-100" style="background-color: darkgray">
         <div class="container">
             <form action="{% url "create_listing" %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-row form-group mt-2">
                     <div class="col">
                         <label class="category h5" for="title">Title</label>
-                        <input autofocus type="text" placeholder="Enter Title" name="name" class="form-control" required maxlength="50">
+                        <input autofocus type="text" placeholder="Enter Title" name="name" class="form-control" required
+                               maxlength="50">
                     </div>
                     <div class="col">
                         <label class="category h5" for="start_bid">Starting Bid</label>
-                        <input type="number" name="start_bid" class="form-control" placeholder="0.0" step=".01" required maxlength="5">
+                        <input type="number" name="start_bid" class="form-control" placeholder="0.0" step=".01" required
+                               maxlength="5">
                     </div>
                 </div>
 
@@ -40,8 +42,8 @@
                 <div class="form-row form-group mt-2">
                     <div class="col">
                         <label class="category h5 w-100 mt-2" for="image">Upload Image
-                        <input type="file" accept="image/*" name="image" class="form-control">
-                            </label>
+                            <input type="file" accept="image/*" name="image" class="form-control">
+                        </label>
                     </div>
                     <div class="col">
                         <label class="category h5" for="category">Category</label>
@@ -64,16 +66,14 @@
                     </div>
                     <div class="col">
                         <label class="category h5" for="start_bid">Auction ends in * days</label>
-                        <input type="number" name="auction_period" class="form-control" value="1" step="1" required max="30">
+                        <input type="number" name="auction_period" class="form-control" value="1" step="1" required
+                               max="30">
                     </div>
                 </div>
                 <div class="text-center">
-                    <button class="btn btn-primary mb-3 gradient-button add-listing" type="submit" >Submit
-                    </button>
+                    <button class="btn btn-primary gradient-button mb-3" type="submit">Submit</button>
                 </div>
             </form>
         </div>
     </section>
-
-
 {% endblock %}
