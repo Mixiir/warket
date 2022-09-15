@@ -1,6 +1,6 @@
 # Warket
 
-Wine market is a web application for wine lovers, where you can trade and auction wines.
+### Wine market is a web application for wine lovers, where you can trade and auction wines.
 
 It has been written in python using the Django framework, database used is mysql, but can work with local sqlite3 too.
 It is a project for the SD Academy Python course.
