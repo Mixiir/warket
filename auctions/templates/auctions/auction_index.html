@@ -80,7 +80,7 @@
                     <div class="row">
                         {% for wine in auction_wines %}
                             <div class="col-md-3 d-flex">
-                                <div class="product ftco-animate" style="height: 800px;">
+                                <div class="product ftco-animate">
                                     <div class="card-body  border-left border-right border-top border-bottom h-auto" style="border-radius: 10%;">
                                         <div class="img d-flex align-items-center justify-content-center"
                                              style="background-image: url({{ wine.image.url }}); border-radius: 10%; height: 200px; width: auto">
@@ -98,7 +98,7 @@
                                             <br>
                                             <span class="mt-2">{{ wine.description }}</span>
                                             <hr/>
-                                            <span class="font-weight-bold">Highest bid: €{{ wine.max_bid }}</span>
+                                            <span class="font-weight-bold">Highest bid: </span><span data-toggle="tooltip" title="Green - You have highest bid, Red - Somebody else has highest bid" class="font-weight-bold{% if wine.last_bidder != user.username %} text-danger{% else %} text-success {% endif %}">€{{ wine.max_bid }}</span>
                                             <br>
                                             <span style="color: #0b0b0b">Bid holder:
                                                 {% if wine.last_bidder %}{{ wine.last_bidder }}{% else %}
@@ -137,7 +137,6 @@
                         {% endfor %}
                         </div>
             </div>
-        </div>
+            </div>
     </section>
-    </div>
 {% endblock %}

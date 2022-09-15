@@ -23,7 +23,8 @@
             </div>
         {% endfor %}
     {% endif %}
-    <section class="ftco-section testimony-section img" style="background-image: url({% static "images/winebackground2.jpg" %});"">
+    <section class="ftco-section testimony-section img"
+             style="background-image: url({% static "images/winebackground2.jpg" %});">
         <div class="container">
             <div class="row">
                 <div class="table-wrap">
@@ -43,29 +44,28 @@
                             {% for item in cart %}
                                 {% with wine=item.wine %}
                                     <td>
-                                        <a href ="{% url "detail_wine" wine.id%}"><div class="img" style="background-image: url({{ wine.image.url }});"></div></a>
+                                        <a href="{% url "detail_wine" wine.id %}">
+                                            <div class="img" style="background-image: url({{ wine.image.url }});"></div>
+                                        </a>
                                     </td>
                                     <td>
-                                        <a href ="{% url "detail_wine" wine.id%}"><div class="email">
-                                            <span class="h4" style="color: #b7472a">{{ wine.name }}</span>
-                                            <span class="h5" style="color: #0b0b0b">{{ wine.description }}</span>
-                                        </div></a>
+                                        <a href="{% url "detail_wine" wine.id %}">
+                                            <div class="email">
+                                                <span class="h4" style="color: #b7472a">{{ wine.name }}</span>
+                                                <span class="h5" style="color: #0b0b0b">{{ wine.description }}</span>
+                                            </div>
+                                        </a>
                                     </td>
                                     <td>
                                         <div class="price">€{{ wine.price_per_unit }}</div>
                                     </td>
                                     <td>
                                         <form action="{% url "cart:cart_add" wine.id %}" method="post">
-                                            <select name="quantity" id="id_quantity_2" class="btn">
+                                            <select name="quantity" id="id_quantity" class="btn">
                                                 {% for x in ""|center:wine.units_in_stock %}
-                                                    <option value="
-                                                            {% if forloop.counter == item.quantity %}{{ forloop.counter }}"
-                                                            selected>
-                                                                {{ forloop.counter }}{% else %}{{ forloop.counter }}">
-                                                                {{ forloop.counter }}{% endif %}</option>
-                                                {% endfor %}
+                                                    <option value="{% if forloop.counter == item.quantity %}{{ forloop.counter }}" selected>{{ forloop.counter }}{% else %}{{ forloop.counter }}">{{ forloop.counter }}{% endif %}</option>{% endfor %}
                                             </select>
-                                            <input type="hidden" name="update" value="True" id="id_update">
+                                            {{ item.update_quantity_form.update }}
                                             <input type="submit" value="Update" class="btn btn-warning">
                                             {% csrf_token %}
                                         </form>

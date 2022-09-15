@@ -4,6 +4,7 @@ import uuid
 
 import decouple
 import requests
+from PIL import Image
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -13,12 +14,10 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView, TemplateView)
-from PIL import Image
 
 from cart.forms import CartAddProductForm
-
 from .constants import COUNTRIES
-from .forms import CreateWineForm, FormAPI
+from .forms import CreateWineForm, FormAPI, CreateManufacturerForm
 from .models import Manufacturer, Wine
 
 
@@ -212,6 +211,7 @@ def create_wine(request):
                             {
                                 "year": year,
                                 "first_dict_name": first_dict_name,
+                                "manufacturer": Manufacturer.objects.all(),
                                 "main_form": main_form,
                             }
                         )
@@ -250,13 +250,12 @@ def create_wine(request):
             )
     else:
         main_form = CreateWineForm()
-        manufacturer = Manufacturer.objects.all()
     return render(
         request,
         "create_wine.html",
         {
             "main_form": main_form,
-            "manufacturer": manufacturer
+            "manufacturer": Manufacturer.objects.all()
         }
     )
 
@@ -272,3 +271,12 @@ class Home(TemplateView):
 
 class Base(TemplateView):
     template_name = "base.html"
+
+
+def create_manufacturer(request):
+    form = CreateManufacturerForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Manufacturer has been created")
+        return redirect("list_manufacturers")
+    return render(request, "create_manufacturer.html", {"form": form})

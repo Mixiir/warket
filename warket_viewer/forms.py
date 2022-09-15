@@ -3,7 +3,7 @@ from crispy_forms.layout import Layout, Div
 
 from django import forms
 
-from .models import Wine
+from .models import Wine, Manufacturer
 
 
 class CreateWineForm(forms.ModelForm):
@@ -51,3 +51,15 @@ class FormAPI(forms.Form):
             return image
         else:
             raise forms.ValidationError("Couldn't read uploaded image")
+
+
+class CreateManufacturerForm(forms.ModelForm):
+    class Meta:
+        model = Manufacturer
+        fields = [
+            "name",
+            "image",
+            "bio",
+            "country",
+            "region",
+        ]

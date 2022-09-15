@@ -23,16 +23,12 @@
         {% endfor %}
     {% endif %}
     <section>
-        <div class="row">
-        <div class="col text-right">
-            <span class="text-center">Are you sure you want to delete {{ wine.name }}?</span>
-        </div>
-            <div class="col">
+    <div class="container text-center h3">
+            <span>Are you sure you want to delete {{ wine.name }}?</span>
             <form method="post">
                 {% csrf_token %}
                 <input type="submit" value="Delete wine" class="btn btn-danger">
             </form>
-                </div>
         </div>
     </section>
 {% endblock %}

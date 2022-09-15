@@ -26,12 +26,14 @@
             </div>
         {% endfor %}
     {% endif %}
-    <section class="ftco-section testimony-section img" style="background-image: url({% static "images/winebackground2.jpg" %});">
+    <section class="ftco-section testimony-section img"
+             style="background-image: url({% static "images/winebackground2.jpg" %});">
         <div class="container">
             <div class="row">
                 <div class="col-lg-5 ftco-animate ml-auto mr-0">
                     <a href="{{ wine.image.url }}" class="image-popup">
-                        <img src="{{ wine.image.url }}" class="float-right" alt="Wine image " style="max-width: 50%;" ></a>
+                        <img src="{{ wine.image.url }}" class="float-right" alt="Wine image "
+                             style="max-width: 50%;"></a>
                 </div>
                 <div class="col-lg-5 product-details pl-md-5 ftco-animate border-left">
                     <h3>{{ wine.name }}</h3>
@@ -57,11 +59,12 @@
                         <span class="badge text-danger">Ended</span>
                     {% endif %}
                 </div>
-        </div>
-        <div class="pt-5">
-        </div>
+            </div>
+            <div class="pt-5">
+            </div>
             {% for bid in bids %}
-                <div class="text-center h5">{{ bid.user.username }} bid €{{ bid.bid_value }} at {{ bid.date|date:"M d, h:i a" }}</div>
+                <div class="text-center h5">{{ bid.user.username }} bid €{{ bid.bid_value }}
+                    at {{ bid.date|date:"M d, h:i a" }}</div>
             {% empty %}
                 <div class="alert alert-warning text-center">
                     No Bids Yet!
@@ -97,10 +100,13 @@
                         </div>
                         <div class="row justify-content-around">
                             <button class="btn btn-primary" type="submit">Place Bid</button>
-                            {% if wine.user.username == user.username and user.is_staff %}
-                                <a href="{% url "end" wine.id %}">
-                                    <button class="btn btn-warning disabled" type="button">End Auction</button>
-                                </a>
+
+                            {% if not wine.last_bidder %}
+                                {% if wine.user.username == user.username or user.is_staff %}
+                                    <a href="{% url "end" wine.id %}">
+                                        <button class="btn btn-warning disabled" type="button">End Auction</button>
+                                    </a>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </form>
