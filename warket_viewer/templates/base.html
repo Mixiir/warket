@@ -65,7 +65,10 @@
                     </a>
                 {% endwith %}
             <div class="dropdown-menu dropdown-menu-right">
-                {% if cart %}{% for item in cart %}{% with wine=item.wine %}
+                {% if cart %}{% for item in cart %}
+                    {% if item not in wines1 %}
+                    {% else %}
+                    {% with wine=item.wine %}
                     <div class="dropdown-item d-flex align-items-start" href="#">
                         <div class="img" style="background-image: url(
                                 {% if wine.image %}{{ wine.image.url }}{% else %}https://infiror.eu/default.jpg{% endif %});"></div>
@@ -76,7 +79,7 @@
                                     class="quantity ml-3">Quantity: {{ item.quantity }}</span></p>
                         </div>
                     </div>
-                {% endwith %}{% endfor %}{% endif %}
+                {% endwith %}{% endif %}{% endfor %}{% endif %}
                 <p class="dropdown-item text-center d-block w-100">Total price: €{{ cart.get_total_price }}</p>
                 <a class="dropdown-item text-center btn-link d-block w-100" href="{% url "cart:cart_detail" %}">
                     View All

@@ -64,7 +64,9 @@ class WineListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        wines1 = Wine.objects.all()
         context["page_is"] = "wines"
+        context["wines1"] = wines1
         return context
 
 
