@@ -82,6 +82,19 @@ DATABASES = {
         "PORT": "3306",
         "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
     },
+    "blank": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": config("DB_BLANK"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_IP"),
+        "PORT": "3306",
+        "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
+    },
+    "local": {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'database',
+    },
 }
 
 # Password validation
