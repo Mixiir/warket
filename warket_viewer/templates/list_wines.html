@@ -27,11 +27,12 @@
         <section>
             <div class="container">
                 <div class="row" style="transform: scale(0.7)">
+
                     <div class="col-lg-2 col-md-4 ">
                         <a href="./?search=Red">
                             <div class="sort w-100 text-center ftco-animate">
                                 <div class="img" style="background-image: url({% static "images/red.png" %});"></div>
-                                <h2>Red</h2>
+                                <h2 class="{% if "search=Red" in request.get_full_path %}blink-text{% endif %}">Red</h2>
                             </div>
                         </a>
                     </div>
@@ -39,7 +40,8 @@
                         <a href="./?search=White">
                             <div class="sort w-100 text-center ftco-animate">
                                 <div class="img" style="background-image: url({% static "images/white.jpg" %});"></div>
-                                <h2>White</h2>
+                                <h2 class="{% if "search=White" in request.get_full_path %}blink-text{% endif %}">
+                                    White</h2>
                             </div>
                         </a>
                     </div>
@@ -48,7 +50,8 @@
                             <div class="sort w-100 text-center ftco-animate">
                                 <div class="img"
                                      style="background-image: url({% static "images/sparkling.png" %});"></div>
-                                <h2>Sparkling</h2>
+                                <h2 class="{% if "search=Sparkling" in request.get_full_path %}blink-text{% endif %}">
+                                    Sparkling</h2>
                             </div>
                         </a>
                     </div>
@@ -56,7 +59,8 @@
                         <a href="./?search=Rose">
                             <div class="sort w-100 text-center ftco-animate">
                                 <div class="img" style="background-image: url({% static "images/rose.jpg" %});"></div>
-                                <h2>Rose</h2>
+                                <h2 class="{% if "search=Rose" in request.get_full_path %}blink-text{% endif %}">
+                                    Rose</h2>
                             </div>
                         </a>
                     </div>
@@ -65,7 +69,8 @@
                             <div class="sort w-100 text-center ftco-animate">
                                 <div class="img"
                                      style="background-image: url({% static "images/dessert.jpg" %});"></div>
-                                <h2>Dessert</h2>
+                                <h2 class="{% if "search=Dessert" in request.get_full_path %}blink-text{% endif %}">
+                                    Dessert</h2>
                             </div>
                         </a>
                     </div>
@@ -73,7 +78,8 @@
                         <a href="./?search=Other">
                             <div class="sort w-100 text-center ftco-animate">
                                 <div class="img" style="background-image: url({% static "images/vermut.png" %});"></div>
-                                <h2>Other</h2>
+                                <h2 class="{% if "search=Other" in request.get_full_path %}blink-text{% endif %}">
+                                    Other</h2>
                             </div>
                         </a>
                     </div>
@@ -100,33 +106,35 @@
                             <div class="col-md-3 d-flex">
                                 <div class="product ftco-animate">
                                     <div class="card-body">
-                                        <div class="img d-flex align-items-center justify-content-center"
-                                             style="background-image: url(
-                                                     {% if wine.image %}{{ wine.image.url }}{% else %}{{ wine.thumbnail.url }}{% endif %}); border-radius: 10%; height:150px; width: auto">
-                                            <div class="desc">
-                                                <p class="meta-prod d-flex">
-                                                    <a href="{% url "detail_wine" wine.id %}"
-                                                       class="d-flex align-items-center justify-content-center">
-                                                        <span class="flaticon-visibility"></span></a>
-                                                </p>
+                                        <a href="{% url "detail_wine" wine.id %}">
+                                            <div class="img d-flex align-items-center justify-content-center"
+                                                 style="background-image: url(
+                                                         {% if wine.image %}{{ wine.image.url }}{% else %}{{ wine.thumbnail.url }}{% endif %}); border-radius: 10%; height:150px; width: auto">
+                                                <div class="desc">
+                                                    <p class="meta-prod d-flex">
+
+                                                        <span class="flaticon-visibility"></span>
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </a>
                                         <div class="text text-center">
                                             <div class="w-100">
                                                 <div style="height: 60px" class="w-100">
                                                     <a href="{% url "detail_wine" wine.id %}">
                                                         <span class="category font-weight-bold mt-2">{{ wine.name|slice:25 }}
-                                                {% if wine.name|length > 25 %}...{% endif %}</span></a>
+                                                            {% if wine.name|length > 25 %}...{% endif %}</span></a>
                                                 </div>
                                                 <div style="height: 60px">
                                                     <a class="mb-0" href="{% url "detail_wine" wine.id %}">
                                                         <span class="mt-2">{{ wine.description|slice:25 }}
-                                                {% if wine.description|length > 25 %}...{% endif %}</span></a>
+                                                            {% if wine.description|length > 25 %}
+                                                                ...{% endif %}</span></a>
                                                 </div>
-                                            <div class="border-top border-bottom">
-                                                <a class="mt-0" href="{% url "detail_wine" wine.id %}">
-                                                    <span>Price: €{{ wine.price_per_unit }}</span></a>
-                                            </div>
+                                                <div class="border-top border-bottom">
+                                                    <a class="mt-0" href="{% url "detail_wine" wine.id %}">
+                                                        <span>Price: €{{ wine.price_per_unit }}</span></a>
+                                                </div>
                                             </div>
                                             <div class="mt-auto">
                                                 <form action="{% url "cart:cart_add" wine.id %}" method="post">
@@ -165,6 +173,5 @@
                         </div>
             </div>
         </div>
-        </section>
     </div>
 {% endblock %}

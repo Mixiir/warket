@@ -1,6 +1,3 @@
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div
-
 from django import forms
 
 from .models import Wine, Manufacturer
@@ -19,7 +16,6 @@ class CreateWineForm(forms.ModelForm):
             "units_in_stock",
             "manufacturer",
             "type",
-            # "variety"
         ]
 
 
@@ -36,7 +32,6 @@ class EditWineForm(forms.ModelForm):
             "units_in_stock",
             "manufacturer",
             "type",
-            # "variety"
         ]
 
 

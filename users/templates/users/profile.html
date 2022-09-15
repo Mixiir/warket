@@ -17,18 +17,18 @@
             </div>
         </div>
     </section>
-        {% if messages %}
+    {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tag }} text-center h5">
                 {{ message }}
             </div>
         {% endfor %}
     {% endif %}
-    <section class ="testimony-section img" style="background-image: url({% static "images/winebackground2.jpg" %});">
+    <section class="testimony-section img" style="background-image: url({% static "images/winebackground2.jpg" %});">
         <div class="container category h5 font-weight-bold w-50">
             <div class="media">
                 <img class="account-img border-right mr-3" height="250" width=auto src="{{ user.image.url }}"
-                     style="border-radius: 5%">
+                     style="border-radius: 5%" alt="background">
                 <div class="media-body w-25">
                     <h2 class="account-heading bo">{{ user.username }}</h2>
                     <p class="h5">{{ user.email }}</p>
@@ -40,7 +40,7 @@
                 {% csrf_token %}
                 <fieldset class="form-group ">
                     <div class="row">
-                        <legend class="border-bottom">Profile Info</legend>
+                        <span class="border-bottom">Profile Info</span>
                     </div>
                     <div class="row">
                         <div class="col">

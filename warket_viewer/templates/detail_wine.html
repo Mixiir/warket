@@ -60,12 +60,16 @@
 
                     <a class="nav-link ftco-animate mr-lg-1" id="v-pills-2-tab" data-toggle="pill" href="#v-pills-2"
                        role="tab" aria-controls="v-pills-2" aria-selected="false">Manufacturer</a>
+                    {% if user == wine_data.user or user.is_staff %}
+                    <a class="nav-link ftco-animate mr-lg-1" id="v-pills-2-tab" href="{% url "edit_wine" wine_data.id %}"
+                       role="tab" aria-selected="false">Edit</a>
+                    <a class="nav-link ftco-animate mr-lg-1" id="v-pills-2-tab" href="{% url "delete_wine" wine_data.id %}"
+                       role="tab" aria-selected="false">Delete</a>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-12 tab-wrap">
-
                 <div class="tab-content bg-light" id="v-pills-tabContent">
-
                     <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="day-1-tab">
                         <div class="p-4">
                             <h3 class="mb-4">{{ wine_data.name}}</h3>

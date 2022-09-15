@@ -24,7 +24,7 @@ def auction_index(request):
 
 def all_auction_listings(request):
     check_auctions_auto()
-    auction_wines = AuctionListing.objects.all()
+    auction_wines = AuctionListing.objects.all().order_by("-end_date")
     return render(request, "auctions/auction_index.html", {
         "auction_wines": auction_wines
     })
@@ -240,7 +240,7 @@ def my_auction_listings(request):
     check_auctions_auto()
     auction_wines = AuctionListing.objects.filter(
         user=request.user
-    ).order_by("-active")
+    ).order_by("-end_date")
     return render(
         request,
         "auctions/auction_index.html",
@@ -263,7 +263,7 @@ def my_ended_auction_listings(request):
     auction_wines = AuctionListing.objects.filter(
         user=request.user,
         active=False
-    )
+    ).order_by("-end_date")
     return render(
         request,
         "auctions/auction_index.html",
@@ -273,8 +273,10 @@ def my_ended_auction_listings(request):
 
 def my_won_auction_listings(request):
     check_auctions_auto()
-    auction_wines = AuctionListing.objects.filter(active=False,
-                                                  last_bidder=request.user)
+    auction_wines = AuctionListing.objects.filter(
+        active=False,
+        last_bidder=request.user
+    ).order_by("-end_date")
     return render(
         request,
         "auctions/auction_index.html",

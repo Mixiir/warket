@@ -9,7 +9,6 @@ from warket_viewer.models import Wine
 class Cart(object):
     def __init__(self, request):
         self.session = request.session
-        wine = Wine.objects.all()
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
@@ -22,11 +21,10 @@ class Cart(object):
             else:
                 del cart[items]
                 self.save()
-                messages.error(request,
-                              "One or more items in your cart are no longer available.")
-
-
-
+                messages.error(
+                    request,
+                    "One or more items in your cart are no longer available."
+                )
 
     def add(self, wine, quantity=1, update_quantity=False):
         wine_id = str(wine.id)

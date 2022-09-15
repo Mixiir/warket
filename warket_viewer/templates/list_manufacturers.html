@@ -33,7 +33,7 @@
                                     href="{% url "detail_manufacturer" m.id %}">{{ forloop.counter }}. {{ m.name }}</a>
                             </div>
                             <div class="col pl-4"><a href="{% url "update_manufacturer" m.id %}">Edit</a>
-                                <a class="ml-2"href="{% url "delete_manufacturer" m.id %}">Delete</a>
+                                <a class="ml-2" href="{% url "delete_manufacturer" m.id %}">Delete</a>
                             </div>
                         </div>
                     {% endfor %}

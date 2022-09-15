@@ -63,7 +63,11 @@
                                         <form action="{% url "cart:cart_add" wine.id %}" method="post">
                                             <select name="quantity" id="id_quantity_{{ forloop.counter }}" class="btn">
                                                 {% for x in ""|center:wine.units_in_stock %}
-                                                    <option value="{% if forloop.counter == item.quantity %}{{ forloop.counter }}" selected>{{ forloop.counter }}{% else %}{{ forloop.counter }}">{{ forloop.counter }}{% endif %}</option>{% endfor %}
+                                                    <option value="
+                                                            {% if forloop.counter == item.quantity %}{{ forloop.counter }}"
+                                                            selected>
+                                                                {{ forloop.counter }}{% else %}{{ forloop.counter }}">
+                                                                {{ forloop.counter }}{% endif %}</option>{% endfor %}
                                             </select>
                                             {{ item.update_quantity_form.update }}
                                             <input type="submit" value="Update" class="btn btn-warning">

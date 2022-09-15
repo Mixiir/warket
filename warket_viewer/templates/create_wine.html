@@ -79,7 +79,7 @@
                 <div class="form-row form-group mt-2">
                 <div class="col">
                     <label for="id_vintage" class="category h5 w-100 mt-2 requiredField">Vintage<span class="asteriskField">*</span> </label>
-                        <input type="number" name="vintage" {% if year|length >= "4" %}value="{{ year }}"{% else %}placeholder="2001" {% endif %}
+                        <input type="number" name="vintage" {% if year|length >= "4" %}value="{{ year }}" {% else %}placeholder="2001" {% endif %}
                                     min="0" class="numberinput form-control" required id="id_vintage">
                 </div>
                 <div class="col">
