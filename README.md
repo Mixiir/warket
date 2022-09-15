@@ -47,11 +47,14 @@ python manage.py migrate
    ```python manage.py createsuperuser```
 8. Run the following command to start the server:
    ```python manage.py runserver```
-9. Open the browser and go to the following address:
+9. Open the browser and go to the following address, with this the app should be up and running:
    ```http://127.0.0.1:8000/```
-10. Firstly you will need to create some mandatory information for the application to work properly. Go to the following
+   
+### Last setup before use    
+Firstly you will need to create some mandatory information for the application to work properly. Go to the following
     address:
-    ```http://127.0.0.1:8000/create_manufacturer/``` and create a manufacturer. Then go to the following address:
+    ```http://127.0.0.1:8000/create_manufacturer/``` and create a manufacturer. 
+    Then go to the following address:
     ```http://127.0.0.1:8000/auctions/categories/``` and add atleast one category to be able to use the auctions as the
     category is a mandatory field.
 
