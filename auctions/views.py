@@ -2,12 +2,13 @@ from datetime import timedelta
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.db.models import Max
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.views.generic import DeleteView
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.views.generic import DeleteView
 
 from .forms import CreateAuctionListingForm
 from .models import AuctionListing, Bid, Category, Comment
@@ -126,6 +127,7 @@ def details(request, wine_id):
     )
 
 
+@login_required
 def categories(request):
     check_auctions_auto()
     if request.method == "POST":
@@ -294,7 +296,8 @@ def check_auctions_auto():
             auction.save()
 
 
-class DeleteCategory(DeleteView):
+class DeleteCategory(PermissionRequiredMixin, DeleteView):
+    permission_required = 'delete_category'
     template_name = "auctions/delete_category.html"
     model = Category
     success_url = reverse_lazy("categories")

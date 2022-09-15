@@ -95,7 +95,7 @@
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active"><a href="{% url "home" %}" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="{% url "about" %}" class="nav-link">About</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">E-shop</a>
@@ -124,7 +124,7 @@
                 {% if user.is_authenticated and user.seller or user.is_staff %}
                     <li class="nav-item"><a href="{% url "create_wine" %}" class="nav-link">Sell wine</a></li>
                 {% endif %}
-                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="{% url "contact" %}" class="nav-link">Contact</a></li>
             </ul>
         </div>
     </div>
@@ -176,10 +176,12 @@
                 <div class="ftco-footer-widget mb-4">
                     <h2 class="ftco-heading-2">Quick Link</h2>
                     <ul class="list-unstyled">
+                        <li><a href="{% url "about" %}"><span class="fa fa-chevron-right mr-2"></span>About us</a></li>
                         <li><a href="{% url "list_wines" %}"><span class="fa fa-chevron-right mr-2"></span>E-shop</a></li>
                         <li><a href="{% url "create_wine" %}"><span class="fa fa-chevron-right mr-2"></span>Sell wines</a></li>
                         <li><a href="{% url "auction_index" %}"><span class="fa fa-chevron-right mr-2"></span>Auctions</a></li>
                         <li><a href="{% url "create_listing" %}"><span class="fa fa-chevron-right mr-2"></span>Create auctions</a></li>
+                        <li><a href="{% url "contact" %}"><span class="fa fa-chevron-right mr-2"></span>Contact us</a></li>
                     </ul>
                 </div>
             </div>

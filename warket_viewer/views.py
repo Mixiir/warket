@@ -7,6 +7,7 @@ import requests
 from PIL import Image
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import Q
 from django.forms import HiddenInput
@@ -99,21 +100,24 @@ class CreateManufacturer(CreateView):
     fields = "__all__"
 
 
-class UpdateManufacturer(UpdateView):
+class UpdateManufacturer(PermissionRequiredMixin, UpdateView):
+    permission_required = 'update_manufacturer'
     template_name = "update_manufacturer.html"
     model = Manufacturer
     success_url = reverse_lazy("list_manufacturers")
     fields = "__all__"
 
 
-class DeleteManufacturer(DeleteView):
+class DeleteManufacturer(PermissionRequiredMixin, DeleteView):
+    permission_required = 'delete_manufacturer'
     template_name = "delete_manufacturer.html"
     model = Manufacturer
     success_url = reverse_lazy("list_manufacturers")
     context_object_name = "manufacturer"
 
 
-class DeleteWine(DeleteView):
+class DeleteWine(PermissionRequiredMixin, DeleteView):
+    permission_required = 'delete_wine'
     template_name = "delete_wine.html"
     model = Wine
     success_url = reverse_lazy("list_wines")
@@ -133,7 +137,8 @@ class DetailWine(DetailView):
         return context
 
 
-class EditWine(UpdateView):
+class EditWine(PermissionRequiredMixin, UpdateView):
+    permission_required = 'edit_wine'
     model = Wine
     fields = "__all__"
     widgets = {"user": HiddenInput()}
@@ -275,6 +280,7 @@ class Base(TemplateView):
     template_name = "base.html"
 
 
+@login_required
 def create_manufacturer(request):
     form = CreateManufacturerForm(request.POST or None)
     if form.is_valid():
@@ -282,3 +288,11 @@ def create_manufacturer(request):
         messages.success(request, "Manufacturer has been created")
         return redirect("list_manufacturers")
     return render(request, "create_manufacturer.html", {"form": form})
+
+
+class About(TemplateView):
+    template_name = "about.html"
+
+
+class Contact(TemplateView):
+    template_name = "contact.html"
