@@ -1,8 +1,12 @@
 # Warket
 
 Wine market is a web application for wine lovers, where you can trade and auction wines.
+It has been written in python using the Django framework. It is a project for the SD Academy course.
 
-### How to run
+Preview images:
+    ![Welcome image](https://github.com/mixii/warket/warket_viewer/static/images/default_view.png?raw=true)
+
+## Installation
 1. Clone the repository into your local machine
 2. Create your virtual environment with the command: 
 ```py -m venv venv```
