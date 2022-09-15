@@ -12,7 +12,7 @@ from warket_viewer.views import (CreateManufacturer, DeleteManufacturer,
                                  DeleteWine, DetailManufacturer, DetailWine,
                                  EditWine, ManufacturersListView,
                                  UpdateManufacturer, WineListView,
-                                 WineSortedList, create_wine, Home, Base, edit_wine)
+                                 WineSortedList, create_wine, Home, Base, edit_wine, create_manufacturer)
 
 urlpatterns = [
     path(
@@ -50,7 +50,7 @@ urlpatterns = [
     ),
     path(
         "create_manufacturer/",
-        CreateManufacturer.as_view(),
+        create_manufacturer,
         name="create_manufacturer"
     ),
     path(

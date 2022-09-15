@@ -46,7 +46,7 @@
                             <a href="{% url "register" %}" class="mr-2">Sign Up</a>
                             <a href="{% url "login" %}" class="mb-o mr-2">Log In</a>{% else %}
                             <a href="{% url "logout" %}" class="mr-2">Logout</a>{% endif %}{% if user.is_staff %}
-                        <a href="/admin/" class="mr-2">Admin panel - {{ user.username }}</a>{% endif %}</p>
+                        <a href="#" class="mr-2">{{ user.username }}</a>{% endif %}</p>
                 </div>
             </div>
         </div>
