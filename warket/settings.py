@@ -16,7 +16,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '*']
 
 # Application definition
 
@@ -72,8 +72,6 @@ WSGI_APPLICATION = "warket.wsgi.application"
 
 DATABASES = {
     "default": {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'test_d109366sd476154'),
         "ENGINE": "django.db.backends.mysql",
         "NAME": config("DB_NAME"),
         "USER": config("DB_USER"),
@@ -82,16 +80,16 @@ DATABASES = {
         "PORT": "3306",
         "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
     },
-    "blank": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": config("DB_BLANK"),
-        "USER": config("DB_USER"),
-        "PASSWORD": config("DB_PASSWORD"),
-        "HOST": config("DB_IP"),
-        "PORT": "3306",
-        "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
-    },
-    "local": {
+    # "default": {
+    #     "ENGINE": "django.db.backends.mysql",
+    #     "NAME": config("DB_BLANK"),
+    #     "USER": config("DB_USER"),
+    #     "PASSWORD": config("DB_PASSWORD"),
+    #     "HOST": config("DB_IP"),
+    #     "PORT": "3306",
+    #     "OPTIONS": {"init_command": "SET sql_mode='STRICT_TRANS_TABLES'"},
+    # },
+    "local_database": {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'database',
     },
