@@ -1,18 +1,32 @@
 from decimal import Decimal
 
 from django.conf import settings
+from django.contrib import messages
 
 from warket_viewer.models import Wine
 
 
 class Cart(object):
     def __init__(self, request):
-        # Starting cart session
         self.session = request.session
+        wine = Wine.objects.all()
         cart = self.session.get(settings.CART_SESSION_ID)
         if not cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
+        # Compare cart to wine list
+        # If wine is not in cart, remove it from cart
+        for items in list(cart):
+            if Wine.objects.filter(id=items).exists():
+                pass
+            else:
+                del cart[items]
+                self.save()
+                messages.error(request,
+                              "One or more items in your cart are no longer available.")
+
+
+
 
     def add(self, wine, quantity=1, update_quantity=False):
         wine_id = str(wine.id)
