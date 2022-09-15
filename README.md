@@ -2,7 +2,7 @@
 
 ### Wine market is a web application for wine lovers, where you can trade and auction wines.
 
-It has been written in python using the Django framework, database used is mysql, but can work with local sqlite3 too.
+It has been written in python (version 3.10) using the Django (version 4.1.1) framework, database used is mysql, but can work with local sqlite3 too.
 It is a project for the SD Academy Python course.
 
 Preview images:
@@ -14,7 +14,7 @@ Preview images:
 2. Create your virtual environment with the command:
    ```py -m venv venv```
 3. Activate the created virtual environment by the command:
-   ```venv\scripts\activate```
+   ```source venv/bin/activate```
 4. Run the following command to install all required packages:
    ```pip install -r requirements.txt```
 5. Create a file named '.env' at the root warket directory with the following content:
