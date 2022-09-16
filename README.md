@@ -8,6 +8,14 @@ It is a project for the SD Academy Python course.
 Preview images:
 ![Welcome image](https://github.com/Mixiir/warket/blob/master/warket_viewer/static/images/default_view.png?raw=true)
 
+Webshop view:
+![Welcome image](https://github.com/Mixiir/warket/blob/master/warket_viewer/static/images/webshop.png?raw=true)
+
+Auction view:
+![Welcome image](https://github.com/Mixiir/warket/blob/master/warket_viewer/static/images/auction.png?raw=true)
+
+
+
 ## Installation
 
 1. Clone the repository into your local machine
@@ -79,3 +87,5 @@ To access the admin panel go to the following address:
 1. Kuuba Onnis - [KuubaOnnis]
 2. Mikk Narusberg -[Mixiir]
 
+
+### License is MIT
