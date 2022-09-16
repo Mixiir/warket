@@ -30,6 +30,8 @@ FTP_PASSWORD=''   #FTP password
 FTP_ADDRESS=''   #FTP server address like - 'center.eu'
 FTP_STORAGE_LOCATION=''   #FTP storages full address like - 'ftp://random:password@center.eu:21/htdocs'
 IMAGE_SERVER=''   #URL to ftp server like - 'https://center.eu/'
+EMAIL_USER=''    #Email username like random@gmail.com
+EMAIL_PASSWORD=''    #Email password
 ```
 
 6. Run the following command to create and initialize the database:
