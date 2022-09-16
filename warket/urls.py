@@ -19,7 +19,7 @@ from warket_viewer.views import (DeleteManufacturer,
 urlpatterns = [
     path(
         "admin/",
-        admin.site.urls
+        admin.site.urls,
     ),
 
     path(

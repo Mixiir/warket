@@ -223,10 +223,18 @@ def end(request, wine_id):
     if auction_listing.user == user:
         auction_listing.active = False
         auction_listing.save()
-        messages.success(
-            request,
-            f"Auction for {auction_listing.name} successfully closed!"
-        )
+        if not auction_listing.last_bidder:
+            messages.success(
+                request,
+                f"Auction for {auction_listing.name} was closed"
+            )
+        else:
+            messages.success(
+                request,
+                f"Auction for {auction_listing.name} successfully closed!\n"
+                f"Winner is {auction_listing.last_bidder} "
+                f"with bid of €{auction_listing.max_bid}"
+            )
     else:
         messages.info(
             request, "You are not authorized to end this listing!"

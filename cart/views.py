@@ -1,6 +1,12 @@
+import django.contrib.auth.decorators
+from decouple import config
 from django.contrib import messages
+from django.core.mail import BadHeaderError
+from django.core.mail import send_mail
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 from warket_viewer.models import Wine
 from .cart import Cart
@@ -50,21 +56,46 @@ def cart_detail(request):
 
 
 @require_POST
+@login_required
 def cart_clear(request):
     cart = Cart(request)
-    print(cart.cart)
     if request.method == "POST":
         delete_from_cart = []
         for item in cart:
             wine_id = int(item["wine"].id)
-            quantity = int(item["quantity"])
-            print(quantity)
             wine_in_cart = Wine.objects.get(id=wine_id)
+            user = request.user
+            if not user.first_name:
+                user.first_name = "Anonymous"
+            first_name = user.first_name
+            if not user.last_name:
+                user.last_name = "Anonymous last name"
+            last_name = user.last_name
+            wine_name = item["wine"].name
+            quantity = int(item["quantity"])
+            seller = item["wine"].user
+            email = config("EMAIL_USER")
+            receiver_email = seller.email
             delete_from_cart.append(wine_id)
             wine_in_cart.units_in_stock -= quantity
             wine_in_cart.save()
+            # Sending email to the seller
+            subject = f"Warket: Order from {first_name} {last_name}"
+            message = f"You have sold {quantity} bottles of '{wine_name}'" \
+                      f" to {first_name} {last_name}." \
+                      f"Please make sure you send the wine to the buyer."
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    email,
+                    [receiver_email],
+                    fail_silently=False,
+                )
+            except BadHeaderError:
+                return HttpResponse("Invalid header found.")
         for item in delete_from_cart:
             wine = get_object_or_404(Wine, pk=item)
             cart.remove(wine)
-            messages.success(request, "Thank You for your purchase")
-    return redirect("list_wines")
+        messages.success(request, "Thank You for your purchase")
+        return redirect("cart:cart_detail")
