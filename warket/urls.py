@@ -1,19 +1,20 @@
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
 from django.views.generic import RedirectView
-from django.contrib.staticfiles.storage import staticfiles_storage
 
 import auctions.views
 from auctions import views as auctions_views
 from users import views as user_views
-from warket_viewer.views import (CreateManufacturer, DeleteManufacturer,
+from warket_viewer.views import (DeleteManufacturer,
                                  DeleteWine, DetailManufacturer, DetailWine,
-                                 EditWine, ManufacturersListView,
+                                 ManufacturersListView,
                                  UpdateManufacturer, WineListView,
                                  WineSortedList, create_wine, Home, Base,
-                                 edit_wine, create_manufacturer, About, Contact)
+                                 edit_wine, create_manufacturer, About,
+                                 contact_form_send_email)
 
 urlpatterns = [
     path(
@@ -190,7 +191,7 @@ urlpatterns = [
     path(
         "about/", About.as_view(), name="about"),
     path(
-        "contact/", Contact.as_view(), name="contact"),
+        "contact/", contact_form_send_email, name="contact"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

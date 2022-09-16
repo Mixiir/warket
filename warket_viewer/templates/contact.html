@@ -16,6 +16,13 @@
             </div>
         </div>
     </section>
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tag }} text-center h2">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     <section class="ftco-section bg-light">
         <div class="container">
             <div class="row justify-content-center">
@@ -69,6 +76,7 @@
                                 <div class="contact-wrap w-100 p-md-5 p-4">
                                     <h3 class="mb-4">Contact Us</h3>
                                     <form method="POST" id="contactForm" name="contactForm" class="contactForm">
+                                        {% csrf_token %}
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">

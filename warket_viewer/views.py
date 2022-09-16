@@ -9,8 +9,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.core.mail import send_mail, BadHeaderError
 from django.db.models import Q
 from django.forms import HiddenInput
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
@@ -18,7 +20,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
 
 from cart.forms import CartAddProductForm
 from .constants import COUNTRIES
-from .forms import CreateWineForm, FormAPI, CreateManufacturerForm
+from .forms import CreateWineForm, FormAPI, CreateManufacturerForm, ContactForm
 from .models import Manufacturer, Wine
 
 
@@ -294,5 +296,27 @@ class About(TemplateView):
     template_name = "about.html"
 
 
-class Contact(TemplateView):
-    template_name = "contact.html"
+def contact_form_send_email(request):
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data["name"]
+            email = form.cleaned_data["email"]
+            subject = form.cleaned_data["subject"]
+            message = form.cleaned_data["message"]
+            message = message + " from " + name + " @ " + email
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    email,
+                    ["warket@infiror.eu"],
+                    fail_silently=False,
+                )
+                messages.success(request, "Thank you for your email")
+            except BadHeaderError:
+                return HttpResponse("Invalid hgmeader found.")
+            return redirect("contact")
+    else:
+        form = ContactForm()
+    return render(request, "contact.html", {"form": form})
