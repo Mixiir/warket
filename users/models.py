@@ -9,8 +9,8 @@ from warket_viewer.constants import COUNTRIES
 class MyUser(AbstractUser):
     username = models.CharField(max_length=40, unique=True, db_index=True)
     email = models.EmailField(max_length=254, unique=True)
-    first_name = models.CharField(_("first name"), max_length=150, blank=True)
-    last_name = models.CharField(_("last name"), max_length=150, blank=True)
+    first_name = models.CharField(_("first name"), max_length=150)
+    last_name = models.CharField(_("last name"), max_length=150)
     birth_date = models.DateField(default="1999-01-01")
     is_staff = models.BooleanField(
         _("staff status"),

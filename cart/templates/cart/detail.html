@@ -18,7 +18,7 @@
     </section>
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-{{ message.tag }} text-center h2">
+            <div class="alert alert-{{ message.tag }} text-center h4">
                 {{ message }}
             </div>
         {% endfor %}
@@ -27,7 +27,7 @@
              style="background-image: url({% static "images/winebackground2.jpg" %});">
         <div class="container">
             <div class="row">
-                <div class="table-wrap">
+                <div>
                     <table class="table">
                         <thead class="thead-primary">
                         <tr>
@@ -61,16 +61,16 @@
                                     </td>
                                     <td>
                                         <form action="{% url "cart:cart_add" wine.id %}" method="post">
+                                            <label for="id_quantity_{{ forloop.counter }}"></label>
                                             <select name="quantity" id="id_quantity_{{ forloop.counter }}" class="btn">
                                                 {% for x in ""|center:wine.units_in_stock %}
                                                     <option value="
-                                                            {% if forloop.counter == item.quantity %}{{ forloop.counter }}"
-                                                            selected>
-                                                                {{ forloop.counter }}{% else %}{{ forloop.counter }}">
-                                                                {{ forloop.counter }}{% endif %}</option>{% endfor %}
+                                                        {% if forloop.counter == item.quantity %}{{ forloop.counter }}" selected>
+                                                        {{ forloop.counter }}{% else %}{{ forloop.counter }}">
+                                                        {{ forloop.counter }}{% endif %}</option>{% endfor %}
                                             </select>
-                                            {{ item.update_quantity_form.update }}
-                                            <input type="submit" value="Update" class="btn btn-warning">
+                                            <input type="hidden" name="update" value="True" id="id_update">
+                                            <input class="btn btn-warning" type="submit" value="Update">
                                             {% csrf_token %}
                                         </form>
                                     </td>
@@ -89,14 +89,14 @@
                     <div class="row">
                         <div class="col text-right">
                             <form action="{% url "list_wines" %}">
-                                <input type="submit" class="btn btn-success" value="Continue Shopping"/>
+                                <input type="submit" class="btn btn-info" value="Continue Shopping"/>
                             </form>
                         </div>
                         <div class="col">
                             <form action="{% url "cart:cart_clear" %}" method="post" class="form-group">
-                                {{ cart_product_form }}
                                 {% csrf_token %}
-                                <input type="submit" class="btn btn-primary" value="Confirm order">
+                                {{ cart_product_form }}
+                                <input type="submit" class="btn btn-success" value="Confirm order">
                             </form>
                         </div>
                     </div>

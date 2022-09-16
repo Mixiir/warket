@@ -5,6 +5,7 @@ import uuid
 import decouple
 import requests
 from PIL import Image
+from decouple import config
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -310,7 +311,7 @@ def contact_form_send_email(request):
                     subject,
                     message,
                     email,
-                    ["warket@infiror.eu"],
+                    [config("EMAIL_USER")],
                     fail_silently=False,
                 )
                 messages.success(request, "Thank you for your email")

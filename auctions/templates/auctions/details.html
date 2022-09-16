@@ -20,7 +20,7 @@
     {#  Wine auction body  #}
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-{{ message.tag }} text-center h2">
+            <div class="alert alert-{{ message.tag }} text-center h4">
                 {{ message }}
             </div>
         {% endfor %}
@@ -99,8 +99,8 @@
                         </div>
                         <div class="row justify-content-around">
                             <button class="btn btn-primary" type="submit">Place Bid</button>
-
-                            {% if not wine.last_bidder %}
+{#                         #If wine has an bid, then you cannot delete the auction anymore.                                         #}
+                            {% if not wine.last_bidder or user.is_staff %}
                                 {% if wine.user.username == user.username or user.is_staff %}
                                     <a href="{% url "end" wine.id %}">
                                         <button class="btn btn-warning disabled" type="button">End Auction</button>
@@ -115,8 +115,8 @@
             <section class="h5">
                 Details:
                 <ul>
-                    <li>Listed By: <strong>{{ wine.user.username }}</strong></li>
-                    <li>Category: <strong>{{ wine.category.name }}</strong></li>
+                    <li>Listed By: <strong>{{ wine.user.username|title }}</strong></li>
+                    <li>Category: <strong>{{ wine.category.name|title }}</strong></li>
                     <li>Listed On: <strong>{{ wine.date }}</strong></li>
                     <li>End date: <strong>{{ wine_end_date }}</strong></li>
                 </ul>

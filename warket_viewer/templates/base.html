@@ -152,7 +152,9 @@
                         </li>
                         <li><a href="{% url "register" %}"><span class="fa fa-chevron-right mr-2"></span>Register</a>
                         </li>
+                        {% if not user.is_authenticated %}
                         <li><a href="{% url "login" %}"><span class="fa fa-chevron-right mr-2"></span>Log In</a></li>
+                        {% endif %}
                         <li><a href="{% url "create_wine" %}"><span class="fa fa-chevron-right mr-2"></span>Sell
                             wine</a></li>
                         <li><a href="{% url "cart:cart_detail" %}"><span
@@ -167,7 +169,7 @@
                     <ul class="list-unstyled">
                         <li><a href="{% url "list_manufacturers"%}"><span class="fa fa-chevron-right mr-2"></span>Manufacturers list</a></li>
                         <li><a href="{% url "categories"%}"><span class="fa fa-chevron-right mr-2"></span>Auction categories</a></li>
-                        <li><a href="admin/"><span class="fa fa-chevron-right mr-2"></span>Admin panel</a></li>
+                        <li><a href="../admin"><span class="fa fa-chevron-right mr-2"></span>Admin panel</a></li>
                     </ul>
                 </div>
             </div>

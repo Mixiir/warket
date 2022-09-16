@@ -17,7 +17,7 @@
         </div>
     </section>
     <section class="testimony-section img" style="background-image: url({% static "images/winebackground2.jpg" %});">
-        <div class="container">
+        <div class="container w-50">
             <form action="{% url "create_listing" %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-row form-group mt-2">
@@ -28,8 +28,8 @@
                     </div>
                     <div class="col">
                         <label class="category h5" for="start_bid">Starting Bid</label>
-                        <input type="number" name="start_bid" class="form-control" placeholder="0.0" step=".01" required
-                               maxlength="5">
+                        <input type="number" name="start_bid" class="form-control" placeholder="32" step="1" required
+                               maxlength="5" min="0">
                     </div>
                 </div>
 
