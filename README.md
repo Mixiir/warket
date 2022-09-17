@@ -57,7 +57,7 @@ python manage.py migrate
    ```python manage.py createsuperuser```
 8. Run the following command to start the server:
    ```python manage.py runserver```
-9. Open the browser and go to the following address, with this the app should be up and running:
+9. Open the browser and go to the following address(default), with this the app should be up and running:
    ```http://127.0.0.1:8000/```
    
 ### Last setup before use    
